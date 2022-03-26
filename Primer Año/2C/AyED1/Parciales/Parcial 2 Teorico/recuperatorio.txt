@@ -1,0 +1,350 @@
+4.
+
+Const N: Int, A: Array[0,N) of Int;
+Var r : Int;
+{ N ≥ 0 }
+S
+{ r = 〈 Σ i : 0 ≤ i < N ∧ A.i ≤ 2^i : A.i 〉 }
+
+Introduzco la variable j para recorrer el arreglo y la variable pot para
+asi fortalecer el invariante y tener una hipotesis por la cual reemplazar
+2^i que no es programable.
+
+I : { r = 〈 Σ i : 0 ≤ i < j ∧ A.i <= 2^i : A.i 〉 ∧ 0<=j<=N ∧ pot = 2^j }
+
+Voy a necesitar un ciclo:
+
+{ N ≥ 0 }
+S0
+{I}
+do B ->
+    {I ∧ B}
+    S1
+    {I}
+od
+{ r = 〈 Σ i : 0 ≤ i < N ∧ A.i ≤ 2^i : A.i 〉 }
+
+Derivamos el cuerpo del ciclo:
+
+{I ∧ B}
+r,pot,j := R,E,j+1
+{I}
+
+Ahora, supongo la hipotesis y veo la wp:
+
+Propongo B : j < N
+
+{r = 〈 Σ i : 0 ≤ i < j ∧ A.i <= 2^i : A.i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j < N}
+r,pot,j := R,E,j+1
+{r = 〈 Σ i : 0 ≤ i < j ∧ A.i <= 2^i : A.i 〉 ∧ 0<=j<=N ∧ pot = 2^j}
+
+≡ {def de wp}
+
+R = 〈 Σ i : 0 ≤ i < j+1 ∧ A.i <= 2^i : A.i 〉 ∧ 0<=j+1<=N ∧ E = 2^j+1
+
+≡ {hip j<N => j+1<=N}{hip pot = 2^j}
+
+R = 〈 Σ i : 0 ≤ i < j+1 ∧ A.i <= 2^i : A.i 〉 ∧ E = pot*2
+
+≡ {logica}
+
+R = 〈 Σ i : (0 ≤ i < j ∨ j=i) ∧ A.i <= 2^i : A.i 〉 ∧ E = pot*2
+
+≡ {logica}
+
+R = 〈 Σ i : (0 ≤ i < j ∧ A.i <= 2^i) ∨ (A.i <= 2^i ∧ j=i) : A.i 〉 ∧ E = pot*2
+
+≡ {particion de rango}
+
+R = 〈 Σ i : 0 ≤ i < j ∧ A.i <= 2^i : A.i 〉 + 〈 Σ i : A.i <= 2^i ∧ j=i : A.i 〉 ∧ E = pot*2
+
+≡ {hip r = ...}
+
+R = r + 〈 Σ i : A.i <= 2^i ∧ j=i : A.i 〉 ∧ E = pot*2
+
+≡ {rango unitario}
+
+R = r + (A.j <= 2^j -> A.j, A.j > 2^j -> 0) ∧ E = pot*2
+
+≡ {hip pot = 2^j}
+
+R = r + (A.j <= pot -> A.j, A.j > pot -> 0) ∧ E = pot*2
+
+Propongo E = pot*2 e introducir un condicional para manejar el analisis por casos
+
+
+Terna 1:
+
+{I ∧ B ∧ A.j <= pot}
+r,pot,j := R1,pot*2,j+1 
+{I}
+
+R1 = r+A.j
+
+Propongo R1 = r+A.j
+
+True
+
+
+Terna 2:
+
+{I ∧ B ∧ A.j > pot}
+r,pot,j := R2,pot*2,j+1 
+{I}
+
+R2 = r+0
+
+Propongo R2=r
+
+True
+
+
+Propongo la cota t=N-j, sabemos que t >= 0 <== j <= N
+Sabemos que t decrece
+
+Terna 1:
+
+{I ∧ B ∧ A.j <= pot ∧ t=T}
+r,pot,j := r+A.j,pot*2,j+1 
+{I ∧ t<T}
+
+≡
+
+N-j-1 < N-j
+
+≡
+
+True
+
+Terna 2:
+
+{I ∧ B ∧ A.j > pot ∧ t=T}
+r,pot,j := r,pot*2,j+1 
+{I ∧ t<T}
+
+≡
+
+N-j-1 < N-j
+
+≡
+
+True
+
+
+Ahora tenemos que derivar la inicializacion:
+
+{ N ≥ 0 }
+S0
+{r = 〈 Σ i : 0 ≤ i < j ∧ A.i <= 2^i : A.i 〉 ∧ 0<=j<=N ∧ pot = 2^j}
+
+≡
+
+{ N ≥ 0 }
+r,pot,j := R0,E0,J0
+{r = 〈 Σ i : 0 ≤ i < j ∧ A.i <= 2^i : A.i 〉 ∧ 0<=j<=N ∧ pot = 2^j}
+
+≡ {aplico def de wp}
+
+N ≥ 0 
+=>
+R0 = 〈 Σ i : 0 ≤ i < J0 ∧ A.i <= 2^i : A.i 〉 ∧ 0<=J0<=N ∧ E0 = 2^J0
+
+Propongo R0=0, E0=1, J0=0
+
+N ≥ 0 
+=>
+0 = 〈 Σ i : 0 ≤ i < 0 ∧ A.i <= 2^i : A.i 〉 ∧ 0<=0<=N ∧ 1 = 2^0
+
+≡ {logica}{hip N>=0}
+
+0 = 〈 Σ i : False ∧ A.i <= 2^i : A.i 〉 ∧ True ∧ 1 = 2^0
+
+≡ {logica}{aritmetica}
+
+0 = 〈 Σ i : False : A.i 〉 ∧ True ∧ 1 = 1
+
+≡ {rango vacio}{logica}{reflexividad del =}
+
+0 = 0 ∧ True
+
+≡ {logica}{reflexividad del =}
+
+True
+
+El programa queda de la siguiente forma:
+
+Const N: Int, A: Array[0,N) of Int;
+Var r : Int, j : Int, pot : Int;
+{ N ≥ 0 }
+r,pot,j := 0,1,0;
+do j < N ->
+    if A.j <= pot ->
+        r,pot,j := r+A.j,pot*2,j+1;
+    [] A.j > pot ->
+        r,pot,j := r,pot*2,j+1;
+    fi
+od
+{ r = 〈 Σ i : 0 ≤ i < N ∧ A.i ≤ 2^i : A.i 〉 }
+
+
+Ver I ∧ ¬B => Q:
+
+r = 〈 Σ i : 0 ≤ i < j ∧ A.i <= 2^i : A.i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j >= N
+=>
+r = 〈 Σ i : 0 ≤ i < N ∧ A.i ≤ 2^i : A.i 〉
+
+Esto es verdad, ya que como 0<=j<=N ∧ j >= N => j = N 
+=> r = 〈 Σ i : 0 ≤ i < N ∧ A.i ≤ 2^i : A.i 〉
+
+El programa termina.
+El programa es correcto.
+
+
+
+
+
+
+
+
+
+
+
+
+3.
+
+rf.x.n = 〈 Π i : 0 ≤ i < n : x + i 〉
+
+Const N,X : Int;
+Var r : Int;
+{ N ≥ 0 }
+S
+{ r = rf.X.N }
+
+Propongo el invariante:
+
+I : {r = rf.X.n ∧ 0 <= n <= N}
+
+Propongo hacer un ciclo e inicializar las variables r y n:
+
+{ N ≥ 0 }
+r,n := E, F
+{I}
+do B ->
+    {I ∧ B}
+    S1
+    {I}
+od
+{ r = rf.X.N }
+
+Busco una guarda, propngo N-n > 0. Pruebo:
+
+I ∧ ¬B => Q
+
+≡ {def de I, B y Q}
+
+r = rf.X.n ∧ 0 <= n <= N ∧ ¬(N-n > 0) 
+=> 
+r = rf.X.N
+
+≡ {negacion}
+
+r = rf.X.n ∧ 0 <= n <= N ∧ N-n <= 0 
+=> 
+r = rf.X.N
+
+≡ {como 0 <= n <= N ∧ N-n <= 0 => n = N y r = rf.X.n ∧ n = N, entonces se cumple r = rf.X.N}
+
+Ahora, propongo la cota T=N-n y derivo el cuerpo del ciclo:
+
+{I ∧ B ∧ N-n=T}
+S1
+{I ∧ N-n<T}
+
+Propongo una asignacion para r y n, con n:=n+1:
+
+{r = rf.X.n ∧ 0 <= n <= N ∧ N > n ∧ N-n=T}
+r,n := E, n+1
+{r = rf.X.n ∧ 0 <= n <= N ∧ N-n<T}
+
+≡ {Obligacion de prueba}
+
+{r = rf.X.n ∧ 0 <= n <= N ∧ N > n ∧ N-n=T}
+=>
+{E = rf.X.(n+1) ∧ 0 <= n+1 <= N ∧ N-(n+1)<T}
+
+≡ {hip N>n>=0 => N>=n+1>=0}{hip T=N-n}
+
+{E = rf.X.(n+1) ∧ N-(n+1)<N-n}
+
+≡ {aritmetica}
+
+{E = rf.X.(n+1) ∧ -1<0}
+
+≡ {orden}
+
+{E = rf.X.(n+1)}
+
+≡ {def de rf}
+
+{E = 〈 Π i : 0 ≤ i < n+1 : X + i 〉}
+
+≡ {particion de rango}
+
+{E = 〈 Π i : 0 ≤ i < n : X + i 〉 * 〈 Π i : i=n : X + i 〉}
+
+≡ {hip y rango unitario}
+
+{E = r * X + n }
+
+El "programa" queda asi:
+
+{ N ≥ 0 }
+r,n := E, F
+{I}
+do N-n>0 ->
+    {I ∧ B}
+    r,n := r*X+n,n+1
+    {I}
+od
+{ r = rf.X.N }
+
+Ahora, solo queda derivar la inicializacion:
+
+{ N ≥ 0 }
+r,n := E, F
+{r = rf.X.n ∧ 0 <= n <= N}
+
+≡ {Obligacion de prueba}
+
+{ N ≥ 0 }
+=>
+{E = rf.X.F ∧ 0 <= F <= N}
+
+≡ {propongo E=1 y F=0}
+
+{1 = rf.X.0 ∧ 0 <= 0 <= N}
+
+≡ {hip N >= 0}
+
+{1 = rf.X.0}
+
+≡ {def de rf}
+
+{1 = 〈 Π i : 0 ≤ i < 0 : x + i 〉}
+
+≡ {logica y rango vacio}
+
+{1 = 1}
+
+≡ {reflexividad del =}
+
+True
+
+El programa queda de la siguiente forma:
+
+{ N ≥ 0 }
+r,n := 1, 0
+do N-n>0 ->
+    r,n := r*X+n,n+1
+od
+{ r = rf.X.N }

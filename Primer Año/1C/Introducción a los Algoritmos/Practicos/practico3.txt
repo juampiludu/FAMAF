@@ -1,0 +1,968 @@
+1)
+
+a) ((a = b) ∧ (b = c) ⇒ (a = c)) ≡ True
+b) (p ⇒ q) ∧ (q ⇒ p) ⇒ (p ≡ q)
+c) (p ∧ q) ∨ ¬r ⇒ p ∧ (q ∨ r)
+
+
+2)
+
+a) ((p ∨ q) ⇒ r) ≡ (p ⇒ r) ∧ (q ⇒ r)
+b) (p ⇒ q) ≡ p ∨ q ≡ q
+c) (p ⇒ q) ≡ ¬p ∨ q
+
+
+3)
+
+a) ((True ∧ False) ⇒ False) ≡ False
+True: Bool
+False: Bool
+
+b) (2 = 3) ∨ (3 = 4) ∨ (((a ∗ a) + 2) <= (b + 7))
+2: Int
+3: Int
+4: Int
+7: Int
+a: Int
+b: Int
+
+c) ((x ∧ y) ≡ a) ∧ (z <= w)
+x, y, a, z, w: Int
+
+d) (x + 3) ⇒ y
+x, y, 3: Int
+
+e) ((x + 3) = y) ∧ (¬z)
+x, y, 3, z: Int
+
+f ) a ∨ (b = (3 + y))
+a, b, 3, y: Int
+
+g) (((a >= b) ∧ ((3 + 2) < 4)) ⇒ c) ≡ ((b + 1) = 2)
+
+
+h) (((a + 2) >= c) ⇒ ((3 + 2) < b)) ≡ c ≡ (b = (2 ∗ a))
+
+
+i) (((((¬(a ∗ b)) + c) = d) ∨ p) ⇒ q) ≡ (r ⇐ (s ∧ (j = (k + (l ∗ m)))))
+
+
+4)
+
+a) satisfactible
+b) valido
+c) valido
+d) satisfactible
+e) satisfactible
+f) valido
+g) satisfactible
+h) valido
+i) satisfactible
+j) valido
+k) valido
+l) no satisfactible
+m) satisfactible
+n) valido
+ñ) no satisfactible
+
+
+
+6)
+
+a)
+
+(p ≡ p) ≡ True
+
+{por precedencia del ≡}
+
+p ≡ p ≡ True
+
+{por A2}
+
+p ≡ True ≡ p
+
+{Es un teorema}
+
+
+
+b)
+
+¬¬p ≡ p
+
+{por A4}
+
+¬(¬p ≡ p)
+
+{por A4}
+
+(¬p ≡ ¬p)
+
+{por reflexividad del ≡}
+
+True
+
+
+
+
+c)
+
+p ≡ False ≡ ¬p
+
+{por A2}
+
+p ≡ ¬p ≡ False
+
+{por A4}
+
+¬(p ≡ p) ≡ False
+
+{por 6a}
+
+¬(True) ≡ False
+
+{por A4}
+
+¬True ≡ False
+
+{por A5}
+
+False ≡ False
+
+{por reflexividad del ≡}
+
+True
+
+
+d)
+
+(p /≡ False) ≡ p
+
+{por A1}
+
+p /≡ (False ≡ p)
+
+{por A5}
+
+p /≡ (¬True ≡ p)
+
+{por A4}
+
+p /≡ ¬(True ≡ p)
+
+{por A3}
+
+p /≡ ¬(p)
+
+{por A4}
+
+p /≡ ¬p
+
+{por tabla de verdad}
+
+True
+
+
+
+
+
+
+7)
+
+a) 
+p ≡ p ≡ p ≡ True
+
+no es valida
+
+Demostracion por contraejemplo
+
+si instancio p := False
+
+_False ≡ False_ ≡ False ≡ True
+
+≡ {semantica del ≡}
+
+_True ≡ False_ ≡ True
+
+≡ {semantica del ≡}
+
+False ≡ True
+
+= {semantica del ≡}
+
+False
+
+
+
+
+b)  
+((p /≡ q) ≡ r) ≡ (_p /≡ (q ≡ r)_)
+
+≡ {por A1}
+
+((p /≡ q) ≡ r) ≡ ((p /≡ q) ≡ r)
+
+≡ {semantica del ≡}
+
+True
+
+Es valida
+
+
+
+
+c)
+(p ≡ q) ≡ (_¬p_ ≡ _¬q_)
+
+≡ {por A4 dos veces}
+
+(p ≡ q) ≡ _¬¬(p ≡ q)_
+
+≡ {por doble negacion}
+
+(p ≡ q) ≡ (p ≡ q)
+
+≡ {semantica del ≡}
+
+True
+
+
+
+d)
+¬p ≡ False
+
+p puede tomar el valor de True o False tanto como ¬p
+
+si p := True
+
+False ≡ False
+
+≡ {semantica del ≡}
+
+True
+
+
+
+si p := False
+
+True ≡ False
+
+≡ {semantica del ≡}
+
+False
+
+
+la formula no es valida
+
+
+
+e)
+¬(p ≡ q) ≡ (¬p ≡ ¬q)
+
+si p := True y q := True
+
+_¬(True ≡ True)_ ≡ (¬True ≡ ¬True)
+
+≡ {por A4}
+
+_¬True_ ≡ True ≡ (_¬True_ ≡ _¬True_)
+
+≡ {por A5 tres veces}
+
+_False ≡ True_ ≡ _False ≡ False_
+
+≡ {semantica del ≡ dos veces}
+
+False ≡ True
+
+≡ {semantica del ≡}
+
+False
+
+la formula no es valida
+
+
+
+
+
+8)
+
+a)
+
+p ∨ (q ∨ r) ≡ _(p ∨ q) ∨ (p ∨ r)_
+
+≡ {por A7}
+
+p ∨ (q ∨ r) ≡ _p ∨ q ∨ p ∨ r_
+
+≡ {por A8}
+
+p ∨ (q ∨ r) ≡ _p ∨ p_ ∨ q ∨ r
+
+≡ {por A9}
+
+p ∨ (q ∨ r) ≡ _p ∨ q ∨ r_
+
+≡ {por A7}
+
+p ∨ (q ∨ r) ≡ (p ∨ q) ∨ r
+
+LLegué a A7
+
+
+
+b)
+
+p ∨ _True_ ≡ True
+
+≡ {por 6a}
+
+_p ∨ (p ≡ p)_ ≡ True
+
+≡ {por A10}
+
+_p ∨ p_ ≡ _p ∨ p_ ≡ True
+
+≡ {por A9}
+
+p ≡ _p ≡ True_
+
+≡ {por A2}
+
+p ≡ True ≡ p
+
+LLegué a A3
+
+
+
+
+c)
+p ∨ _False_ ≡ p
+
+≡ {por A5}
+
+p v ¬_True_ ≡ p
+
+≡ {reflexividad del ≡}
+
+p v _¬(p ≡ p)_ ≡ p
+
+≡ {por A4}
+
+p v ¬p ≡ _p ≡ p_
+
+≡ {reflexividad del ≡}
+
+p v ¬p ≡ True
+
+LLegué a A11
+
+
+
+
+d)
+_p ∨ q ≡ p_ ∨ ¬q ≡ p
+
+≡ {por A10}
+
+p v q ≡ p v _p v ¬q ≡ p_
+
+≡ {por A10}
+
+p v q ≡ p v p v ¬q ≡ p v p
+
+≡ {por A9}
+
+p v q ≡ _p v ¬q_ ≡ p
+
+≡ {por A11}
+
+p v q ≡ _True ≡ p_
+
+≡ {por A3}
+
+p v q ≡ p
+
+≡ {por A10}
+
+p v q ≡ q v p
+
+LLegué a A8
+
+
+
+
+9)
+
+a)
+
+p ∨ _(q ∧ r)_ ≡ (p ∨ q) ∧ (p ∨ r)
+
+≡ {A12, P:=q, Q:=r}
+
+_p ∨ (q ≡ r ≡ q ∨ r)_ ≡ (p ∨ q) ∧ (p ∨ r)
+
+≡ {A10, P:=p, Q:=q, R:=r, S:=(q ∨ r)}
+
+p ∨ q ≡ p ∨ r ≡ p ∨ (q ∨ r) ≡ (p ∨ q) ∧ (p ∨ r)
+
+≡ {A1 y A2}
+
+_(p ∨ q) ∧ (p ∨ r)_ ≡ p ∨ q ≡ p ∨ r ≡ p ∨ (q ∨ r)
+
+≡ {A12, P:=(p ∨ q), Q:=(p ∨ r)}
+
+(p ∨ q) ≡ (p ∨ r) ≡ (p ∨ q) ∨ (p ∨ r) ≡ p ∨ q ≡ p ∨ r ≡ p ∨ (q ∨ r)
+
+≡ {A1 y A2}
+
+p ∨ (q ∨ r) ≡ _(p ∨ q) ≡ (p ∨ q)_ ≡ _(p ∨ r) ≡ (p ∨ r)_ ≡ (p ∨ q) ∨ (p ∨ r)
+
+≡ {reflexividad del ≡ dos veces}
+
+p ∨ (q ∨ r) ≡ _True ≡ True_ ≡ (p ∨ q) ∨ (p ∨ r)
+
+≡ {reflexividad del ≡}
+
+_p ∨ (q ∨ r) ≡ True_ ≡ (p ∨ q) ∨ (p ∨ r)
+
+≡ {elemento neutro True}
+
+p ∨ (q ∨ r) ≡ (p ∨ q) ∨ (p ∨ r)
+
+≡ {por 8a}
+
+(p ∨ q) ∨ (p ∨ r) ≡ (p ∨ q) ∨ (p ∨ r)
+
+
+
+
+b)
+
+_(p ∧ q)_ ∧ r ≡ p ∧ (q ∧ r)
+
+≡ {A12, P:=p, Q:=q}
+
+(p ≡ q ≡ p ∨ q) ∧ r ≡ p ∧ _(q ∧ r)_
+
+≡ {A12, P:=q, Q:=r}
+
+_(p ≡ q ≡ p ∨ q) ∧ r_ ≡ p ∧ (q ≡ r ≡ q ∨ r)
+
+≡ {A8}
+
+_r ∧ (p ≡ q ≡ p ∨ q)_ ≡ p ∧ (q ≡ r ≡ q ∨ r)
+
+≡ {A10}
+
+(r ∨ p) ≡ (r ∨ q) ≡ (r ∨ (p ∨ q)) ≡ _p ∧ (q ≡ r ≡ q ∨ r)_
+
+≡ {A10}
+
+(r ∨ p) ≡ (r ∨ q) ≡ (r ∨ (p ∨ q)) ≡ (p ∨ q) ≡ (p ∨ r) ≡ (p ∨ (q ∨ r))
+
+≡ {A2 y A8}
+
+_(p ∨ r) ≡ (p ∨ r)_ ≡ (q ∨ r) ≡ (p ∨ q) ≡ (r ∨ (p ∨ q)) ≡ (p ∨ (q ∨ r))
+
+≡ {reflexividad del ≡}
+
+_True ≡ (q ∨ r)_ ≡ (p ∨ q) ≡ (r ∨ (p ∨ q)) ≡ (p ∨ (q ∨ r))
+
+≡ {elemento neutro de True}
+
+(q ∨ r) ≡ (p ∨ q) ≡ _(r ∨ (p ∨ q))_ ≡ (p ∨ (q ∨ r))
+
+≡ {A7 y A8}
+
+(q ∨ r) ≡ (p ∨ q) ≡ _(p ∨ (q ∨ r)) ≡ (p ∨ (q ∨ r))_
+
+≡ {reflexividad del ≡}
+
+(q ∨ r) ≡ _(p ∨ q) ≡ True_
+
+≡ {elemento neutro de True}
+
+(q ∨ r) ≡ _(p ∨ q)_
+
+≡ {A8}
+
+(q ∨ r) ≡ (q ∨ p)
+
+≡ {A10}
+
+q ∨ (r ≡ p)
+
+La formula es un teorema porque es equivalente a A10.
+
+
+c)
+
+_p ∧ p_ ≡ p
+
+≡ {A12, P:=p, Q:=p}
+
+p ≡ p ≡ _p ∨ p_ ≡ p
+
+≡ {A9}
+
+_p ≡ p_ ≡ _p ≡ p_
+
+≡ {reflexividad del ≡ dos veces}
+
+True ≡ True
+
+≡ {reflexividad del ≡}
+
+True
+
+
+d)
+
+_p ∧ q_ ≡ q ∧ p
+
+≡ {A12, P:=p, Q:=q}
+
+p ≡ q ≡ p ∨ q ≡ _q ∧ p_
+
+≡ {A12, P:=q, Q:=p}
+
+p ≡ q ≡ p ∨ q ≡ q ≡ p ≡ q ∨ p
+
+≡ {A2 y A8}
+
+_p ≡ p_ ≡ _q ≡ q_ ≡ _p ∨ q ≡ p ∨ q_
+
+≡ {reflexividad del ≡ tres veces}
+
+_True ≡ True ≡ True_
+
+≡ {reflexividad del ≡ dos veces}
+
+True
+
+
+
+e)
+
+_p ∧ False_ ≡ False
+
+≡ {A12, P:=p, Q:=False}
+
+p ≡ False ≡ _p ∨ False_ ≡ False
+
+≡ {neutro de la disyuncion}
+
+p ≡ False ≡ p ≡ False
+
+≡ {A1}
+
+(p ≡ False) ≡ (p ≡ False)
+
+≡ {reflexividad del ≡}
+
+True
+
+
+f)
+
+_p ∧ True_ ≡ p
+
+≡ {A12, P:=p, Q:=True}
+
+p ≡ True ≡ _p ∨ True_ ≡ p
+
+≡ {absorbente de la disyuncion}
+
+p ≡ True ≡ True ≡ p
+
+≡ {A1 y A2}
+
+(p ≡ True) ≡ (p ≡ True)
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+g)
+
+¬_(p ∧ q)_ ≡ ¬p ∨ ¬q
+
+≡ {A12, P:=p, Q:=q}
+
+_¬(p ≡ q ≡ p ∨ q)_ ≡ ¬p ∨ ¬q
+
+≡ {A4}
+
+¬p ≡ q ≡ p ∨ q ≡ _¬p ∨ ¬q_
+
+≡ {distributividad de la negacion con respecto a la disyuncion}
+
+¬p ≡ q ≡ p ∨ q ≡ ¬_(p ∨ ¬q)_
+
+≡ {teorema estrella}
+
+¬p ≡ q ≡ p ∨ q ≡ _¬(p ∨ q ≡ p)_
+
+≡ {A4}
+
+¬p ≡ q ≡ p ∨ q ≡ p ∨ q ≡ ¬p  ---------------- pendiente
+
+
+
+h)
+
+_p ∧ (p ∨ q)_ ≡ p
+
+≡ {A12, P:=p, Q:=(p ∨ q)}
+
+p ≡ (p ∨ q) ≡ _p ∨ (p ∨ q)_ ≡ p
+
+≡ {A7}
+
+p ≡ (p ∨ q) ≡ _(p ∨ p)_ ∨ q ≡ p
+
+≡ {A9}
+
+p ≡ (p ∨ q) ≡ p ∨ q ≡ p
+
+≡ {A7 y A8}
+
+p ≡ (p ∨ q) ≡ p ≡ (p ∨ q)
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+
+
+
+
+
+11)
+
+a)
+
+_p ⇒ q_ ≡ ¬p ∨ q
+
+≡ {A13, P:=p, Q:=q}
+
+p ∨ q ≡ q ≡ _¬p ∨ q_
+
+≡ {A7 y A8}
+
+p ∨ q ≡ _q ∨ ¬p ≡ q_
+
+≡ {teorema estrella, P:=q, Q:=p}
+
+p ∨ q ≡ _q ∨ p_
+
+≡ {A8}
+
+p ∨ q ≡ p ∨ q
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+
+b)
+
+_p ⇒ q_ ≡ p ∧ q ≡ p
+
+≡ {A13, P:=p, Q:=q}
+
+p ∨ q ≡ q ≡ _p ∧ q_ ≡ p
+
+≡ {A12, P:=p, Q:=q}
+
+p ∨ q ≡ q ≡ p ≡ q ≡ p ∨ q ≡ p
+
+≡ {A1 y A2}
+
+(p ∨ q ≡ q ≡ p) ≡ (p ∨ q ≡ q ≡ p)
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+
+c)
+
+_p ⇒ False_ ≡ ¬p
+
+≡ {A13, P:=p, Q:=False}
+
+p ∨ False ≡ False ≡ ¬p
+
+≡ {A10}
+
+p ∨ False ≡ p ∨ False ≡ _p ∨ ¬p_
+
+≡ {A11}
+
+_p ∨ False_ ≡ _p ∨ False_ ≡ True
+
+≡ {neutro de disyuncion dos veces}
+
+_p ≡ p_ ≡ True
+
+≡ {reflexividad del ≡}
+
+True ≡ True
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+
+d)
+
+p ∧ q ⇒ p
+
+≡ {A13, P:=(p ∧ q), Q:=p}
+
+_(p ∧ q) ∨ p_ ≡ p
+
+≡ {A8}
+
+_p ∨ (p ∧ q)_ ≡ p
+
+≡ {T17}
+
+p ≡ p
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+
+
+e)
+
+
+p ⇒ p ∨ q
+
+≡ {A13, P:=p, Q:=(p ∨ q)}
+
+_p ∨ (p ∨ q)_ ≡ (p ∨ q)
+
+≡ {A7}
+
+_(p ∨ p)_ ∨ q ≡ (p ∨ q)
+
+≡ {A9}
+
+p ∨ q ≡ (p ∨ q)
+
+≡ {A1}
+
+(p ∨ q) ≡ (p ∨ q)
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+
+f)
+
+p ∧ _(p ⇒ q)_ ≡ p ∧ q
+
+≡ {def dual implicacion}
+
+p ∧ (_p ∧ q_ ≡ p) ≡ p ∧ q
+
+≡ {A12}
+
+p ∧ (p ≡ q ≡ p ∨ q ≡ p) ≡ _p ∧ q_
+
+≡ {A12}
+
+_p ∧ (p ≡ q ≡ p ∨ q ≡ p)_ ≡ p ≡ q ≡ p ∨ q
+
+≡ {A12, P:=p, Q:=(p ≡ q ≡ p ∨ q ≡ p)}
+
+p ≡ (p ≡ q ≡ p ∨ q ≡ p) ≡ _p ∨ (p ≡ q ≡ p ∨ q ≡ p)_ ≡ p ≡ q ≡ p ∨ q
+
+≡ {A10}
+
+p ≡ (p ≡ q ≡ p ∨ q ≡ p) ≡ p ∨ p ≡ p ∨ q ≡ p ∨ (p ∨ q) ≡ p ∨ p ≡ p ≡ q ≡ p ∨ q
+
+≡ {A1 y A2}
+
+_p ≡ p_ ≡ _p ≡ p_ ≡ _(p ∨ p) ≡ (p ∨ p)_ ≡ _q ≡ q_ ≡ _(p ∨ q) ≡ (p ∨ q)_ ≡ (p ∨ q) ≡ (p ∨ (p ∨ q))
+
+≡ {reflexividad del ≡ cinco veces}
+
+_True ≡ True ≡ True ≡ True ≡ True_ ≡ (p ∨ q) ≡ (p ∨ (p ∨ q))
+
+≡ {reflexividad del ≡}
+
+True ≡ (p ∨ q) ≡ _(p ∨ (p ∨ q))_
+
+≡ {A7}
+
+True ≡ (p ∨ q) ≡ (_(p ∨ p)_ ∨ q)
+
+≡ {A9}
+
+True ≡ _(p ∨ q) ≡ (p ∨ q)_
+
+≡ {reflexividad del ≡}
+
+True ≡ True
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+
+
+g)
+
+(_p ⇒ q_) ∧ ¬q ≡ ¬p ∧ ¬q
+
+≡ {caract de la implicacion}
+
+_(¬p ∨ q) ∧ ¬q_ ≡ ¬p ∧ ¬q
+
+≡ {A12, P:=(¬p ∨ q), Q:=¬q}
+
+(¬p ∨ q) ≡ ¬q ≡ (¬p ∨ q) ∨ ¬q ≡ _¬p ∧ ¬q_
+
+≡ {A12, P:=¬p, Q:=¬q}
+
+(¬p ∨ q) ≡ ¬q ≡ (¬p ∨ q) ∨ ¬q ≡ ¬p ≡ ¬q ≡ ¬p ∨ ¬q
+
+≡ {A1 y A2}
+
+¬p ≡ _¬q ≡ ¬q_ ≡ (¬p ∨ q) ∨ ¬q ≡ (¬p ∨ ¬q) ≡ (¬p ∨ q)
+
+≡ {reflexividad del ≡}
+
+_¬p_ ≡ True ≡ (¬p ∨ q) ∨ ¬q ≡ (¬p ∨ ¬q) ≡ (¬p ∨ q)
+
+≡ {equiv y negacion}
+
+p ≡ _False ≡ True_ ≡ (¬p ∨ q) ∨ ¬q ≡ (¬p ∨ ¬q) ≡ (¬p ∨ q)
+
+≡ {def de False}
+
+_p ≡ False_ ≡ (¬p ∨ q) ∨ ¬q ≡ (¬p ∨ ¬q) ≡ (¬p ∨ q)
+
+≡ {equiv y negacion}
+
+¬p ≡ _(¬p ∨ q) ∨ ¬q_ ≡ (¬p ∨ ¬q) ≡ (¬p ∨ q)
+
+≡ {A7 y A8}
+
+¬p ≡ q ∨ _(¬p ∨ ¬q)_ ≡ _(¬p ∨ ¬q)_ ≡ (¬p ∨ q)
+
+≡ {morgan dos veces}
+
+¬p ≡ q ∨ ¬_(p ∧ q)_ ≡ ¬_(p ∧ q)_ ≡ (¬p ∨ q)
+
+≡ {A12 dos veces}
+
+¬p ≡ q ∨ _¬(p ≡ q ≡ p ∨ q)_ ≡ _¬(p ≡ q ≡ p ∨ q)_ ≡ (¬p ∨ q)
+
+≡ {A4 dos veces}
+
+¬p ≡ q ∨ ¬p ≡ q ≡ p ∨ q ≡ ¬p ≡ q ≡ p ∨ q ≡ (¬p ∨ q)
+
+≡ {A1 y A2}
+
+(¬p ≡ q ≡ (p ∨ q) ≡ (¬p ∨ q)) ≡ (¬p ≡ q ≡ (p ∨ q) ≡ _(q ∨ ¬p)_)
+
+≡ {A8}
+
+(¬p ≡ q ≡ (p ∨ q) ≡ (¬p ∨ q)) ≡ (¬p ≡ q ≡ (p ∨ q) ≡ (¬p ∨ q))
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+
+
+
+
+h)
+
+_p ⇒ q_ ≡ ¬q ⇒ ¬p
+
+≡ {caract de la implicacion}
+
+¬p ∨ q ≡ _¬q ⇒ ¬p_
+
+≡ {consecuencia}
+
+¬p ∨ q ≡ _¬p ∨ ¬q_ ≡ ¬p
+
+≡ {morgan}
+
+¬p ∨ q ≡ ¬(p ∧ q) ≡ ¬p
+
+≡ {A4}
+
+¬p ∨ q ≡ ¬¬((_p ∧ q_) ≡ p)
+
+≡ {A12}
+
+¬p ∨ q ≡ ¬¬(p ≡ q ≡ p ∨ q ≡ p)
+
+≡ {A4}
+
+¬p ∨ q ≡ ¬p ≡ q ≡ p ∨ q ≡ ¬p
+
+≡ {A1 y A2}
+
+(¬p ∨ q) ≡ (p ∨ q) ≡ _¬p ≡ ¬p_ ≡ q
+
+≡ {reflexividad del ≡}
+
+(¬p ∨ q) ≡ (p ∨ q) ≡ _True ≡ q_
+
+≡ {elemento neutro True}
+
+(¬p ∨ q) ≡ (p ∨ q) ≡ q
+
+≡ {A8}
+
+(q ∨ ¬p) ≡ (q ∨ p) ≡ q
+
+≡ {A10}
+
+_q ∨ ¬p_ ≡ p ≡ q
+
+≡ {teorema estrella}
+
+q ∨ p ≡ q ≡ p ≡ q
+
+≡ {A8 y A2}
+
+p ∨ q ≡ p ≡ _q ≡ q_
+
+≡ {reflexividad del ≡}
+
+p ∨ q ≡ _p ≡ True_
+
+≡ {elemento neutro True}
+
+p ∨ q ≡ p ------------------------- terminar

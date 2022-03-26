@@ -1,0 +1,46 @@
+8.
+
+Const N : Int, A : array[0, N) of Int;
+Var r : Int;
+{P : N ≥ 2}
+S
+{ Q : r =〈 Max p, q : 0 ≤ p < q < N : A.p − A.q 〉
+
+Un invariante puede ser: {r =〈 Max p, q : 0 ≤ p < q < n : A.p − A.q 〉∧ 0 <= n <= N}
+
+Voy a hacer un ciclo:
+
+{P : N ≥ 2}
+S0
+{I}
+do B ->
+    {I ∧ B}
+    S1
+    {I}
+od
+{ Q : r =〈 Max p, q : 0 ≤ p < q < N : A.p − A.q 〉
+
+Voy a derivar el cuerpo del ciclo con asignaciones multiples:
+Propongo B: n<N
+
+{r =〈 Max p, q : 0 ≤ p < q < n : A.p − A.q 〉∧ 0 <= n <= N ∧ n<N}
+r, n, p, q := R, E, P, Q
+{r =〈 Max p, q : 0 ≤ p < q < n : A.p − A.q 〉∧ 0 <= n <= N}
+
+≡ {Obligacion de prueba}
+
+{r =〈 Max p, q : 0 ≤ p < q < n : A.p − A.q 〉∧ 0 <= n <= N ∧ n<N}
+=>
+{R =〈 Max p, q : 0 ≤ P < Q < E : A.P − A.Q 〉∧ 0 <= E <= N}
+
+≡ {propongo E:=n+1}
+
+{R =〈 Max p, q : 0 ≤ P < Q < n+1 : A.P − A.Q 〉∧ 0 <= n+1 <= N}
+
+≡ {por hip n<N => n+1 <= N}
+
+{R =〈 Max p, q : 0 ≤ P < Q < n+1 : A.P − A.Q 〉}
+
+≡ {logica}
+
+{R =〈 Max p, q : 0 ≤ P < Q <= n : A.P − A.Q 〉}

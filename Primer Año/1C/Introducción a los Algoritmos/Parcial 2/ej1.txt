@@ -1,0 +1,51 @@
+Nombre y Apellido: Juan Pablo Ludueña Zakka
+DNI: 43299161
+Comisión: 4
+
+a) p ∧ (q ≡ r) ≡ (p ∧ q) ≡ (p ∧ r) ≡ p ∧ (r ∨ ¬r)
+
+__p ∧ (q ≡ r)__ ≡ (p ∧ q) ≡ (p ∧ r) ≡ p ∧ (r ∨ ¬r)
+
+≡ {A13, P:=p, Q:=(q ≡ r)}
+
+p ≡ q ≡ r ≡ p ∨ (q ≡ r) ≡ __(p ∧ q)__ ≡ (p ∧ r) ≡ p ∧ (r ∨ ¬r)
+
+≡ {A13, P:=p, Q:=q}
+
+p ≡ q ≡ r ≡ p ∨ (q ≡ r) ≡ p ≡ q ≡ p ∨ q ≡ __(p ∧ r)__ ≡ p ∧ (r ∨ ¬r)
+
+≡ {A13, P:=p, Q:=r}
+
+p ≡ q ≡ r ≡ p ∨ (q ≡ r) ≡ p ≡ q ≡ p ∨ q ≡ p ≡ r ≡ p ∨ r ≡ p ∧ __(r ∨ ¬r)__
+
+≡ {A8, P:=r}
+
+p ≡ q ≡ r ≡ p ∨ (q ≡ r) ≡ p ≡ q ≡ p ∨ q ≡ p ≡ r ≡ p ∨ r ≡ __p ∧ True__
+
+≡ {T9, P:=p}
+
+p ≡ q ≡ r ≡ __p ∨ (q ≡ r)__ ≡ p ≡ q ≡ p ∨ q ≡ p ≡ r ≡ p ∨ r ≡ p
+
+≡ {A9, P:=p, Q:=q, R:=r}
+
+p ≡ q ≡ r ≡ p ∨ q ≡ p ∨ r ≡ p ≡ q ≡ p ∨ q ≡ __p ≡ r ≡ p ∨ r ≡ p__
+
+≡ {A2}
+
+p ≡ q ≡ r ≡ p ∨ q ≡ p ∨ r ≡ p ≡ q ≡ p ∨ q ≡ r ≡ p ∨ r ≡ __p ≡ p__
+
+≡ {A3}
+
+p ≡ q ≡ r ≡ p ∨ q ≡ p ∨ r ≡ p ≡ q ≡ p ∨ q ≡ r ≡ __p ∨ r ≡ True__
+
+≡ {A3}
+
+p ≡ q ≡ r ≡ p ∨ q ≡ p ∨ r ≡ __p ≡ q ≡ p ∨ q ≡ r__ ≡ p ∨ r
+
+≡ {A1 y A2}
+
+(p ≡ q ≡ r ≡ p ∨ q ≡ p ∨ r) ≡ (p ≡ q ≡ r ≡ p ∨ q ≡ p ∨ r)
+
+≡ {reflexividad del ≡}
+
+True

@@ -1,0 +1,280 @@
+1)
+    sum : [Num] → Num
+    sum [] = 0                  (1)
+    sum (x:xs) = x + sum xs     (2)
+    
+    a. La función toma una lista de numeros y devuelve el total de la suma de cada elemento.
+    b. < Σ i : 0 <= i < #xs : xs!!i >
+    c. 
+    Inducción:
+
+    Caso base:
+
+    < Σ i : 0 <= i < #[] : []!!i >
+    < Σ i : 0 <= i < 0 : []!!i >
+    < Σ i : False : []!!i >
+    0
+    sum []
+
+    Hipótesis inductiva (HI):
+    < Σ i : 0 <= i < #xs : xs!!i > = sum xs
+
+    Paso inductivo:
+    < Σ i : 0 <= i < #(x:xs) : (x:xs)!!i > = sum (x:xs)
+    ≡ {(2)}
+    < Σ i : 0 <= i < #(x:xs) : (x:xs)!!i > = x + sum xs
+    ≡ {(HI)}
+    < Σ i : 0 <= i < #(x:xs) : (x:xs)!!i > = x +  < Σ i : 0 <= i < #xs : xs!!i >
+
+
+2)
+
+    a. sum_cuad.xs =〈 ∑ i : 0 ≤ i < #xs : xs!i ∗ xs!i 〉
+
+        Caso base:
+
+        sum_cuad.[] =〈 ∑ i : 0 ≤ i < #[] : []!i ∗ []!i 〉
+        sum_cuad.[] =〈 ∑ i : 0 ≤ i < #0 : []!i ∗ []!i 〉
+        sum_cuad.[] =〈 ∑ i : false : []!i ∗ []!i 〉
+        sum_cuad.[] = 0
+
+        Hipótesis inductiva:
+        sum_cuad.xs =〈 ∑ i : 0 ≤ i < #xs : xs!i ∗ xs!i 〉
+
+        Paso inductivo:
+
+        sum_cuad.(x:xs) =〈 ∑ i : 0 ≤ i < #(x:xs) : (x:xs)!i ∗ (x:xs)!i 〉
+        ≡ {lógica}
+        sum_cuad.(x:xs) =〈 ∑ i : i = 0 ∨ 1 ≤ i < #(x:xs) : (x:xs)!i ∗ (x:xs)!i 〉
+        ≡ {partición de rango}
+        sum_cuad.(x:xs) =〈 ∑ i : i = 0 : (x:xs)!i ∗ (x:xs)!i 〉+〈 ∑ i : 1 ≤ i < #(x:xs) : (x:xs)!i ∗ (x:xs)!i 〉
+        ≡ {rango unitario}
+        sum_cuad.(x:xs) = (x:xs)!0 ∗ (x:xs)!0 +〈 ∑ i : 1 ≤ i < #(x:xs) : (x:xs)!i ∗ (x:xs)!i 〉
+        ≡ {definicion de !}
+        sum_cuad.(x:xs) = x ∗ x +〈 ∑ i : 1 ≤ i < #(x:xs) : (x:xs)!i ∗ (x:xs)!i 〉
+        ≡ {definicion de #}
+        sum_cuad.(x:xs) = x ∗ x +〈 ∑ i : 1 ≤ i < #xs + 1 : (x:xs)!i ∗ (x:xs)!i 〉
+        ≡ {cambio de variable, i:=(j+1)}
+        sum_cuad.(x:xs) = x ∗ x +〈 ∑ j : 1 ≤ (j+1) < #xs + 1 : (x:xs)!(j+1) ∗ (x:xs)!(j+1) 〉
+        ≡ {compatibilidad de la suma y el orden}
+        sum_cuad.(x:xs) = x ∗ x +〈 ∑ j : 0 ≤ j < #xs : (x:xs)!(j+1) ∗ (x:xs)!(j+1) 〉
+        ≡ {definicion recursiva de !}
+        sum_cuad.(x:xs) = x ∗ x +〈 ∑ j : 0 ≤ j < #xs : xs!j ∗ xs!j 〉
+        ≡ {HI}
+        sum_cuad.(x:xs) = x ∗ x + sum_cuad.xs
+
+    b. iga.e.xs =〈 ∀ i : 0 ≤ i <#xs : xs!i = e 〉
+
+        Caso base:
+
+        iga.e.[] =〈 ∀ i : 0 ≤ i < #[] : []!i = e 〉
+        ≡ {definicion de #}
+        iga.e.[] =〈 ∀ i : 0 ≤ i < 0 : []!i = e 〉
+        ≡ {lógica}
+        iga.e.[] =〈 ∀ i : False : []!i = e 〉
+        ≡ {rango vacio}
+        iga.e.[] = True
+
+
+        Hipótesis inductiva:
+
+        iga.e.xs =〈 ∀ i : 0 ≤ i <#xs : xs!i = e 〉
+
+        Paso inductivo:
+
+        iga.e.(x:xs) =〈 ∀ i : 0 ≤ i < #(x:xs) : (x:xs)!i = e 〉
+        ≡ {definicion recursiva de #}
+        iga.e.(x:xs) =〈 ∀ i : 0 ≤ i < #xs + 1 : (x:xs)!i = e 〉
+        ≡ {lógica}
+        iga.e.(x:xs) =〈 ∀ i : i = 0 ∨ 1 ≤ i < #xs + 1 : (x:xs)!i = e 〉
+        ≡ {partición de rango}
+        iga.e.(x:xs) =〈 ∀ i : i = 0 : (x:xs)!i = e 〉∧〈 ∀ i : 1 ≤ i < #xs + 1 : (x:xs)!i = e 〉 
+        ≡ {rango unitario de ∀}
+        iga.e.(x:xs) = (x:xs)!0 = e ∧〈 ∀ i : 1 ≤ i < #xs + 1 : (x:xs)!i = e 〉
+        ≡ {definicion de !}
+        iga.e.(x:xs) = x = e ∧〈 ∀ i : 1 ≤ i < #xs + 1 : (x:xs)!i = e 〉
+        ≡ {cambio de variable, i:=(j+1)}
+        iga.e.(x:xs) = x = e ∧〈 ∀ j : 1 ≤ (j+1) < #xs + 1 : (x:xs)!(j+1) = e 〉
+        ≡ {compatibilidad de la suma y el orden}
+        iga.e.(x:xs) = x = e ∧〈 ∀ j : 0 ≤ j < #xs : (x:xs)!(j+1) = e 〉
+        ≡ {definicion recursiva de !}
+        iga.e.(x:xs) = x = e ∧〈 ∀ j : 0 ≤ j < #xs : xs!j = e 〉
+        ≡ {HI}
+        iga.e.(x:xs) = x = e ∧ iga.e.xs
+
+    c. exp.x.n = x**n
+
+        Caso base:
+
+        exp.x.0 = x**0
+        ≡ {aritmetica}
+        exp.x.0 = 1
+
+
+        Hipótesis inductiva:
+        
+        exp.x.n = x**n
+
+        exp.x.n+1 = x**n+1
+        ≡ {aritmetica}
+        exp.x.n+1 = x * x**n
+        ≡ {HI}
+        exp.x.n+1 = x * exp.x.n
+
+    d. sum_par.n =〈 ∑ i : 0 ≤ i ≤ n ∧ par.i : i 〉, donde par.i .= i mod 2 = 0.
+
+        Caso base:
+
+        sum_par.0 =〈 ∑ i : 0 ≤ i ≤ 0 ∧ par.i : i 〉
+        ≡ {lógica}
+        sum_par.0 =〈 ∑ i : false ∧ par.i : i 〉
+        ≡ {elemento absorvente de la conjuncion}
+        sum_par.0 =〈 ∑ i : false : i 〉
+        ≡ {rango vacio}
+        sum_par.0 = 0
+
+
+        Hipótesis inductiva:
+
+        sum_par.n =〈 ∑ i : 0 ≤ i ≤ n ∧ par.i : i 〉
+
+        
+        Paso inductivo:
+
+        sum_par.n+1 =〈 ∑ i : 0 ≤ i ≤ n+1 ∧ par.i : i 〉
+        
+    e. cuantos.p.xs =〈 N i : 0 ≤ i < #xs : p.(xs!i) 〉
+
+        Caso base:
+
+        cuantos.p.[] =〈 N i : 0 ≤ i < #[] : p.([]!i) 〉
+        ≡ {definicion de #}
+        cuantos.p.[] =〈 N i : 0 ≤ i < 0 : p.([]!i) 〉
+        ≡ {lógica y definicion de conteo}
+        cuantos.p.[] =〈 Σ i : false ∧ p.([]!i) : 1 〉
+        ≡ {lógica}
+        cuantos.p.[] =〈 Σ i : false : 1 〉
+        ≡ {rango vacio}
+        cuantos.p.[] = 0
+
+        Paso inductivo:
+
+        Hipótesis inductiva:
+
+        cuantos.p.xs =〈 N i : 0 ≤ i < #xs : p.(xs!i) 〉
+
+        cuantos.p.(x:xs) =〈 N i : 0 ≤ i < #(x:xs) : p.((x:xs)!i) 〉
+        ≡ {definicion de conteo}
+        cuantos.p.(x:xs) =〈 Σ i : 0 ≤ i < #(x:xs) ∧ p.((x:xs)!i) : 1 〉
+        ≡ {definicion de #}
+        cuantos.p.(x:xs) =〈 Σ i : 0 ≤ i < #xs+1 ∧ p.((x:xs)!i) : 1 〉
+        ≡ {cambio de variable, i:=(j+1)}
+        cuantos.p.(x:xs) =〈 Σ j : 0 ≤ (j+1) < #xs+1 ∧ p.((x:xs)!(j+1)) : 1 〉
+        ≡ {definicion de !}
+        cuantos.p.(x:xs) =〈 Σ j : 0 ≤ (j+1) < #xs+1 ∧ p.(xs!j) : 1 〉
+        ≡ {lógica}
+        cuantos.p.(x:xs) =〈 Σ j : (j = 0 ∨ 1 ≤ (j+1) < #xs+1) ∧ p.(xs!j) : 1 〉
+        ≡ {distributividad de la conjuncion con la disyuncion}
+        cuantos.p.(x:xs) =〈 Σ j : (j = 0 ∧ p.(xs!j)) ∨ (p.(xs!j) ∧ 1 ≤ (j+1) < #xs+1) : 1 〉
+        ≡ {partición de rango}
+        cuantos.p.(x:xs) =〈 Σ j : j = 0 ∧ p.(xs!j) : 1 〉+〈 Σ j : p.(xs!j) ∧ 1 ≤ (j+1) < #xs+1 : 1 〉
+        ≡ {compatibilidad de la suma y el orden}
+        cuantos.p.(x:xs) =〈 Σ j : j = 0 ∧ p.(xs!j) : 1 〉+〈 Σ j : p.(xs!j) ∧ 0 ≤ j < #xs : 1 〉
+        ≡ {definicion de conteo}
+        cuantos.p.(x:xs) =〈 Σ j : j = 0 ∧ p.(xs!j) : 1 〉+〈 N j : 0 ≤ j < #xs : p.(xs!j) 〉
+        ≡ {renombre de variable, j:=i}
+        cuantos.p.(x:xs) =〈 Σ i : i = 0 ∧ p.(xs!i) : 1 〉+〈 N i : 0 ≤ i < #xs : p.(xs!i) 〉
+        ≡ {HI}
+        cuantos.p.(x:xs) =〈 Σ i : i = 0 ∧ p.(xs!i) : 1 〉+ cuantos.p.xs
+        ≡ {rango unitario y condicion}
+        cuantos.p.(x:xs) | p.(xs!0) = 1 + cuantos.p.xs
+                         | ¬(p.(xs!0)) = 0 + cuantos.p.xs
+        ≡ {elemento neutro de la suma}
+        cuantos.p.(x:xs) | p.(xs!0) = 1 + cuantos.p.xs
+                         | ¬(p.(xs!0)) = cuantos.p.xs
+
+
+    f. busca.e.xs =〈 Min i : 0 ≤ i < #xs ∧ xs!i = e : i 〉
+
+        Caso base:
+
+        busca.e.[] =〈 Min i : 0 ≤ i < #[] ∧ []!i = e : i 〉
+        ≡ {definicion de #}
+        busca.e.[] =〈 Min i : 0 ≤ i < 0 ∧ []!i = e : i 〉
+        ≡ {lógica}
+        busca.e.[] =〈 Min i : false ∧ []!i = e : i 〉
+        ≡ {lógica}
+        busca.e.[] =〈 Min i : false : i 〉
+        ≡ {rango vacio}
+        busca.e.[] = +∞
+
+        Paso inductivo:
+
+        Hipótesis inductiva:
+
+        busca.e.xs =〈 Min i : 0 ≤ i < #xs ∧ xs!i = e : i 〉
+
+        busca.e.(x:xs)) =〈 Min i : 0 ≤ i < #(x:xs) ∧ (x:xs)!i = e : i 〉
+        ≡ {definicion de #}
+        busca.e.(x:xs)) =〈 Min i : 0 ≤ i < #xs+1 ∧ (x:xs)!i = e : i 〉
+        ≡ {cambio de variable, i:=(k+1)}
+        busca.e.(x:xs)) =〈 Min k : 0 ≤ (k+1) < #xs+1 ∧ (x:xs)!(k+1) = e : (k+1) 〉
+        ≡ {definicion de !}
+        busca.e.(x:xs)) =〈 Min k : 0 ≤ (k+1) < #xs+1 ∧ xs!k = e : (k+1) 〉
+        ≡ {lógica}
+        busca.e.(x:xs)) =〈 Min k : (k = 0 ∨ 1 ≤ (k+1) < #xs+1) ∧ xs!k = e : (k+1) 〉
+        ≡ {distributividad de la conjuncion con la disyuncion}
+        busca.e.(x:xs)) =〈 Min k : (k = 0 ∧ xs!k = e ) ∨ (xs!k = e ∧ 1 ≤ (k+1) < #xs+1) : (k+1) 〉
+        ≡ {partición de rango}
+        busca.e.(x:xs)) =〈 Min k : k = 0 ∧ xs!k = e : (k+1) 〉min〈 Min k : xs!k = e ∧ 1 ≤ (k+1) < #xs+1 : (k+1) 〉
+        ≡ {compatibilidad de la suma y el orden}
+        busca.e.(x:xs)) =〈 Min k : k = 0 ∧ xs!k = e : (k+1) 〉min〈 Min k : xs!k = e ∧ 0 ≤ k < #xs : (k+1) 〉
+        ≡ {distributividad}
+        busca.e.(x:xs)) =〈 Min k : k = 0 ∧ xs!k = e : (k+1) 〉min〈 Min k : xs!k = e ∧ 0 ≤ k < #xs : k 〉+ 1
+        ≡ {conmutatividad de ∧}
+        busca.e.(x:xs)) =〈 Min k : k = 0 ∧ xs!k = e : (k+1) 〉min〈 Min k : 0 ≤ k < #xs ∧ xs!k = e : k 〉+ 1
+        ≡ {renombre de variable, k:=i}
+        busca.e.(x:xs)) =〈 Min i : i = 0 ∧ xs!i = e : (i+1) 〉min〈 Min i : 0 ≤ i < #xs ∧ xs!i = e : i 〉+ 1
+        ≡ {HI}
+        busca.e.(x:xs)) =〈 Min i : i = 0 ∧ xs!i = e : (i+1) 〉min busca.e.xs + 1
+        ≡ {distributividad}
+        busca.e.(x:xs)) =〈 Min i : i = 0 ∧ xs!i = e : i 〉+ 1 min busca.e.xs + 1 (terminar)
+
+
+4)
+
+    a. sumpot : Num → Nat → Num, sumpot.x.n = 〈 ∑ i : 0 ≤ i < n : x^i 〉
+
+        Caso base:
+
+        sumpot.x.0 = 〈 ∑ i : 0 : x^i 〉
+        ≡ {rango unitario}
+        sumpot.x.0 = x^0 = 1
+
+        Paso inductivo:
+
+        Hipótesis inductiva:
+
+        sumpot.x.n = 〈 ∑ i : 0 ≤ i < n : x^i 〉
+
+        sumpot.x.(n+1) = 〈 ∑ i : 0 ≤ i < (n+1) : x^i 〉
+        ≡ {lógica}
+        sumpot.x.(n+1) = 〈 ∑ i : i = 0 ∨ 1 ≤ i < (n+1) : x^i 〉
+        ≡ {partición de rango}
+        sumpot.x.(n+1) = 〈 ∑ i : i = 0 : x^i 〉 + 〈 ∑ i : 1 ≤ i < (n+1) : x^i 〉
+        ≡ {rango unitario}
+        sumpot.x.(n+1) = x^0 + 〈 ∑ i : 1 ≤ i < (n+1) : x^i 〉
+        ≡ {aritmetica}
+        sumpot.x.(n+1) = 1 + 〈 ∑ i : 1 ≤ i < (n+1) : x^i 〉
+        ≡ {compatibilidad de la suma y el orden}
+        sumpot.x.(n+1) = 1 + 〈 ∑ i : 0 ≤ i-1 < n : x^i 〉
+        ≡ {cambio de variable, i:=(j+1)}
+        sumpot.x.(n+1) = 1 + 〈 ∑ j : 0 ≤ (j+1)-1 < n : x^(j+1) 〉
+        ≡ {suma de opuestos}
+        sumpot.x.(n+1) = 1 + 〈 ∑ j : 0 ≤ j < n : x^(j+1) 〉
+        ≡ {potenciacion}
+        sumpot.x.(n+1) = 1 + 〈 ∑ j : 0 ≤ j < n : x^j * x 〉
+        ≡ {distributividad}
+        sumpot.x.(n+1) = 1 + 〈 ∑ j : 0 ≤ j < n : x^j 〉* x
+        ≡ {HI}
+        sumpot.x.(n+1) = 1 + (sumpot.x.n) * x

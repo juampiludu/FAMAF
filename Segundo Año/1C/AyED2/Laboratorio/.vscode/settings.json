@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.html": "django-html",
+        "*.txt": "django-txt",
+        "*.ayed": "plaintext",
+        "array": "c",
+        "string_view": "c",
+        "mybool.h": "c"
+    }
+}

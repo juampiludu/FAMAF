@@ -1,0 +1,148 @@
+11.
+
+    f.xs.ys =〈 Min i, j : 0 ≤ i < #xs ∧ 0 ≤ j < #ys : |xs!i - ys!j| 〉
+
+    Caso base:
+
+    Para xs = []
+
+    f.[].ys =〈 Min i, j : 0 ≤ i < #[] ∧ 0 ≤ j < #ys : |[]!i - ys!j| 〉
+
+    ≡ {def de #}
+
+    f.[].ys =〈 Min i, j : 0 ≤ i < 0 ∧ 0 ≤ j < #ys : |[]!i - ys!j| 〉
+
+    ≡ {logica}
+
+    f.[].ys =〈 Min i, j : False : |[]!i - ys!j| 〉
+
+    ≡ {rango vacio}
+
+    f.[].ys = inf
+
+    Para ys = []
+
+    f.xs.[] =〈 Min i, j : 0 ≤ i < #xs ∧ 0 ≤ j < #[] : |xs!i - []!j| 〉
+
+    ≡ {def de #}
+
+    f.xs.[] =〈 Min i, j : 0 ≤ i < #xs ∧ 0 ≤ j < 0 : |xs!i - []!j| 〉
+
+    ≡ {logica}
+
+    f.xs.[] =〈 Min i, j : False : |xs!i - []!j| 〉
+
+    ≡ {rango vacio}
+
+    f.xs.[] = inf
+
+
+    Caso inductivo:
+
+    HI: f.xs.ys =〈 Min i, j : 0 ≤ i < #xs ∧ 0 ≤ j < #ys : |xs!i - ys!j| 〉
+
+    Para xs = x:xs
+
+    f.(x:xs).ys =〈 Min i, j : 0 ≤ i < #(x:xs) ∧ 0 ≤ j < #ys : |(x:xs)!i - ys!j| 〉
+
+    ≡ {def de #}
+
+    f.(x:xs).ys =〈 Min i, j : 0 ≤ i < #xs + 1 ∧ 0 ≤ j < #ys : |(x:xs)!i - ys!j| 〉
+
+    ≡ {logica}
+
+    f.(x:xs).ys =〈 Min i, j : (i = 0 ∨ 1 ≤ i < #xs + 1) ∧ 0 ≤ j < #ys : |(x:xs)!i - ys!j| 〉
+
+    ≡ {logica}
+
+    f.(x:xs).ys =〈 Min i, j : (0 ≤ j < #ys ∧ i = 0) ∨ (0 ≤ j < #ys ∧ 1 ≤ i < #xs + 1) : |(x:xs)!i - ys!j| 〉
+    
+    ≡ {particion de rango}
+
+    f.(x:xs).ys =〈 Min i, j : 0 ≤ j < #ys ∧ i = 0 : |(x:xs)!i - ys!j| 〉min〈 Min i, j : 0 ≤ j < #ys ∧ 1 ≤ i < #xs + 1 : |(x:xs)!i - ys!j| 〉
+
+    ≡ {i:=i+1}
+
+    f.(x:xs).ys =〈 Min i, j : 0 ≤ j < #ys ∧ i = 0 : |(x:xs)!i - ys!j| 〉min〈 Min i, j : 1 ≤ i + 1 < #xs + 1 ∧ 0 ≤ j < #ys : |(x:xs)!(i + 1) - ys!j| 〉
+
+    ≡ {suma y orden}{def de !}
+
+    f.(x:xs).ys =〈 Min i, j : 0 ≤ j < #ys ∧ i = 0 : |(x:xs)!i - ys!j| 〉min〈 Min i, j : 0 ≤ i < #xs ∧ 0 ≤ j < #ys : |xs!i - ys!j| 〉
+
+    ≡ {HI}
+
+    f.(x:xs).ys =〈 Min i, j : i = 0 ∧ 0 ≤ j < #ys : |(x:xs)!i - ys!j| 〉min f.xs.ys
+
+    ≡ {eliminacion de variable}
+
+    f.(x:xs).ys =〈 Min j : 0 ≤ j < #ys : |(x:xs)!0 - ys!j| 〉min f.xs.ys
+
+    ≡ {def de !}
+
+    f.(x:xs).ys =〈 Min j : 0 ≤ j < #ys : |x - ys!j| 〉min f.xs.ys
+
+    ****
+
+    Modularizar:
+
+    minF.x.ys =〈 Min j : 0 ≤ j < #ys : |x - ys!j| 〉
+
+    Caso base:
+
+    minF.x.[] =〈 Min j : 0 ≤ j < #[] : |x - []!j| 〉
+
+    ≡ {def de #}
+
+    minF.x.[] =〈 Min j : 0 ≤ j < 0 : |x - []!j| 〉
+
+    ≡ {logica y rango vacio}
+
+    minF.x.[] = inf
+
+    Paso inductivo:
+
+    HI: minF.x.ys =〈 Min j : 0 ≤ j < #ys : |x - ys!j| 〉
+
+    minF.x.(y:ys) =〈 Min j : 0 ≤ j < #(y:ys) : |x - (y:ys)!j| 〉
+
+    ≡ {def de #}
+
+    minF.x.(y:ys) =〈 Min j : 0 ≤ j < #ys + 1 : |x - (y:ys)!j| 〉
+
+    ≡ {logica y particion de rango}
+
+    minF.x.(y:ys) =〈 Min j : j = 0 : |x - (y:ys)!j| 〉min〈 Min j : 1 ≤ j < #ys + 1 : |x - (y:ys)!j| 〉
+
+    ≡ {rango unitario}
+
+    minF.x.(y:ys) = |x - (y:ys)!0| min〈 Min j : 1 ≤ j < #ys + 1 : |x - (y:ys)!j| 〉
+
+    ≡ {def de !}
+
+    minF.x.(y:ys) = |x - y| min〈 Min j : 1 ≤ j < #ys + 1 : |x - (y:ys)!j| 〉
+
+    ≡ {j:=j+1}
+
+    minF.x.(y:ys) = |x - y| min〈 Min j : 1 ≤ j + 1 < #ys + 1 : |x - (y:ys)!(j + 1)| 〉
+
+    ≡ {suma y orden}
+
+    minF.x.(y:ys) = |x - y| min〈 Min j : 0 ≤ j < #ys : |x - (y:ys)!(j + 1)| 〉
+
+    ≡ {def de !}
+
+    minF.x.(y:ys) = |x - y| min〈 Min j : 0 ≤ j < #ys : |x - ys!j| 〉
+
+    ≡ {HI}
+
+    minF.x.(y:ys) = |x - y| min minF.x.ys
+
+    ****
+
+    ≡ {reemplazamos por la modularizacion}
+
+    f.(x:xs).ys = |x - y| min minF.x.ys min f.xs.ys
+
+    ≡ {def de minF}
+
+    f.(x:xs).ys = minF.x.(y:ys) min f.xs.ys

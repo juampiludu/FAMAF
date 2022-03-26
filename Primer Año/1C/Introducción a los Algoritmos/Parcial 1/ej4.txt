@@ -1,0 +1,74 @@
+Juan Pablo Ludueña Zakka - 43299161
+
+
+- Definiciones:
+
+sacaUnos :: [Int] -> [Int]
+sacaUnos [] = [] (1)
+sacaUnos (x:xs) | x == 1 = sacaUnos xs (2a)
+                | x != 1 = x:(sacaUnos xs) (2b)
+
+
+productoria :: [Int] -> Int
+productoria [] = 1 (3)
+productoria (x:xs) = x * productoria xs (4)
+
+
+- Hipótesis inductiva:
+
+productoria (sacaUnos xs) = productoria xs
+
+
+- Caso base:
+
+productoria (sacaUnos []) = __productoria []__
+
+=== {(3)}
+productoria (__sacaUnos []__) = 1
+
+=== {(1)}
+__productoria []__ = 1
+
+=== {(3)}
+1 = 1
+
+=== {por reflexividad del =}
+True
+
+
+- Caso inductivo cuando x es igual a 1:
+
+productoria (sacaUnos (x:xs)) = __productoria (x:xs)__
+
+=== {(4)}
+productoria (__sacaUnos (x:xs)__) = 1 * (productoria xs)
+
+=== {(2a)}
+__productoria (sacaUnos xs)__ = 1 * (productoria xs)
+
+=== {(HI)}
+productoria xs = __1 * (productoria xs)__
+
+=== {aritmética}
+productoria xs = productoria xs
+
+Queda demostrado por reflexividad del =
+
+
+- Caso inductivo cuando x es distinto a 1:
+
+productoria (sacaUnos (x:xs)) = __productoria (x:xs)__
+
+=== {(4)}
+productoria (__sacaUnos (x:xs)__) = x * (productoria xs)
+
+=== {(2b)}
+__productoria (x:(sacaUnos xs))__ = x * (productoria xs)
+
+=== {(4): x:=x; xs:=sacaUnos xs}
+x * (__productoria (sacaUnos xs)__) = x * (productoria xs)
+
+=== {(HI)}
+x * (productoria xs) = x * (productoria xs)
+
+Queda demostrado por reflexividad del =

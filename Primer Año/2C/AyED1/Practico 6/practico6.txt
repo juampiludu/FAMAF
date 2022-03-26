@@ -1,0 +1,215 @@
+9.
+
+    Const X, Y : Int;
+    Var x, y : Int;
+    { P : X > 0 ∧ Y > 0 ∧ x = X ∧ y = Y }
+    S
+    { Q : x = mcd.X.Y }
+
+    INV = x > 0 ∧ y > 0 ∧ mcd.x.y = mcd.X.Y
+
+    Propiedades del mcd:
+
+    a) mcd.x.x = x
+    b) mcd.x.y = mcd.y.x
+    c) x > y ⇒ mcd.x.y = mcd.(x−y).y
+    d) y > x ⇒ mcd.x.y = mcd.x.(y−x)
+
+    Si hay invariante, el programa va a tener un ciclo.
+
+    Como S es un ciclo, va a tener el siguiente cuerpo:
+
+    S0              (inicializacion)
+    do B ->         (guarda)
+        S1          (cuerpo del ciclo)
+    od
+
+    Agregando las anotaciones:
+
+    { P }
+    S0
+    { INV }
+    do B -> 
+        { INV ∧ B }
+        S1
+        { INV }
+    od
+    { Q }
+
+    Las incongnitas son S0, SQ1 y B.
+
+    Derivar S0:
+
+    Debemos encontrar S0 tal que: { P } S0 { INV }
+    o sea:
+
+    { X > 0 ∧ Y > 0 ∧ x = X ∧ y = Y } S0 { x > 0 ∧ y > 0 ∧ mcd.x.y = mcd.X.Y }
+
+    Ley del minimo esfuerzo: Podria ser que la solucion a esto sea skip? Sí, ya que P => INV (demostrar)
+
+
+    { P }
+    do B -> 
+        { INV ∧ B }
+        S1
+        { INV }
+    od
+    { Q }
+
+    Propongo la guarda { B : x != y }
+    
+    { P }
+    do (x != y) -> 
+        { INV ∧ (x != y) }
+        S1
+        { INV }
+    od
+    { Q }
+
+    Ahora, busco una cota t tal que INV ∧ B => t > 0. Propongo la cota t = |x-y|
+
+    { P }
+    do (x != y) -> 
+        { INV ∧ (x != y) ∧ |x-y| = T }
+        S1
+        { INV ∧ |x-y| < T }
+    od
+    { Q }
+
+    Como tenemos x!=y, sabemos que T > 0. Para que |x-y| disminuya, hay que asignarle valores a las variables de la cota:
+
+    { P }
+    do (x != y) -> 
+        { INV ∧ (x != y) ∧ |x-y| = T }
+        x, y := E, F
+        { INV ∧ |x-y| < T }
+    od
+    { Q }
+
+    Ahora, hay que buscar los valores de E y F:
+
+    { x > 0 ∧ y > 0 ∧ mcd.x.y = mcd.X.Y ∧ (x != y) ∧ |x-y| = T } => { E > 0 ∧ F > 0 ∧ mcd.E.F = mcd.E.F ∧ |E-F| < T }
+
+    Podemos usar las ecuacuines c) y d) para plantear un analisis por casos:
+
+    { P }
+    do (x != y) -> 
+        { INV ∧ (x != y) ∧ |x-y| = T }
+        if
+            x > y -> x, y := E1, F1
+            x < y -> x, y := E2, F2
+        fi
+        { INV ∧ |x-y| < T }
+    od
+    { Q }
+
+    Ahora, hay qye buscar los valores a asignar en cada caso:
+
+    ≡ {verificacion con terna de hoare}
+
+    { P : INV ∧ (x != y) ∧ |x-y| = T }
+    { Q : INV ∧ |x-y| < T }
+    INV = x > 0 ∧ y > 0 ∧ mcd.x.y = mcd.X.Y
+
+    P
+
+    =>
+
+    (x > y ∨ x < y) ∧ { x > y ∧ P } x, y := E1, F1 { E1 > 0 ∧ F1 > 0 ∧ mcd.E.F = mcd.X.Y ∧ |E1-F1| < T } ∧ { x < y ∧ P } x, y := E2, F2 { E2 > 0 ∧ F2 > 0 ∧ mcd.E.F = mcd.X.Y ∧ |E2-F2| < T }
+
+    ≡ {como x!=y, se cumple (x > y ∨ x < y)}
+
+    { x > y ∧ P } x, y := E1, F1 { E1 > 0 ∧ F1 > 0 ∧ mcd.E.F = mcd.X.Y ∧ |E1-F1| < T } ∧ { x < y ∧ P } x, y := E2, F2 { E2 > 0 ∧ F2 > 0 ∧ mcd.E.F = mcd.X.Y ∧ |E2-F2| < T }
+
+    ≡ {verificacion con terna de hoare}
+
+    { x > y ∧ P } => { INV ∧ |E1-F1| < T } ∧ { x < y ∧ P } => { INV ∧ |E2-F2| < T }
+
+    ≡ {probar que E1=x-y, F1=y, E2=x, F2=y-x}
+
+    ≡ {probamos primera implicancia}
+
+    { x > y ∧ x > 0 ∧ y > 0 ∧ mcd.x.y = mcd.X.Y ∧ (x != y) ∧ |x-y| = T } 
+    => 
+    { x-y > 0 ∧ y > 0 ∧ mcd.x.y = mcd.X.Y ∧ |x-y-y| < T }
+
+    ≡ {se cumple x-y>0 e y>0 ya que x>y>0}
+
+    { mcd.x.y = mcd.X.Y ∧ |x-y-y| < T }
+
+    ≡ {premisa: mcd.x.y = mcd.X.Y}
+
+    { mcd.(x-y).y = mcd.x.y ∧ |x-y-y| < T }
+
+    ≡ {propiedad del mcd}
+
+    { |x-y-y| < T }
+
+    ≡ {premisa: T = |x-y| }
+
+    { |x-y-y| < |x-y| }
+
+    ≡ {suma y orden}
+
+    { y-y-y < x-x }
+
+    ≡ {suma}
+
+    { y > 0 }
+
+    ≡ {hipotesis}
+
+    True
+
+    ≡ {probar que E1=x-y, F1=y, E2=x, F2=y-x}
+
+    ≡ {probamos segunda implicancia}
+
+    { x < y ∧ x > 0 ∧ y > 0 ∧ mcd.x.y = mcd.X.Y ∧ (x != y) ∧ |x-y| = T } 
+    => 
+    { x > 0 ∧ y-x > 0 ∧ mcd.x.y = mcd.X.Y ∧ |x-y-x| < T }
+
+    ≡ {se cumple y-x>0 y x>0 ya que y>x>0}
+
+    { mcd.x.y = mcd.X.Y ∧ |x-y-x| < T }
+
+    ≡ {premisa: mcd.x.y = mcd.X.Y }
+
+    { mcd.x.(y-x) = mcd.x.y ∧ |x-y-x| < T }
+
+    ≡ {propiedad del mcd}
+
+    { |x-y-x| < T }
+
+    ≡ {premisa: T = |x-y| }
+
+    { |x-y-x| < |x-y| }
+
+    ≡ {suma}
+
+    { -y < x-y }
+
+    ≡ {suma y orden}
+
+    { y-y < x }
+
+    ≡ {suma}
+
+    { 0 < x }
+
+    ≡ {hipotesis}
+
+    True
+
+    El resultado final es el siguiente:
+
+    { X > 0 ∧ Y > 0 ∧ x = X ∧ y = Y }
+    do (x != y) -> 
+        { INV ∧ (x != y) }
+        if
+            x > y -> x, y := x-y, y
+            x < y -> x, y := x, y-x
+        fi
+        { INV }
+    od
+    { x = mcd.x.y }

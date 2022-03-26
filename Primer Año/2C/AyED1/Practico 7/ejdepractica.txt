@@ -1,0 +1,321 @@
+1.
+
+    a.
+
+| ----- | ------------- | ----------------------- | --------------------------------- |
+| Linea | nombre estado | estado/guardas          | aclaracion                        |
+| ----- | ------------- | ----------------------- | --------------------------------- |
+|       | σ0            | r->R, s->S, i->I, N = 3 | estado inicial                    |
+| l1    | σ1            | r->0, s->0, i->0        | despues de ejecutar la asignacion |
+| l2    |               | 0!=3->True              | se ejecuta la condicion           |
+| l3    | σ2            | r->1, s->0, i->1        | se modifican los estados          |
+| l4    |               |                         | termina el bucle                  |
+| l5    |               | 1!=3->True              | se ejecuta la condicion           |
+| l6    | σ3            | r->2, s->2, i->2        | se modifican los estados          |
+| l7    |               |                         | termina el bucle                  |
+| l8    |               | 2!=3->True              | se ejecuta la condicion           |
+| l9    | σ4            | r->5, s->4, i->3        | se modifican los estados          |
+| l10   |               |                         | termina el bucle                  |
+| l11   |               | 3!=3->False             | se ejecuta la condicion           |
+| l12   |               |                         | termina el bucle                  |
+| l13   | σ5            | r->5, s->4, i->3        | estado final                      |
+
+    
+    
+    b.
+
+        Const N : Int;
+        Var r, s, i : Int;
+        {N>=0}
+        r, s, i := 0, 0, 0;
+        do i != N →
+            r, s, i := r + s + 1, i + i, i + 1
+        od
+        {i==N}
+
+
+    
+    c.
+
+        I : r = i^2 ∧ s = 2i ∧ 0 <= i <= N
+
+        1.
+
+            {i != N ∧ r = i^2 ∧ s = 2i ∧ 0 <= i <= N}
+            r, s, i := r + s + 1, i + i, i + 1
+            {r = i^2 ∧ s = 2i ∧ 0 <= i <= N}
+
+            ≡ {verificacion con terna de hoare}
+
+            {i != N ∧ r = i^2 ∧ s = 2i ∧ 0 <= i <= N}
+            =>
+            {r+s+1 = (i+1)^2 ∧ i+i = 2(i+1) ∧ 0 <= (i+1) <= N}
+
+            ≡ {aritmetica}
+
+            {r+s+1 = i^2+2i+1 ∧ 2i = 2i+2 ∧ 0 <= (i+1) <= N}
+
+            ≡ {aritmetica}
+
+            {r+s = i^2+2i ∧ i = i+1 ∧ 0 <= (i+1) <= N}
+
+            ≡ {aritmetica}
+
+            {r+s = i(i+2) ∧ i = i+1 ∧ 0 <= (i+1) <= N}
+
+            ≡ {logica}
+
+            {r+s = i(i+2) ∧ i = i+1 ∧ i = 0 ∧ 1 <= (i+1) <= N}
+
+            ≡ {si i <= N, entonces i+1 <= N+1}
+
+            {r+s = i(i+2) ∧ i = i+1 ∧ i = 0 ∧ 1 <= (i+1) <= (N+1)}
+
+            ≡ {suma y orden}
+
+            {r+s = i(i+2) ∧ i = i+1 ∧ i = 0 ∧ 0 <= i <= N}
+
+
+
+
+            {i != N ∧ r = i^2 ∧ s = 2i ∧ 0 <= i <= N}
+            r, s, i := r + s + 1, i + i, i + 1
+            {r = i^2 ∧ s = 2i ∧ 0 <= i <= N}
+
+
+            {i != N ∧ r = i^2 ∧ s = 2i ∧ 0 <= i <= N}
+            =>
+            {r+s+1 = i^2 ∧ i+i = 2i ∧ 0 <= (i+1) <= N}
+
+            ≡ {aritmetica}
+
+            {r+s+1 = i^2 ∧ 2i = 2i ∧ 0 <= (i+1) <= N}
+
+            ≡ {reflexividad del =}
+
+            {r+s+1 = i^2 ∧ True ∧ 0 <= (i+1) <= N}
+
+            ≡ {logica}
+
+            {r+s+1 = i^2 ∧ 0 <= (i+1) <= N}
+
+            ≡ {logica}
+
+            {r+s+1 = i^2 ∧ i = 0 ∧ 1 <= (i+1) <= N}
+
+            ≡ {por premisa: si i <= N, entonces i+1 <= N+1}
+
+            {r+s+1 = i^2 ∧ i = 0 ∧ 1 <= (i+1) <= (N+1)}
+
+            ≡ {suma y orden}
+
+            {r+s+1 = i^2 ∧ i = 0 ∧ 0 <= i <= N}
+
+            ≡ {logica}
+
+            {r+s+1 = i^2 ∧ 0 <= i <= N}
+
+            ≡ {por premisa: r=i^2 y s=2i}
+
+            {i^2+2i+1 = i^2 ∧ 0 <= i <= N}
+
+            ≡ {aritmetica}
+
+            {2i+1 = 0 ∧ 0 <= i <= N}
+
+            ≡ {logica}
+
+            {0 <= i <= N}
+
+            ≡ {por premisa 0 <= i <= N}
+
+            True
+
+        2.
+
+            (¬B ∧ I) ⇒ Q
+            
+            {i == N ∧ r = i^2 ∧ s = 2i ∧ 0 <= i <= N}
+            ⇒ 
+            {r+s==N^2}
+
+            ≡ {por premisa: r = i^2, s = 2i}
+
+            {i^2+2i==N^2}
+
+            ≡ {aritmetica}
+
+            {i(i+2)==N^2}
+
+            ≡ {falso}
+
+
+
+
+Ejercicio del parcial
+
+    Const X : Int, N: Int, A: Array[0,N) of Int;
+    Var r : Int;
+    { N ≥ 0 }
+    S
+    { r = 〈 N i : 0 ≤ i < N : A.i = X * 2^i 〉 }
+
+    Propongo el invariante:
+
+    { r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j }
+
+    Introduzco la variable i para recorrer el arreglo y la variable pot para
+    asi fortalecer el invariante y tener una hipotesis por la cual reemplazar
+    2^i que no es programable.
+
+    Voy a necesitar un ciclo:
+
+    { N ≥ 0 }
+    S0
+    {I}
+    do B ->
+        {I ∧ B}
+        S1
+        {I}
+    od
+    { r = 〈 N i : 0 ≤ i < N : A.i = X * 2^i 〉 }
+
+    Derivamos el cuerpo del ciclo
+    
+    {I ∧ B} S1 {I}
+
+    S1 va a ser una asignacion multiple
+
+    {I ∧ B}
+    r,pot,j := R,E,j+1 
+    {I}
+
+    j es j+1 para recorrer el arreglo
+
+    Ahora, ver la wp:
+
+    Propongo B : j < N
+    
+    {r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j < N}
+    r,pot,j := R,E,j+1
+    { r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j }
+
+    {r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j < N}
+    =>
+    wp.(r,pot,j := R,E,j+1).(r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j)
+
+    ≡ {def de wp}
+    
+    {r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j < N}
+    =>
+    R = 〈 N i : 0 ≤ i < j+1 : A.i = X * 2^i 〉 ∧ 0<=j+1<=N ∧ E = 2^j+1
+
+    ≡ {hip j<N => j+1<=N}
+
+    {r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j < N}
+    =>
+    R = 〈 N i : 0 ≤ i < j+1 : A.i = X * 2^i 〉 ∧ E = 2^j*2
+
+    ≡ {logica}
+
+    {r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j < N}
+    =>
+    R = 〈 N i : 0 ≤ i < j ∨ j=i : A.i = X * 2^i 〉 ∧ E = 2^j*2
+
+    ≡ {particion de rango}
+
+    {r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j < N}
+    =>
+    R = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 + 〈 N i : j=i : A.i = X * 2^i 〉 ∧ E = 2^j*2
+
+    ≡ {por hip r = 〈N i : ...〉, pot=2^j}
+
+    {r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j < N}
+    =>
+    R = r + 〈 N i : j=i : A.i = X * pot 〉 ∧ E = pot*2
+
+    ≡ {rango unitario}
+
+    {r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j < N}
+    =>
+    R = r + (A.i = X * pot -> 1, A.i != X * pot -> 0) ∧ E = pot*2
+
+    Propongo E = pot*2 e introducir un condicional para manejar el analisis por casos
+
+    {I ∧ B}
+    r,pot,j := R1,pot*2,j+1 
+    {I}
+
+    Terna 1:
+
+    R1 = r+1
+
+    Propongo R1 = r+1
+
+    True
+
+    {I ∧ B}
+    r,pot,j := R2,pot*2,j+1 
+    {I}
+
+    Terna 2:
+
+    R2 = r+0
+
+    Propongo R2=r
+
+    True
+
+    Ahora, hay que derivar la inicializacion
+
+    { N ≥ 0 }
+    r,pot,j := R0, E0, J0
+    { r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j }
+
+    ≡ {def de wp}
+
+    R0 = 〈 N i : 0 ≤ i < J0 : A.i = X * 2^i 〉 ∧ 0<=J0<=N ∧ E0 = 2^J0
+
+    Propongo R0=0, E0=1, J0=0
+
+    0 = 〈 N i : 0 ≤ i < 0 : A.i = X * 2^i 〉 ∧ 0<=0<=N ∧ 1 = 2^0
+
+    ≡ {logica y aritmetica}{hip N>=0}
+
+    0 = 〈 N i : False : A.i = X * 2^i 〉 ∧ True ∧ 1 = 1
+
+    ≡ {rango vacio, logica, reflexividad del =}
+
+    0 = 0 ∧ True ∧ True
+
+    ≡ {logica y reflexividad del =}
+
+    True
+
+    El programa completo es:
+
+    Const X : Int, N: Int, A: Array[0,N) of Int;
+    Var r : Int, pot : Int, j : Int;
+    { N ≥ 0 }
+    r,pot,j := 0,1,0;
+    {I}
+    do j < N ->
+        {I ∧ B}
+        if A.i = X pot ->
+            r,pot,j := r+1,pot*2,j+1
+        [] A.i != X pot ->
+            r,pot,j := r,pot*2,j+1
+        fi
+        {I}
+    od
+    { r = 〈 N i : 0 ≤ i < N : A.i = X * 2^i 〉 }
+
+    I ∧ ¬B => Q
+
+    r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0<=j<=N ∧ pot = 2^j ∧ j >= N
+    =>
+    r = 〈 N i : 0 ≤ i < N : A.i = X * 2^i 〉
+
+    Es True, ya que  (0<=j<=N ∧ j >= N => j = N) => r = 〈 N i : 0 ≤ i < N : A.i = X * 2^i 〉
+
+    El programa termina y es correcto.

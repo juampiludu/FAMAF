@@ -1,0 +1,19 @@
+1)
+
+    a. No
+    b. Si, dia 3 y dia 5
+    c. No
+    d. No, solo uno
+    e. No
+
+2)
+
+    a. Para todo i en el rango definido xs tal que el indice i de xs sea mayor estricto que 140. "i" es una variable ligada.
+    b. Existe un i en el rango definido xs tal que el indice i de xs sea igual a x. "i" es una variable ligada y "x" es una variable libre.
+    c. Para todo i en el rango definido xs tal que existe un j en el rango definido ys tal que el indice i de xs es igual al indice j de ys. "i" y "j" son variables ligadas.
+    d. Para todo i en el rango definido xs
+
+
+3)
+
+    

@@ -1,0 +1,296 @@
+1.
+
+| ----- | ------------- | ------------------- |
+| Linea | nombre estado | estado/guardas      |
+| ----- | ------------- | ------------------- |
+|       | σ0            | x->20, r->21, y->22 |
+| l1    | σ1            | x->20, r->0, y->1   |
+| l2    |               | x>=y*2 == True      |
+| l3    | σ2            | x->20, r->1, y->2   |
+| l2    |               | x>=y*2 == True      |
+| l3    | σ3            | x->20, r->2, y->4   |
+| l2    |               | x>=y*2 == True      |
+| l3    | σ4            | x->20, r->3, y->8   |
+| l2    |               | x>=y*2 == True      |
+| l3    | σ5            | x->20, r->4, y->16  |
+| l2    |               | x>=y*2 == False     |
+| l5    | σ6            | x->4, r->4, y->16   |
+
+
+
+
+3.
+
+{ P }
+if n mod 2 ≡ 0 →
+    r,n ≔ r+1, n+1
+[] n mod 3 ≡ 0 →
+    r,n ≔ r+1, n+1
+fi
+{ r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉 }
+
+P 
+=> 
+(n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) 
+∧ 
+{n mod 2 ≡ 0 ∧ P} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉} 
+∧ 
+{n mod 3 ≡ 0 ∧ P} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉}
+
+
+a. 
+
+{r = 1 ∧ n = 2}
+=>
+(n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) 
+∧ 
+{n mod 2 ≡ 0 ∧ r = 1 ∧ n = 2} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉} 
+∧ 
+{n mod 3 ≡ 0 ∧ r = 1 ∧ n = 2} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉}
+
+≡ {por premisa r=1 y n=2}
+
+(True)
+∧ 
+{True} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉} 
+∧ 
+{False} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉}
+
+≡ {verificacion con terna de hoare y logica}
+
+True => {r+1 = 〈 N i : 0 ≤ i < n+1 : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉} 
+
+≡ {definicion de conteo}
+
+{r+1 = 〈 Σ i : 0 ≤ i < n+1 ∧ i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 : 1 〉}
+
+≡ {premisa r=1 y n=2}
+
+{2 = 〈 Σ i : 0 ≤ i < 3 ∧ (i mod 2 ≡ 0 ∨ i mod 3 ≡ 0) : 1 〉}
+
+≡ {logica}
+
+{2 = 〈 Σ i : i = 0 ∧ (1 ≤ i < 3 ∧ (i mod 2 ≡ 0 ∨ i mod 3 ≡ 0)) : 1 〉}
+
+≡ {rango unitario y condicion}
+
+2 = False -> 1 [] True -> 0 
+
+b.
+
+{r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉} 
+=> 
+(n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) 
+∧ 
+{n mod 2 ≡ 0 ∧ r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉} 
+∧ 
+{n mod 3 ≡ 0 ∧ r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉}
+
+≡ {premisa}
+
+(n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) 
+∧ 
+{n mod 2 ≡ 0} r,n ≔ r+1, n+1 {True} 
+∧ 
+{n mod 3 ≡ 0} r,n ≔ r+1, n+1 {True}
+
+≡ {verificacion con terna de hoare}
+
+(n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) 
+∧ 
+{n mod 2 ≡ 0} => {True} 
+∧ 
+{n mod 3 ≡ 0} => {True}
+
+≡ {logica}
+
+(n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) 
+∧ 
+True
+∧ 
+True
+
+no puede ser
+
+
+c.
+
+{ r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉 ∧ (n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) } 
+=> 
+(n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) 
+∧ 
+{n mod 2 ≡ 0 ∧ { r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉 ∧ (n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) }} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉} 
+∧ 
+{n mod 3 ≡ 0 ∧ { r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉 ∧ (n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) }} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉}
+
+≡ {premisa}
+
+{n mod 2 ≡ 0} r,n ≔ r+1, n+1 {True} 
+∧ 
+{n mod 3 ≡ 0} r,n ≔ r+1, n+1 {True}
+
+≡ {verificacion terna de hoare}
+
+{n mod 2 ≡ 0} => True 
+∧ 
+{n mod 3 ≡ 0} => True
+
+≡ {logica}
+
+True
+
+
+d.
+
+{False}
+=> 
+(n mod 2 ≡ 0 ∨ n mod 3 ≡ 0) 
+∧ 
+{False} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉} 
+∧ 
+{False} r,n ≔ r+1, n+1 {r = 〈 N i : 0 ≤ i < n : i mod 2 ≡ 0 ∨ i mod 3 ≡ 0 〉}
+
+
+
+4.
+
+Const N: Int, A: Array[0,N) of Int;
+Var r,u,n : Int;
+{ N>0 }
+r, u, n ≔ 0,0,N;
+{ INV : r = 〈 N p : n ≤ p < N : sum.A.p.N = 2 〉 ∧ 0≤n≤N ∧ u = sum.A.n.N }
+do n≠0 →
+    u ≔ u+A.(n-1);
+    { R1 }
+    if u=2 →
+        r ≔ r+1
+    [] u≠2 →
+       skip
+    fi ;
+    { R2 }
+    n ≔ n-1
+od
+{ r = 〈 N p : 0 ≤ p < N : sum.A.p.N = 2 〉 }
+
+
+1°:
+
+{ N>0 } r, u, n ≔ 0,0,N { r = 〈 N p : n ≤ p < N : sum.A.p.N = 2 〉 ∧ 0≤n≤N ∧ u = sum.A.n.N }
+
+≡ {verificacion}
+
+{ N>0 } => { 0 = 〈 N p : N ≤ p < N : sum.A.p.N = 2 〉 ∧ 0≤N≤N ∧ 0 = sum.A.N.N }
+
+≡ {premisa}
+
+{ 0 = 〈 N p : N ≤ p < N : sum.A.p.N = 2 〉 ∧ 0 = sum.A.N.N }
+
+≡ {logica}
+
+{ 0 = 〈 N p : False : sum.A.p.N = 2 〉 ∧ 0 = sum.A.N.N }
+
+≡ {definicion de conteo}
+
+{ 0 = 〈 Σ p : False ∧ sum.A.p.N = 2 : 1 〉 ∧ 0 = sum.A.N.N }
+
+≡ {logica}
+
+{ 0 = 〈 Σ p : False : 1 〉 ∧ 0 = sum.A.N.N }
+
+≡ {rango vacio}
+
+{ 0 = 0 ∧ 0 = sum.A.N.N }
+
+≡ {definicion de sum}
+
+{ 0 = 0 ∧ 0 = 〈 Σ i : N≤i<N : A.i 〉 }
+
+≡ {logica}
+
+{ 0 = 0 ∧ 0 = 〈 Σ i : False : A.i 〉 }
+
+≡ {rango vacio}
+
+{ 0 = 0 ∧ 0 = 0 }
+
+≡ {reflexividad del = y logica}
+
+True
+
+
+
+
+
+
+
+5.
+
+f.n.0=1
+f.n.(k+1) = (f.n.k * (n - k)) / (k+1)
+
+Const N,K : Int;
+Var r : Int;
+{ N > 0 ∧ 0 ≤ K ≤ N }
+S
+{ r = f.N.K }
+
+Programa intuido:
+
+Const N,K : Int;
+Var r : Int;
+{ N > 0 ∧ 0 ≤ K ≤ N }
+S
+{ r = f.N.K }
+
+Voy a hacer un bucle:
+
+{ N > 0 ∧ 0 ≤ K ≤ N }
+S0
+do B ->
+    S1
+od
+{ r = f.N.K }
+
+Propongo I = f.N.(K+1)
+
+
+
+6.
+
+Const X : Int, N: Int, A: Array[0,N) of Int;
+Var r : Int;
+{ N ≥ 0 }
+S
+{ r = 〈 N i : 0 ≤ i < N : A.i = X * 2^i 〉 }
+
+Voy a hacer un ciclo:
+
+{ N ≥ 0 }
+S0
+{I}
+do B ->
+    {I ∧ B}
+    S1
+    {I}
+od
+{ r = 〈 N i : 0 ≤ i < N : A.i = X * 2^i 〉 }
+
+Propongo I = {r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0 <= i <= N ∧ t = 2^i}
+
+Ahora, veo si P => Q
+
+{ N ≥ 0 }
+=>
+{r = 〈 N i : 0 ≤ i < j : A.i = X * 2^i 〉 ∧ 0 <= i <= N ∧ t = 2^i}
+
+No, en la post me habla de r y j pero en la pre no me ofrece hipotesis sobre tales valores:
+
+wp(r:=E1,j:=E2).I
+
+≡ {def wp}
+
+{E1 = 〈 N i : 0 ≤ i < E2 : A.i = X * 2^i 〉 ∧ 0 <= i <= N ∧ t = 2^i}
+
+≡ {def conteo}
+
+{E1 = 〈 Σ i : 0 ≤ i < E2 ∧ A.i = X * 2^i : 1 〉 ∧ 0 <= i <= N ∧ t = 2^i}

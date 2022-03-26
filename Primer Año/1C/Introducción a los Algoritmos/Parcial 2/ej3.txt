@@ -1,0 +1,39 @@
+Nombre y Apellido: Juan Pablo Ludueña Zakka
+DNI: 43299161
+Comisión: 4
+
+<∀x : : ¬(p.x => q.x)> ∨ <∃x : : False ∧ p.x> ≡ <∀x : : p.x> ∧ <∀x : : ¬q.x>
+
+<∀x : : ¬(__p.x => q.x__)> ∨ <∃x : : False ∧ p.x> ≡ <∀x : : p.x> ∧ <∀x : : ¬q.x>
+
+≡ {T19 digesto proposicional, P:=p.x, Q:=q.x}
+
+<∀x : : ¬(¬p.x ∨ q.x)> ∨ __<∃x : : False ∧ p.x>__ ≡ <∀x : : p.x> ∧ <∀x : : ¬q.x>
+
+≡ {T6, r.x:=False, t.x:=p.x}
+
+<∀x : : ¬(¬p.x ∨ q.x)> ∨ __<∃x : False : p.x>__ ≡ <∀x : : p.x> ∧ <∀x : : ¬q.x>
+
+≡ {T14, t.x:=p.x}
+
+__<∀x : : ¬(¬p.x ∨ q.x)> ∨ False__ ≡ <∀x : : p.x> ∧ <∀x : : ¬q.x>
+
+≡ {T4 digesto proposicional, P:=<∀x : : ¬(¬p.x ∨ q.x)>}
+
+<∀x : : __¬(¬p.x ∨ q.x)__> ≡ <∀x : : p.x> ∧ <∀x : : ¬q.x>
+
+≡ {T12 digesto proposicional, P:=¬p.x, Q:=q.x}
+
+<∀x : : __¬¬p.x__ ∧ ¬q.x> ≡ <∀x : : p.x> ∧ <∀x : : ¬q.x>
+
+≡ {T1, P:=p.x}
+
+__<∀x : : p.x ∧ ¬q.x>__ ≡ <∀x : : p.x> ∧ <∀x : : ¬q.x>
+
+≡ {A2, t.x:=p.x, s.x:=¬q.x}
+
+<∀x : : p.x> ∧ <∀x : : ¬q.x> ≡ <∀x : : p.x> ∧ <∀x : : ¬q.x>
+
+≡ {reflexividad del ≡}
+
+True

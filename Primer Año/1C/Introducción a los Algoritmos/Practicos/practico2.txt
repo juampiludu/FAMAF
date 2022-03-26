@@ -1,0 +1,649 @@
+Ej 10
+
+a)
+
+sumar1 :: [Int] -> [Int]
+sumar1 [] = [] (1)
+sumar1 (x:xs) = x+1: sumar1 xs (2)
+
+sum :: [Int] -> Int
+sum [] = 0 (3)
+sum (x:xs) = x + sum xs (4)
+
+length :: [a] -> Int
+length [] = 0 (5)
+length (x:xs) = 1 + length xs (6)
+
+
+
+
+Hipótesis inductiva: sum (sumar1 xs) = sum xs + length xs
+
+
+
+
+Caso base:
+
+
+
+
+sum [] = sum [] + length []
+== {por (3) y por (5)}
+sum [] = 0 + 0
+== {por elemento neutro de la suma}
+sum [] = 0
+== {por (3)}
+0 = 0
+== {por reflexividad del =}
+True
+
+
+
+
+Caso Inductivo:
+
+
+
+
+sum (sumar1 (x:xs)) = sum (x:xs) + length (x:xs)
+== {por (2)}
+sum x+1: sumar1 xs = sum (x:xs) + length (x:xs)
+== {por (4) y (6)}
+sum x+1: sumar1 xs = x + sum xs + 1 + length xs
+== {por (4), x:=x+1, xs:= sumar1 xs}
+x + 1 + sum sumar1 xs = x + sum xs + 1 + length xs
+== {por (HI)}
+sum (sumar1 xs) = sum xs + length xs
+
+
+
+
+
+
+b)
+
+duplica :: [Int] -> [Int]
+duplica [] = [] (1)
+duplica (x:xs) = (x*2): duplica xs (2)
+
+sum :: [Int] -> Int
+sum [] = 0 (3)
+sum (x:xs) = x + sum xs (4)
+
+
+
+
+Hipótesis inductiva = sum (duplica xs) = 2 * sum sx
+
+
+
+
+Caso base:
+
+
+
+
+sum [] = 2 * sum []
+== {por (3)}
+0 = 2 * 0
+== {por elemento neutro de la multiplicación}
+0 = 0
+== {por reflexividad del =}
+True
+
+
+
+
+Caso Inductivo:
+
+
+
+
+sum (duplica (x:xs)) = 2 * sum (x:xs)
+== {por (4)}
+sum (duplica (x:xs)) = 2 * (x + sum xs)
+== {por (2)}
+sum (x * 2): duplica xs = 2 * x + sum xs
+== {por (4), x:= x * 2, xs:= duplica xs}
+2 * x + sum (duplica xs) = 2 * x + 2 * sum xs
+== {por (HI)}
+sum (duplica xs) = 2 * sum xs
+
+
+c)
+
+duplica :: [Int] -> [Int]
+duplica [] = [] (1)
+duplica (x:xs) = (x*2): duplica xs (2)
+
+length :: [a] -> Int
+length [] = 0 (3)
+length (x:xs) = 1 + length xs (4)
+
+
+
+
+Hipótesis inductiva: length (duplica xs) = length xs
+
+
+
+
+
+Caso base:
+
+length (duplica []) = length []
+== {por (1)}
+length [] = length []
+== {por (3)}
+0 = 0
+== {por reflexividad del =}
+True
+
+
+
+
+
+Caso inductivo:
+
+
+
+length (duplica (x:xs)) = length (x:xs)
+=== {(2)}
+length (x*2: duplica xs) = length (x:xs)
+=== {(4)}
+length (x*2: duplica xs) = 1 + length xs
+=== {(4), x:= x*2, xs:= duplica xs}
+1 + length (duplica xs) = 1 + length xs
+=== {inverso aditivo de 1 en ambos lados}
+length (duplica xs) = length xs
+=== {(HI)}
+length xs = length xs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ej 11
+
+a)
+
+(++) :: [a] -> [a] -> [a]
+xs (++) [] = xs (1)
+xs (++) ys =  (++) (take (length xs -1) xs) (drop (length xs -1) xs !! 0: ys) (2)
+
+xs ++ [] = xs
+== {por (1)}
+xs = xs
+== {por reflexividad del =}
+True
+
+
+b)
+
+length :: [a] -> Int
+length [] = 0 (1)
+length (x:xs) = 1 + length xs (2)
+
+Hipótesis inductiva: length xs >= 0
+
+Caso base:
+
+length [] >= 0
+== {por (1)}
+0 >= 0
+== {por reflexividad del >=}
+True
+
+Caso Inductivo:
+
+length (x:xs) >= 0
+== {por (2)}
+1 + length xs >= 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ej 13
+
+soloPares :: [Int] -> [Int]
+soloPares [] = [] (1)
+soloPares (x:xs) | x mod 2 == 0 = x: soloPares xs (2)
+                 | x mod 2 /= 0 = soloPares xs (3)
+
+(++) :: [a] -> [a] -> [a]
+(++) [] ys = ys (4)
+(++) (x:xs) ys = x : xs ++ ys (5)
+
+
+Hipótesis inductiva: soloPares (xs ++ ys) = soloPares xs ++ soloPares ys
+
+
+
+
+Caso base:
+
+
+
+
+soloPares ([] ++ []) = soloPares [] ++ soloPares []
+== {por (1)}
+soloPares ([] ++ []) = [] ++ []
+== {por (4)}
+soloPares [] = []
+== {por (1)}
+[] = []
+== {por reflexividad del =}
+True
+
+
+
+
+Caso Inductivo:
+
+
+Cuando x es par
+
+soloPares ((x:xs) ++ ys) = soloPares (x:xs) ++ soloPares ys
+=== {(2)}
+soloPares ((x:xs) ++ ys) = x: soloPares xs ++ soloPares ys
+=== {(5)}
+soloPares (x: xs ++ ys) = soloPares (x:xs) ++ soloPares ys
+=== {(2)}
+x: soloPares xs ++ ys = soloPares (x:xs) ++ soloPares ys
+=== {(5)}
+x: soloPares xs ++ ys = x: soloPares xs ++ soloPares ys
+=== {(5)}
+x: soloPares xs ++ ys = x: soloPares xs ++ ys
+
+{Queda demostrado por reflexividad del =}
+
+
+Cuando x es impar
+
+soloPares ((x:xs) ++ ys) = soloPares (x:xs) ++ soloPares ys
+=== {(3)}
+soloPares ((x:xs) ++ ys) = soloPares xs ++ soloPares ys
+=== {(5)}
+soloPares (x: xs ++ ys) = soloPares xs ++ soloPares ys
+=== {(3); x:=x; xs:=xs ++ ys}
+soloPares (xs ++ ys) = soloPares xs ++ soloPares ys
+
+{Queda demostrado por Hipótesis Inductiva.}
+
+
+
+
+
+
+
+Ej 14
+
+sum :: [Int] -> Int
+sum [] = 0 (1)
+sum (x:xs) = x + sum xs (2)
+
+(++) :: [a] -> [a] -> [a]
+(++) [] ys = ys (3)
+(++) (x:xs) ys = x : xs ++ ys (4)
+
+(+) :: Int -> Int -> Int
+(+) n 0 = n (5)
+(+) x y = x + y (6)
+
+
+Hipótesis Inductiva: sum (xs ++ ys) = sum xs + sum ys
+
+
+Caso base:
+
+sum ([] ++ []) = sum [] + sum []
+=== {(3)}
+sum [] = sum [] + sum []
+=== {(1)}
+0 = 0 + 0
+=== {(5)}
+0 = 0
+=== {reflexividad del =}
+True
+
+
+Caso inductivo:
+
+sum ((x:xs) ++ ys) = sum (x:xs) + sum ys
+=== {(2)}
+sum ((x:xs) ++ ys) = x + sum xs + sum ys
+=== {(4)}
+sum (x: xs ++ ys) = x + sum xs + sum ys
+=== {(2); x:=x; xs:=xs ++ ys}
+x + sum xs ++ ys = x + sum xs + sum ys
+=== {inverso aditivo de x en ambos lados}
+sum xs ++ ys = sum xs + sum ys
+=== {(HI)}
+sum xs ++ ys = sum xs ++ ys
+
+{Queda demostrado por HI}
+
+
+
+
+
+
+Ej 15
+
+
+repetir :: Int -> Int -> [Int]
+repetir 0 x = [] (1)
+repetir (n+1) x = x: repetir n x (2)
+
+length :: [a] -> Int
+length [] = 0 (3)
+length (x:xs) = 1 + length xs (4)
+
+
+
+Hipótesis inductiva: length repetir n x = n
+
+
+Case base:
+
+length repetir 0 x = 0
+=== {(1)}
+length [] = 0
+=== {(3)}
+0 = 0
+=== {reflexividad del =}
+True
+
+
+Caso inductivo:
+
+length repetir (n+1) x = n+1
+length (x: repetir n x) = n+1
+1 + length repetir n x = n+1
+length repetir n x = n
+
+
+
+
+
+
+
+
+
+
+
+
+Ej 16
+
+concat :: [[a]] -> [a]
+concat [] = [] (1)
+concat (xs:xss) = xs ++ concat xss (2)
+
+(++) :: [a] -> [a] -> [a]
+(++) [] yss = yss (3)
+(++) (xs:xss) yss = xs : xss ++ yss (4)
+
+Hipótesis inductiva: concat (xss ++ yss) = concat xss ++ concat yss
+
+Caso base:
+
+concat ([] ++ yss) = concat [] ++ concat yss
+=== {(3)}
+concat yss = concat [] ++ concat yss
+=== {(1)}
+concat yss = [] ++ concat yss
+=== {(3)}
+concat yss = concat yss
+=== {reflexividad del =}
+True
+
+
+
+Caso inductivo:
+
+concat ((xs:xss) ++ yss) = concat (xs:xss) ++ concat yss
+=== {(4)}
+concat (xs: xss ++ yss) = concat (xs:xss) ++ concat yss
+=== {(2)}
+concat (xs: xss ++ yss) = xs ++ concat xss ++ concat yss
+=== {(2); xs:=xs; xss:=xss ++ yss}
+xs ++ concat (xss ++ yss) = xs ++ concat (xss ++ yss)
+
+
+
+
+
+
+
+
+Ej 17
+
+
+rev :: [a] -> [a]
+rev [] = [] (1)
+rev (x:xs) = rev xs ++ [x] (2)
+
+(++) :: [a] -> [a] -> [a]
+(++) [] ys = ys (3)
+(++) (x:xs) ys = x : xs ++ ys (4)
+
+Hipótesis inductiva: rev (xs ++ ys) = rev ys ++ rev xs
+
+
+Caso base:
+
+rev ([] ++ ys) = rev ys ++ rev []
+=== {(3)}
+rev ys = rev ys ++ rev []
+=== {(1)}
+rev ys = rev ys ++ []
+=== {(3)}
+rev ys = rev ys
+=== {reflexividad del =}
+True
+
+
+
+Caso inductivo:
+
+
+rev ((x:xs) ++ ys) = rev ys ++ rev (x:xs)
+=== {(4)}
+rev (x: xs ++ ys) = rev ys ++ rev (x:xs)
+=== {(2)}
+rev (x: xs ++ ys) = rev ys ++ rev xs ++ [x]
+=== {(2); x:=x; xs:=xs ++ ys}
+rev xs ++ ys ++ [x] = rev ys ++ rev xs ++ [x]
+=== {(HI)}
+rev xs ++ ys ++ [x] = rev xs ++ ys ++ [x]
+
+
+
+
+
+
+Ej 19
+
+
+a)
+
+
+f 0 = 0 (1)
+f (n + 1) = 2 + f n (2)
+
+Hipótesis inductiva: f n = 2 * n
+
+
+Caso base:
+
+f 0 = 2 * 0
+=== {(1)}
+0 = 2 * 0
+=== {por elemento neutro de la multiplicación}
+0 = 0
+=== {reflexividad del =}
+True
+
+
+Caso Inductivo:
+
+f (n+1) = 2 * (n+1)
+=== {(2)}
+2 + f n = 2 * (n+1)
+=== {distributividad}
+2 + f n = 2 * n + 2
+=== {inverso aditivo de 2 en ambos lados}
+f n = 2 * n
+=== {(HI)}
+f n = f n
+
+
+
+
+b)
+
+g 0 = 0 (1)
+g (n+1) = 1 + g n (2)
+
+
+Hipótesis inductiva: g n = n
+
+Caso base:
+
+g 0 = 0
+=== {(1)}
+0 = 0
+=== {reflexividad del =}
+True
+
+
+Caso inductivo:
+
+g (n+1) = n+1
+=== {(2)}
+1 + g n = n+1
+=== {inverso aditivo del 1 en ambos lados}
+g n = n
+=== {(HI)}
+n = n
+
+{Queda demostrado por reflexividad del =}
+
+
+
+
+c) Dudas
+
+g 0 = 0 (1)
+g (n+1) = n + 1 + g n (2)
+
+f n = n * (n+1)/2 (3)
+
+
+Hipótesis inductiva: f n = g n
+
+
+Caso base:
+
+f 0 = g 0
+=== {(1)}
+f 0 = 0
+=== {(3)}
+0 = 0
+=== {reflexividad del =}
+True
+
+
+Caso inductivo:
+
+f (n+1) = g (n+1)
+=== {2}
+f (n+1) = n + 1 + g n
+=== {HI}
+f (n+1) = n + 1 + f n
+=== {3}
+n+1 * (n+1+1)/2 = n + 1 + f n
+=== {2}
+n+1 * (n+1+1)/2 = n + 1 + n * (n+1)/2
+(n+1) * (n+2)/2 = (n+1) + n * (n+1)/2
+
+
+
+
+
+
+
+
+
+
+Ej 20
+
+a)
+
+listasIguales :: Eq a => [a] -> [a] -> Bool
+listasIguales [] [] = True
+listasIguales (x:xs) (y:ys) | x:xs == y:ys = True
+                            | otherwise = False
+
+
+listasIguales es de tipo fold.
+
+
+
+b)
+
+mejorNota :: [(String, Int, Int, Int)] -> [(String, Int)]
+mejorNota [] = []
+mejorNota ((nom, x, y, z):xs) = (nom, max x (max y z)): mejorNota xs
+
+
+mejorNota es de tipo 
+
+
+
+c)
+
+
+incPrim :: [(Int, Int)] -> [(Int, Int)]
+incPrim [] = []
+incPrim ((x,y):xs) = (x+1,y): incPrim xs
+
+
+
+d)
+
+expandir :: String -> String
+expandir "" = ""
+expandir (x:xs) = x : " " ++ expandir xs

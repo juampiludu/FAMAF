@@ -1,0 +1,11 @@
+¿Por qué falla la compilación?
+
+La compilación falla porque cuando compilo array_helpers.c o main.c, y en estos también se llama a
+array_helpers.h, lo que provoca que el tipo "mybool" se esté definiendo varias veces, que es lo
+que genera el error.
+
+
+¿Cómo se resuelve el problema?
+
+El problema se resuelve buscando la forma de verificar si el tipo "mybool" ya está definido, entonces
+así impedimos que se redefina y generar errores.

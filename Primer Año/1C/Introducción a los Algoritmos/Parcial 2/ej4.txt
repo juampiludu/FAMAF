@@ -1,0 +1,59 @@
+Nombre y Apellido: Juan Pablo Ludueña Zakka
+DNI: 43299161
+Comisión: 4
+
+todoCyG:[Figura] -> Bool
+todoCyG.[] = True                                          (1)
+todoCyG.(x:xs) = circulo.x ∧ tam.x >= 10 ∧ todoCyG.xs      (2)
+
+
+∈: A -> [A] -> Bool
+e ∈ [] = False                                             (3)
+e ∈ (x:xs) = (e == x) ∨ e ∈ xs                             (4)
+
+
+Demostrar: todoCyG.xs ≡ <∀y: y ∈ xs : circulo.y ∧ tam.y >= 10> 
+
+
+Caso base:
+
+__todoCyG.[]__ ≡ <∀y: __y ∈ []__ : circulo.y ∧ tam.y >= 10> 
+
+≡ {(1) y (3)}
+
+True ≡ __<∀y: False : circulo.y ∧ tam.y >= 10>__
+
+≡ {T5, t.x:=circulo.y ∧ tam.y >= 10}
+
+True ≡ True
+
+≡ {reflexividad del ≡}
+
+True
+
+
+Paso inductivo:
+
+Hipótesis inductiva: todoCyG.xs ≡ <∀y: y ∈ xs : circulo.y ∧ tam.y >= 10>
+
+__todoCyG.(x:xs)__ ≡ <∀y: __y ∈ (x:xs)__ : circulo.y ∧ tam.y >= 10>
+
+≡ {(2) y (4)}
+
+circulo.x ∧ tam.x >= 10 ∧ todoCyG.xs ≡ __<∀y: (y == x) ∨ y ∈ xs : circulo.y ∧ tam.y >= 10>__
+
+≡ {T1, r.x:=(y == x), s.x:=y ∈ xs, t.x:=circulo.y ∧ tam.y >= 10}
+
+circulo.x ∧ tam.x >= 10 ∧ todoCyG.xs ≡ <∀y: y == x : circulo.y ∧ tam.y >= 10> ∧ __<∀y: y ∈ xs : circulo.y ∧ tam.y >= 10>__
+
+≡ {HI}
+
+circulo.x ∧ tam.x >= 10 ∧ todoCyG.xs ≡ __<∀y: y == x : circulo.y ∧ tam.y >= 10>__ ∧ todoCyG.xs
+
+≡ {A4, x:=y, A:=x, t.x:=circulo.y ∧ tam.y >= 10}
+
+circulo.x ∧ tam.x >= 10 ∧ todoCyG.xs ≡ circulo.x ∧ tam.x >= 10 ∧ todoCyG.xs
+
+≡ {reflexividad del ≡}
+
+True

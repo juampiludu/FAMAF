@@ -1,0 +1,520 @@
+11)
+
+a) Intercambio entre rango y término ∃:〈∃x : R.x : T.x〉≡〈∃x : : R.x ∧ T.x〉
+
+(∃x : R.x : T.x)
+
+≡ {A5}
+
+¬(∀x : R.x : ¬T.x)
+
+≡ {A1}
+
+¬(∀x : : R.x ⇒ ¬T.x)
+
+≡ {T19}
+
+¬(∀x : : ¬R.x ∨ ¬T.x)
+
+≡ {T12}
+
+¬(∀x : : ¬(R.x ∧ T.x))
+
+≡ {A5}
+
+(∃x : : R.x ∧ T.x)
+
+
+b) Regla del Término del ∃:〈∃x : : T.x〉∨〈∃x : : U.x〉≡〈∃x : : T.x ∨ U.x〉
+
+(∃x : : T.x) ∨ (∃x : : U.x)
+
+≡ {A5}
+
+¬(∀x : : ¬T.x) ∨ ¬(∀x : : ¬U.x)
+
+≡ {T13}
+
+¬((∀x : : ¬T.x) ∧ (∀x : : ¬U.x))
+
+≡ {A2}
+
+¬(∀x : : ¬T.x ∧ ¬U.x)
+
+≡ {T12}
+
+¬(∀x : : ¬(T.x ∨ U.x))
+
+≡ {A5}
+
+(∃x : : T.x ∨ U.x)
+
+
+
+c) Regla del Término del ∀ (bis):〈∀x : R.x : T.x〉∧〈∀x : R.x : U.x〉≡〈∀x : R.x : T.x ∧ U.x〉
+
+(∀x : R.x : T.x) ∧ (∀x : R.x : U.x)
+
+≡ {A1}
+
+(∀x : : R.x => T.x) ∧ (∀x : : R.x => U.x)
+
+≡ {A2}
+
+(∀x : : (R.x => T.x) ∧ (R.x => U.x))
+
+≡ {T19 x2}
+
+(∀x : : (¬R.x ∨ T.x) ∧ (¬R.x ∨ U.x))
+
+≡ {T14}
+
+(∀x : : ¬R.x ∨ (T.x ∧ U.x))
+
+≡ {T19}
+
+(∀x : : R.x => (T.x ∧ U.x))
+
+≡ {A1}
+
+(∀x : R.x : T.x ∧ U.x)
+
+
+d) Regla del Término del ∃ (bis):〈∃x : R.x : T.x〉∨〈∃x : R.x : U.x〉≡〈∃x : R.x : T.x ∨ U.x〉
+
+(∃x : R.x : T.x) ∨ (∃x : R.x : U.x)
+
+≡ {A5 x2}
+
+¬(∀x : R.x : ¬T.x) ∨ ¬(∀x : R.x : ¬U.x)
+
+≡ {T13}
+
+¬((∀x : R.x : ¬T.x) ∧ (∀x : R.x : ¬U.x))
+
+≡ {A1 x2}
+
+¬((∀x : : R.x => ¬T.x) ∧ (∀x : : R.x => ¬U.x))
+
+≡ {A2}
+
+¬(∀x : : (R.x => ¬T.x) ∧ (R.x => ¬U.x))
+
+≡ {T19 x2}
+
+¬(∀x : : (¬R.x ∨ ¬T.x) ∧ (¬R.x ∨ ¬U.x))
+
+≡ {T14}
+
+¬(∀x : : ¬R.x ∨ (¬T.x ∧ ¬U.x))
+
+≡ {T12}
+
+¬(∀x : : ¬R.x ∨ ¬(T.x ∨ U.x))
+
+≡ {T13}
+
+¬(∀x : : ¬(R.x ∧ (T.x ∨ U.x)))
+
+≡ {A5}
+
+(∃x : : R.x ∧ (T.x ∨ U.x))
+
+≡ {11a}
+
+(∃x : R.x : T.x ∨ U.x)
+
+
+
+e) Partición de Rango del ∀:〈∀x : R.x ∨ S.x : T.x〉≡〈∀x : R.x : T.x〉∧〈∀x : S.x : T.x〉
+
+(∀x : R.x ∨ S.x : T.x)
+
+≡ {A1}
+
+(∀x : : R.x ∨ S.x => T.x)
+
+≡ {T19}
+
+(∀x : : ¬(R.x ∨ S.x) ∨ T.x)
+
+≡ {T12}
+
+(∀x : : (¬R.x ∧ ¬S.x) ∨ T.x)
+
+≡ {A6 prop}
+
+(∀x : : T.x ∨ (¬R.x ∧ ¬S.x))
+
+≡ {T14}
+
+(∀x : : (T.x ∨ ¬R.x) ∧ (T.x ∨ ¬S.x))
+
+≡ {T19}
+
+(∀x : : (R.x => T.x) ∧ (S.x => T.x))
+
+≡ {A2}
+
+(∀x : : R.x => T.x) ∧ (∀x : : S.x => T.x)
+
+≡ {A1}
+
+(∀x : R.x : T.x) ∧ (∀x : S.x : T.x)
+
+
+
+f) Partición de rango para ∃:〈∃x : R.x ∨ S.x : T.x〉≡〈∃x : R.x : T.x〉∨〈∃x : S.x : T.x〉
+
+(∃x : R.x ∨ S.x : T.x)
+
+≡ {T6}
+
+(∃x : : (R.x ∨ S.x) ∧ T.x)
+
+≡ {T15}
+
+(∃x : : (T.x ∧ R.x) ∨ (T.x ∧ S.x))
+
+≡ {T7}
+
+(∃x : : T.x ∧ R.x) ∨ (∃x : : T.x ∧ S.x)
+
+≡ {T7 prop x2}
+
+(∃x : : R.x ∧ T.x) ∨ (∃x : : S.x ∧ T.x)
+
+≡ {T6}
+
+(∃x : R.x : T.x) ∨ (∃x : S.x : T.x)
+
+
+
+g) Rango unitario:〈∃x : x = Y : T.x〉≡ T.Y, siempre que Y no ocurra cuantificada en T.
+
+(∃x : x = Y : T.x)
+
+≡ {A5}
+
+¬(∀x : x = Y : ¬T.x)
+
+≡ {A4}
+
+¬¬T.Y
+
+≡ {doble negacion}
+
+T.Y
+
+
+
+h) Distributividad de ∧ con ∃: X ∧〈∃x : : T.x〉≡〈∃x : : X ∧ T.x〉, siempre que x no ocurra en X.
+
+X ∧ (∃x : : T.x)
+
+≡ {A5}
+
+X ∧ ¬(∀x : : ¬T.x)
+
+≡ {T12}
+
+¬(¬X ∨ ¬¬(∀x : : ¬T.x))
+
+≡ {doble negacion}
+
+¬(¬X ∨ (∀x : : ¬T.x))
+
+≡ {A3}
+
+¬(∀x : : ¬X ∨ ¬T.x)
+
+≡ {T13}
+
+¬(∀x : : ¬(X ∧ T.x))
+
+≡ {A5}
+
+(∃x : : X ∧ T.x)
+
+
+
+
+15)
+
+∈l : : A -> [A] -> Bool		
+e ∈l [] = False (1)
+e ∈l (x:xs) = (e==x) v (e ∈l xs) (2)
+
+algunCuadrado: [Figura] → Bool
+algunCuadrado.[] .= False (3)
+algunCuadrado.(x:xs) .= cuadrado.x ∨ algunCuadrado.xs (4)
+
+
+algunCuadrado.xs ≡〈∃x : x ∈ xs : cuadrado.x〉
+
+Caso base:
+
+algunCuadrado [] ≡ (∃x : x ∈ [] : cuadrado.x)
+
+≡ {(3) y (1)}
+
+False ≡ (∃x : False : cuadrado.x)
+
+≡ {rango vacio de ∃}
+
+False = False
+
+≡ {reflexividad del ≡}
+
+True
+
+
+Caso inductivo:
+
+Hipótesis inductiva: algunCuadrado.xs ≡ (∃y : y ∈ xs : cuadrado.y)
+
+algunCuadrado.(x:xs) ≡ (∃y : y ∈ (x:xs) : cuadrado.y)
+
+≡ {(4)}
+
+cuadrado.x ∨ algunCuadrado.xs ≡ (∃y : y ∈ (x:xs) : cuadrado.y)
+
+≡ {(2)}
+
+cuadrado.x ∨ algunCuadrado.xs ≡ (∃y : (y==x) v (y ∈l xs) : cuadrado.y)
+
+≡ {particion del rango ∃}
+
+cuadrado.x ∨ algunCuadrado.xs ≡ (∃y : y==x : cuadrado.y) v (∃y : y ∈ xs : cuadrado.y)
+
+≡ {HI}
+
+cuadrado.x ∨ algunCuadrado.xs ≡ (∃y : y==x : cuadrado.y) v algunCuadrado.xs
+
+≡ {rango unitario de ∃}
+
+cuadrado.x ∨ algunCuadrado.xs ≡ cuadrado.x ∨ algunCuadrado.xs
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+
+Parcial 2019 mañana
+
+
+1)
+
+a) p ⇒ (q ⇒ r) ≡ ¬r ⇒ (p ⇒ ¬q)
+
+
+p ⇒ _(q ⇒ r)_ ≡ ¬r ⇒ (p ⇒ ¬q)
+
+≡ {T19}
+
+p ⇒ ¬q ∨ r ≡ ¬r ⇒ _(p ⇒ ¬q)_
+
+≡ {T19}
+
+_p ⇒ ¬q ∨ r_ ≡ _¬r ⇒ ¬p ∨ ¬q_
+
+≡ {T19 x2}
+
+¬p ∨ ¬q ∨ r ≡ _¬¬r_ ∨ ¬p ∨ ¬q
+
+≡ {doble negacion}
+
+¬p ∨ ¬q ∨ r ≡ _r ∨ ¬p ∨ ¬q_
+
+≡ {A8}
+
+¬p ∨ ¬q ∨ r ≡ ¬p ∨ ¬q ∨ r
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+b) ¬p ∧ q ≡ ¬(p ∧ ¬q ≡ q) ≡ (p ≡ False)
+
+
+¬p ∧ q ≡ ¬(p ∧ ¬q ≡ q) ≡ (_p ≡ False_)
+
+≡ {T2}
+
+¬p ∧ q ≡ ¬(p ∧ ¬q ≡ q) ≡ ¬p
+
+≡ {A4}
+
+¬(¬p ∧ q ≡ (p ∧ ¬q ≡ q) ≡ ¬p)
+
+≡ {A4}
+
+¬¬(¬p ∧ q ≡ (p ∧ ¬q ≡ q) ≡ p)
+
+≡ {doble negacion}
+
+_¬p ∧ q_ ≡ _p ∧ ¬q_ ≡ q ≡ p
+
+≡ {T12 x2}
+
+¬(¬¬p ∨ ¬q) ≡ ¬(¬p ∨ ¬¬q) ≡ q ≡ p
+
+≡ {A4 x2}
+
+¬¬(¬¬p ∨ ¬q ≡ ¬p ∨ ¬¬q ≡ q ≡ p)
+
+≡ {doble negacion}
+
+_¬¬p_ ∨ ¬q ≡ ¬p ∨ _¬¬q_ ≡ q ≡ p
+
+≡ {doble negacion x2}
+
+p ∨ ¬q ≡ ¬p ∨ q ≡ q ≡ p
+
+≡ {A2}
+
+p ∨ ¬q ≡ p ≡ _¬p ∨ q ≡ q_
+
+≡ {A14}
+
+p ∨ ¬q ≡ p ≡ _¬p => q_
+
+≡ {T19}
+
+p ∨ ¬q ≡ p ≡ _¬¬p_ ∨ q
+
+≡ {doble negacion}
+
+p ∨ ¬q ≡ p ≡ p ∨ q
+
+≡ {Queda demostrado con Teorema estrella}
+
+
+
+2)
+
+a) < ∀x : : x ∈l xs ∧ (triangulo.x ∧ rojo.x) ∨ cuadrado.x >
+
+b) < ∃i : 0 <= i < length.xs ∧ xs!!i > 0 : < ∀j : 0 <= j < length.xs ∧ i /= j : xs!!j <= 0 > >
+
+
+
+3)
+
+xs = [(Cuadrado,Azul,8),(Triangulo,Verde,11),(Triangulo,Amarillo,15)]
+xs' = [(Cuadrado,Azul,8),(Triangulo,Verde,1),(Triangulo,Amarillo,15)]
+
+
+
+4) Demostrar: (∀x : R.x : T.x) ∧ (∀x : ¬T.x : R.x) ≡ (∀x : : T.x)
+
+_(∀x : R.x : T.x)_ ∧ _(∀x : ¬T.x : R.x)_
+
+≡ {A1}
+
+_(∀x : : R.x => T.x) ∧ (∀x : : ¬T.x => R.x)_
+
+≡ {A2}
+
+(∀x : : (_R.x => T.x_) ∧ (_¬T.x => R.x_))
+
+≡ {T19 dig-prop x2}
+
+(∀x : : (¬R.x ∨ T.x) ∧ (_¬¬T.x_ ∨ R.x))
+
+≡ {T1 dig-prop}
+
+(∀x : : (_¬R.x ∨ T.x_) ∧ (T.x ∨ R.x))
+
+≡ {A6 dig-prop}
+
+(∀x : : _(T.x ∨ ¬R.x) ∧ (T.x ∨ R.x)_)
+
+≡ {T14 dig-prop}
+
+(∀x : : T.x ∨ _(¬R.x ∧ R.x)_)
+
+≡ {A11 dig-prop}
+
+(∀x : : _T.x ∨ False_)
+
+≡ {T4 dig-prop}
+
+(∀x : : T.x)
+
+
+
+5)
+
+∈`: A → [A] → Bool
+e ∈` [] .= False                                               (1)
+e ∈` (x:xs) .= (e == x) ∨ e ∈` xs                              (2)
+
+todosRoC: [Figura] → Bool
+todosRoC.[] .= True                                            (3)
+todosRoC.(x:xs) .= (rojo.x ∨ circulo.x) ∧ todosRoC.xs          (4)
+
+
+Demostrar:      todosRoC.xs ≡ < ∀y : y ∈` xs : rojo.y ∨ circulo.y >
+
+
+Caso base:
+
+_todosRoC.[]_ ≡ < ∀y : _y ∈` []_ : rojo.y ∨ circulo.y >
+
+≡ {(3) y (1)}
+
+True ≡ _< ∀y : False : rojo.y ∨ circulo.y >_
+
+≡ {T5}
+
+True ≡ True
+
+≡ {reflexividad del ≡}
+
+True
+
+
+Paso inductivo
+
+Hipotesis inductiva:      todosRoC.xs ≡ < ∀y : y ∈` xs : rojo.y ∨ circulo.y >
+
+
+_todosRoC.(x:xs)_ ≡ < ∀y : _y ∈` (x:xs)_ : rojo.y ∨ circulo.y >
+
+≡ {(4) y (2)}
+
+(rojo.x ∨ circulo.x) ∧ todosRoC.xs ≡ _< ∀y : (y == x) ∨ y ∈` xs : rojo.y ∨ circulo.y >_
+
+≡ {T1}
+
+(rojo.x ∨ circulo.x) ∧ todosRoC.xs ≡ < ∀y : y == x : rojo.y ∨ circulo.y > ∧ _< ∀y : y ∈` xs : rojo.y ∨ circulo.y >_
+
+≡ {HI}
+
+(rojo.x ∨ circulo.x) ∧ todosRoC.xs ≡ _< ∀y : y == x : rojo.y ∨ circulo.y >_ ∧ todosRoC.xs
+
+≡ {A4}
+
+(rojo.x ∨ circulo.x) ∧ todosRoC.xs ≡ (rojo.x ∨ circulo.x) ∧ todosRoC.xs
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+
+
+
+Parcial 2018 mañana
+
+2)
+
+b) “Hay exactamente dos cuadrados en xs y uno es rojo y el otro azul”.
+
+< ∃i,j : 0 <= i < j < #xs : xs!!i = (cuadrado.x ∧ rojo.x) ∧ xs!!j = (cuadrado.x ∧ azul.x) ∧ < ∃k, 0 <= k < #xs < ∧ k /= i ∧ k/= j : xs!!k /= ¬(cuadrado.x ∧ rojo.x) ∨ xs!!k /= ¬(cuadrado.x ∧ azul.x) > > 

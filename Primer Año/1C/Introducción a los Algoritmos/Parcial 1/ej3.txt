@@ -1,0 +1,60 @@
+Juan Pablo Ludueña Zakka - 43299161
+
+
+- Definiciones:
+
+concatena :: [[a]] -> [a]
+concatena [] = [] (1)
+concatena (xs:xss) = xs ++ (concatena xss) (2)
+
+sum :: [Int] -> Int
+sum [] = 0 (3)
+sum (x:xs) = x + sum xs (4)
+
+cuenta :: [[Int]] -> Int
+cuenta [] = 0 (5)
+cuenta (xs:xss) = (sum xs) + (cuenta xss) (6)
+
+sum (xs ++ ys) = sum xs + sum ys (7)
+
+
+- Hipótesis inductiva:
+
+sum (concatena xss) = (cuenta xss)
+
+
+- Caso base:
+
+sum (__concatena []__) = (cuenta [])
+
+=== {(1)}
+sum [] = __cuenta []__
+
+=== {(5)}
+__sum []__ = 0
+
+=== {(3)}
+0 = 0
+
+=== {por reflexividad del =}
+True
+
+
+- Caso inductivo:
+
+
+sum (concatena (xs:xss)) = (__cuenta (xs:xss)__)
+
+=== {(6)}
+sum (__concatena (xs:xss)__) = (sum xs) + (cuenta xss)
+
+=== {(2)}
+__sum (xs ++ (concatena xss))__ = (sum xs) + (cuenta xss)
+
+=== {(7); xs:=xs; ys:=(concatena xss)}
+sum (xs) + __sum (concatena xss)__ = (sum xs) + (cuenta xss)
+
+=== {(HI)}
+(sum xs) + (cuenta xss) = (sum xs) + (cuenta xss)
+
+Queda demostrado por reflexividad del =

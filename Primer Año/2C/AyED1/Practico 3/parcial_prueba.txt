@@ -1,0 +1,109 @@
+1)
+
+    ham.xs.ys =〈 N i : 0 <= i < #xs min #ys : xs!i != ys!i 〉
+
+    a. ham.xs.ys : String -> String -> Int
+
+    b.
+    
+    c. ham.”come”.”toma” = 2
+
+    d. Caso base:
+
+        Caso xs = []
+
+        ham.[].ys =〈 N i : 0 <= i < #[] min #ys : []!i != ys!i 〉
+        ≡ {definicion de # y !}
+        ham.[].ys =〈 N i : 0 <= i < (0 min #ys) : [] != ys!i 〉
+        ≡ {absorvente para min}
+        ham.[].ys =〈 N i : 0 <= i < 0 : [] != ys!i 〉
+        ≡ {logica}
+        ham.[].ys =〈 N i : False : [] != ys!i 〉
+        ≡ {rango vacio}
+        ham.[].ys = 0
+
+        Caso ys = []
+
+        ham.xs.[] =〈 N i : 0 <= i < #xs min #[] : xs!i != []!i 〉
+        ≡ {definicion de # y !}
+        ham.xs.[] =〈 N i : 0 <= i < (#xs min #[]) : xs!i != []!i 〉
+        ≡ {absorvente para min}
+        ham.xs.[] =〈 N i : 0 <= i < 0 : xs!i != []!i 〉
+        ≡ {logica}
+        ham.xs.[] =〈 N i : False : xs!i != []!i 〉
+        ≡ {rango vacio}
+        ham.xs.[] = 0
+
+    e. Paso inductivo:
+
+        Hipotesis inductiva:
+
+        ham.xs.ys =〈 N i : 0 <= i < #xs min #ys : xs!i != ys!i 〉
+
+        ham.(x:xs).(y:ys) =〈 N i : 0 <= i < #(x:xs) min #(y:ys) : (x:xs)!i != (y:ys)!i 〉
+        ≡ {definicion recursiva de #}
+        ham.(x:xs).(y:ys) =〈 N i : 0 <= i < (#xs+1) min (#ys+1) : (x:xs)!i != (y:ys)!i 〉
+        ≡ {logica}
+        ham.(x:xs).(y:ys) =〈 N i : i = 0 ∨ 1 <= i < (#xs+1) min (#ys+1) : (x:xs)!i != (y:ys)!i 〉
+        ≡ {particion de rango}
+        ham.(x:xs).(y:ys) =〈 N i : i = 0 : (x:xs)!i != (y:ys)!i 〉+〈 N i : 1 <= i < (#xs+1) min (#ys+1) : (x:xs)!i != (y:ys)!i 〉
+        ≡ {distributividad del min}
+        ham.(x:xs).(y:ys) = 〈 N i : i = 0 : (x:xs)!i != (y:ys)!i 〉 +〈 N i : 1 <= i < (#xs min #ys) + 1 : (x:xs)!i != (y:ys)!i 〉
+        ≡ {cambio de variable, i:=(j+1)}
+        ham.(x:xs).(y:ys) = 〈 N i : i = 0 : (x:xs)!i != (y:ys)!i 〉 +〈 N j : 1 <= (j+1) < (#xs min #ys) + 1 : (x:xs)!(j+1) != (y:ys)!(j+1) 〉
+        ≡ {compatibilidad de la suma y el orden}
+        ham.(x:xs).(y:ys) = 〈 N i : i = 0 : (x:xs)!i != (y:ys)!i 〉 +〈 N j : 0 <= j < #xs min #ys : (x:xs)!(j+1) != (y:ys)!(j+1) 〉
+        ≡ {definicion recursiva de !}
+        ham.(x:xs).(y:ys) = 〈 N i : i = 0 : (x:xs)!i != (y:ys)!i 〉 +〈 N j : 0 <= j < #xs min #ys : xs!j != ys!j 〉
+        ≡ {HI}
+        ham.(x:xs).(y:ys) = 〈 N i : i = 0 : (x:xs)!i != (y:ys)!i 〉+ ham.xs.ys
+        ≡ {rango unitario de N}
+        ham.(x:xs).(y:ys) = (
+                            (x:xs)!0 != (y:ys)!0 -> 1
+                            ¬((x:xs)!0 != (y:ys)!0) -> 0
+                            ) + ham.xs.ys
+        ≡ {definicion recursiva de !}
+        ham.(x:xs).(y:ys) = (
+                            x != y -> 1
+                            ¬(x != y) -> 0
+                            ) + ham.xs.ys
+        ≡ {distributividad}
+        ham.(x:xs).(y:ys) = (
+                            x != y -> 1 + ham.xs.ys
+                            ¬(x != y) -> ham.xs.ys
+                            )
+
+    f. 
+
+        ham.”toma”.”come" -> 1 + ham.”oma”.”ome”
+                          -> 1 + (ham.”ma”.”me”)
+                          -> 1 + (ham.”a”.”e”)
+                          -> 1 + (1 + ham.””.””)
+                          -> 1 + 1 + 0
+                          -> 2
+
+
+2)
+
+    pj.xs =〈 ∃ as, bs : xs = as ++ bs : sum.as = sum.bs 〉
+
+    a. 
+
+        Caso base:
+
+        pj.[] =〈 ∃ as, bs : [] = as ++ bs : sum.as = sum.bs 〉
+        ≡ {propiedad de listas}
+        pj.[] =〈 ∃ as, bs : as = [] ∧ bs = [] : sum.as = sum.bs 〉
+        ≡ {rango unitario}
+        pj.[] = sum.[] = sum.[]
+        ≡ {definicion de sum}
+        pj.[] = 0 = 0
+        ≡ {logica}
+        pj.[] = True
+
+        Paso inductivo:
+
+        Hipotesis inductiva:
+
+        pj.(x:xs) =〈 ∃ as, bs : (x:xs) = as ++ bs : sum.as = sum.bs 〉
+        ≡ {}

@@ -1,0 +1,26 @@
+Juan Pablo Ludueña Zakka - 43299161
+
+
+Definición de pegarEn3:
+
+pegarEn3 :: [(String, String)] -> [(String, String, String)]
+pegarEn3 [] = [] (1)
+pegarEn3 ((x,y):xs) = (x,y, x ++ y): pegarEn3 xs (2)
+
+
+Evaluación manual:
+
+
+__pegarEn3 [("ab", "cd"),("fg", "hi")]__ =
+
+=== {(2); (x,y):=("ab", "cd"); xs:=[("fg", "hi")]}
+[("ab", "cd", "ab" ++ "cd"): __pegarEn3 [("fg", "hi")]__]
+
+=== {(2); (x,y):=("fg", "hi"); xs:=[]}
+[("ab", "cd", "ab" ++ "cd"), ("fg", "hi", "fg" ++ "hi"): __pegarEn3 []__]
+
+=== {(1); []:=[]}
+[("ab", "cd", __"ab" ++ "cd"__), ("fg", "hi", __"fg" ++ "hi"__), []]
+
+=== {por definicion de ++}
+[("ab", "cd", "abcd"), ("fg", "hi", "fghi")]

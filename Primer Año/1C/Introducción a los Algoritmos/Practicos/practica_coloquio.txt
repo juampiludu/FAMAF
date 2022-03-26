@@ -1,0 +1,1262 @@
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
+-- 1)
+
+mayoresQue :: Int -> [Int] -> [Int]
+mayoresQue n [] = []
+mayoresQue n (x:xs) | x > n = x: mayoresQue n xs
+                    | otherwise = mayoresQue n xs
+
+
+-- 2)
+
+tamaños :: [[a]] -> [Int]
+tamaños [[]] = [0]
+tamaños [] = []
+tamaños ((y:ys):xs) = length (y:ys): tamaños xs
+
+
+-- 3)
+
+multiplica :: Int -> [Int] -> [Int]
+multiplica n [] = []
+multiplica n (x:xs) = x*n: multiplica n xs
+
+
+-- 4)
+
+ultimo :: [a] -> a
+ultimo [] = error "Lista vacía"
+ultimo (x:xs) = last (x:xs)
+
+
+-- 5)
+
+repetir :: Int -> a -> [a]
+repetir n k | n < 0 = error "El número no puede ser menor a 0"
+            | n >= 0 = replicate n k
+
+
+-- 6)
+
+hacerA :: String -> String
+hacerA "" = ""
+hacerA (x:xs) = if x `elem` ['e','i','o','u'] then 'a': hacerA xs else x: hacerA xs
+
+
+-- 7)
+
+siguientes :: Num a => [a] -> [(a, a)]
+siguientes [] = []
+siguientes (x:xs) = (x, x+1): siguientes xs
+
+
+8)
+
+sum [] = 0                                                  (1)
+sum (x:xs) = x + sum xs                                     (2)
+
+quitarCeros [] = []                                         (3)
+quitarCeros (x:xs) | x /= 0 = x: quitarCeros xs             (4)
+                   | x == 0 = quitarCeros xs                (5)
+
+
+Caso base:
+
+sum _(quitarCeros [])_ = _sum []_
+
+≡ {(3) y (1)}
+
+_sum []_ = 0
+
+≡ {(1)}
+
+0 = 0
+
+≡ {reflexividad del =}
+
+True
+
+
+Paso inductivo:
+
+HI: sum (quitarCeros xs) = sum xs
+
+
+Si x /= 0:
+
+sum (_quitarCeros (x:xs)_) = _sum (x:xs)_
+
+≡ {(4) y (2)}
+
+_sum (x: quitarCeros xs)_ = x + sum xs
+
+≡ {(2), x:=x, xs:= quitarCeros xs}
+
+x + sum quitarCeros xs = x + _sum xs_
+
+≡ {(HI)}
+
+x + sum (quitarCeros xs) = x + sum (quitarCeros xs)
+
+≡ {reflexividad del =}
+
+True
+
+
+Si x == 0:
+
+sum (_quitarCeros (x:xs)_) = _sum (x:xs)_
+
+≡ {(5) y (2)}
+
+_sum (quitarCeros xs)_ = sum xs
+
+≡ {(HI)}
+
+sum xs = sum xs
+
+
+9)
+
+sum [] = 0                                                  (1)
+sum (x:xs) = x + sum xs                                     (2)
+
+invertir [] = []                                            (5)
+invertir (x:xs) = (-x):invertir xs                          (4)
+
+
+Caso base:
+
+sum (_invertir []_) = -_sum []_
+
+≡ {(5) y (1)}
+
+_sum []_ = -0
+
+≡ {(1)}
+
+0 = 0
+
+≡ {reflexividad del =}
+
+True
+
+
+Paso inductivo:
+
+HI: sum (invertir xs) = -sum xs
+
+
+sum (_invertir (x:xs)_) = -_sum (x:xs)_
+
+≡ {(4) y (2)}
+
+_sum (-x:invertir xs)_ = -(x + sum xs)
+
+≡ {(4), x:=-x, xs:=invertir xs}
+
+-x + invertir xs = _-(x + sum xs)_
+
+≡ {distributiva}
+
+-x + _sum (invertir xs)_ = -x - sum xs
+
+≡ {(HI)}
+
+-x _+ (-sum xs)_ = -x - sum xs
+
+≡ {regla de los signos}
+
+-x - sum xs = -x - sum xs
+
+≡ {reflexividad del =}
+
+True
+
+
+
+10)
+
+# [] = 0                                    (1)
+# (x:xs) = 1 + # xs                         (2)
+
+stutter [] = []                             (3)
+stutter (x:xs) = x: (x: stutter xs)         (4)
+
+
+Caso base:
+
+# (_stutter []_) = 2 * _# []_
+
+≡ {(3) y (1)}
+
+_# []_ = _2 * 0_
+
+≡ {(1) y neutro multiplicativo}
+
+0 = 0
+
+≡ {reflexividad del =}
+
+True
+
+
+Paso inductivo:
+
+HI: # (stutter xs) = 2 * # xs
+
+
+# (_stutter (x:xs)_) = 2 * _# (x:xs)_
+
+≡ {(4) y (2)}
+
+# (x: (x: stutter xs)) = _2 * (1 + # xs)_
+
+≡ {por distributividad}
+
+_# (x: (x: stutter xs))_ = 2 + 2 * # xs
+
+≡ {(2), x:=x, xs:=x:stutter xs}
+
+1 + _# (x: stutter xs)_ = 2 + 2 * # xs
+
+≡ {(2), x:=x, xs:=stutter xs}
+
+_1 + 1_ + # stutter xs = 2 + 2 * # xs
+
+≡ {suma}
+
+2 + _# stutter xs_ = 2 + 2 * # xs
+
+≡ {(HI)}
+
+2 + 2 * # xs = 2 + 2 * # xs
+
+≡ {reflexividad del =}
+
+True
+
+
+11)
+
+[] ++ ys = ys                                               (1)
+(x:xs) ++ ys = x: xs ++ ys                                  (2)
+
+soloPares [] = []                                           (3)
+soloPares (x:xs) | x mod 2 == 0 = x: soloPares xs           (4)
+                 | x mod 2 /= 0 = soloPares xs              (5)
+
+
+
+Caso base:
+
+
+soloPares (_[] ++ ys_) = _soloPares []_ ++ soloPares ys
+
+≡ {(1) y (3)}
+
+soloPares ys = _[] ++ soloPares ys_
+
+≡ {(1), ys:= soloPares ys}
+
+soloPares ys = soloPares ys
+
+≡ {reflexividad del =}
+
+True
+
+
+Paso inductivo:
+
+HI: soloPares (xs ++ ys) = soloPares xs ++ soloPares ys
+
+
+Si x mod 2 == 0:
+
+soloPares (_(x:xs) ++ ys_) = soloPares (x:xs) ++ soloPares ys
+
+≡ {(2)}
+
+soloPares (x: xs ++ ys) = _soloPares (x:xs)_ ++ soloPares ys
+
+≡ {(4)}
+
+_soloPares (x: xs ++ ys)_ = x: soloPares xs ++ soloPares ys
+
+≡ {(4), x:=x, xs:= xs ++ ys}
+
+x: _soloPares (xs ++ ys)_ = x: soloPares xs ++ soloPares ys
+
+≡ {(HI)}
+
+x: soloPares xs ++ soloPares ys = x: soloPares xs ++ soloPares ys
+
+≡ {reflexividad del =}
+
+True
+
+
+Si x mod 2 /= 0:
+
+soloPares (_(x:xs) ++ ys_) = soloPares (x:xs) ++ soloPares ys
+
+≡ {(2)}
+
+soloPares (x: xs ++ ys) = _soloPares (x:xs)_ ++ soloPares ys
+
+≡ {(5)}
+
+_soloPares (x: xs ++ ys)_ = soloPares xs ++ soloPares ys
+
+≡ {(5), x:=x, xs:=xs ++ ys}
+
+_soloPares (xs ++ ys)_ = soloPares xs ++ soloPares ys
+
+≡ {(HI)}
+
+soloPares xs ++ soloPares ys = soloPares xs ++ soloPares ys
+
+≡ {reflexividad del =}
+
+True
+
+
+
+12)
+
+Caso base:
+
+_cuantos0y1 []_ = cuantos0y1 (swap0y1 [])
+
+≡ {(1)}
+
+0 = cuantos0y1 (_swap0y1 []_)
+
+≡ {(5)}
+
+0 = _cuantos0y1 []_
+
+≡ {(1)}
+
+0 = 0
+
+≡ {reflexividad del =}
+
+True
+
+
+Paso inductivo:
+
+HI: cuantos0y1 xs = cuantos0y1 (swap0y1 xs)
+
+
+Si x==0:
+
+_cuantos0y1 (x:xs)_ = cuantos0y1 (swap0y1 (x:xs))
+
+≡ {(2)}
+
+1 + cuantos0y1 xs = cuantos0y1 (_swap0y1 (x:xs)_)
+
+≡ {(6)}
+
+1 + cuantos0y1 xs = _cuantos0y1 (1: swap0y1 xs)_
+
+≡ {(2), x:=1, xs:= swap0y1 xs}
+
+1 + cuantos0y1 xs = 1 + _cuantos0y1 (swap0y1 xs)_
+
+≡ {(HI)}
+
+1 + cuantos0y1 xs = 1 + cuantos0y1 xs
+
+≡ {reflexividad del =}
+
+True
+
+
+Si x==1:
+
+_cuantos0y1 (x:xs)_ = cuantos0y1 (swap0y1 (x:xs))
+
+≡ {(3)}
+
+1 + cuantos0y1 xs = cuantos0y1 (_swap0y1 (x:xs)_)
+
+≡ {(7)}
+
+1 + cuantos0y1 xs = _cuantos0y1 (0: swap0y1 xs)_
+
+≡ {(3), x:=0, xs:=swap0y1 xs}
+
+1 + cuantos0y1 xs = 1 + _cuantos0y1 (swap0y1 xs)_
+
+≡ {(HI)}
+
+1 + cuantos0y1 xs = 1 + cuantos0y1 xs
+
+≡ {reflexividad del =}
+
+True
+
+
+Si x/= 0 ∧ x/=1:
+
+_cuantos0y1 (x:xs)_ = cuantos0y1 (swap0y1 (x:xs))
+
+≡ {(4)}
+
+cuantos0y1 xs = cuantos0y1 (_swap0y1 (x:xs)_)
+
+≡ {(8)}
+
+cuantos0y1 xs = _cuantos0y1 (x: swap0y1 xs)_
+
+≡ {(4), x:=x, xs:= swap0y1 xs}
+
+cuantos0y1 xs = _cuantos0y1 (swap0y1 xs)_
+
+≡ {(HI)}
+
+cuantos0y1 xs = cuantos0y1 xs
+
+≡ {reflexividad del =}
+
+True
+
+
+
+13)
+
+
+Caso base:
+
+cuantos 1 (_agregaSiguiente []_) = cuantos 0 [] + cuantos 1 []
+
+≡ {(4)}
+
+_cuantos 1 []_ = _cuantos 0 []_ + _cuantos 1 []_
+
+≡ {(1)}
+
+0 = _0 + 0_
+
+≡ {neutro aditivo}
+
+0 = 0
+
+≡ {reflexividad del =}
+
+True
+
+
+Paso inductivo:
+
+HI: cuantos 1 (agregaSiguiente xs) = cuantos 0 xs + cuantos 1 xs
+
+Si x==n:
+
+cuantos 1 (_agregaSiguiente (x:xs)_) = cuantos 0 (x:xs) + cuantos 1 (x:xs)
+
+≡ {(5)}
+
+cuantos 1 (x:(x + 1): agregaSiguiente xs) = _cuantos 0 (x:xs)_ + cuantos 1 (x:xs)
+
+≡ {(2), n:=0}
+
+cuantos 1 (x:(x + 1): agregaSiguiente xs) = 1 + cuantos 0 xs + _cuantos 1 (x:xs)_
+
+≡ {(2), n:=1}
+
+_cuantos 1 (x:(x + 1): agregaSiguiente xs)_ = 1 + cuantos 0 xs + 1 + cuantos 1 xs
+
+≡ {(2), n:=1, x:=x, xs:=(x + 1): agregaSiguiente xs}
+
+1 + _cuantos 1 ((x + 1): agregaSiguiente xs)_ = 1 + cuantos 0 xs + 1 + cuantos 1 xs
+
+≡ {(2), n:=1, x:=(x+1), xs:=agregaSiguiente xs}
+
+_1 + 1_ + cuantos 1 agregaSiguiente xs = _1 + cuantos 0 xs + 1 + cuantos 1 xs_
+
+≡ {suma y conmutatividad}
+
+2 + cuantos 1 agregaSiguiente xs = _1 + 1_ + cuantos 0 xs + cuantos 1 xs
+
+≡ {(suma)}
+
+2 + cuantos 1 agregaSiguiente xs = 2 + _cuantos 0 xs + cuantos 1 xs_
+
+≡ {(HI)}
+
+2 + cuantos 1 (agregaSiguiente xs) = 2 + cuantos 1 (agregaSiguiente xs)
+
+≡ {reflexividad del =}
+
+True
+
+
+Si x/=n:
+
+cuantos 1 (_agregaSiguiente (x:xs)_) = cuantos 0 (x:xs) + cuantos 1 (x:xs)
+
+≡ {(5)}
+
+cuantos 1 (x:(x + 1): agregaSiguiente xs) = _cuantos 0 (x:xs)_ + cuantos 1 (x:xs)
+
+≡ {(2), n:=0}
+
+cuantos 1 (x:(x + 1): agregaSiguiente xs) = cuantos 0 xs + _cuantos 1 (x:xs)_
+
+≡ {(2), n:=1}
+
+_cuantos 1 (x:(x + 1): agregaSiguiente xs)_ = cuantos 0 xs + cuantos 1 xs
+
+≡ {(3), n:=1, x:=x, xs:=(x + 1): agregaSiguiente xs}
+
+_cuantos 1 ((x + 1): agregaSiguiente xs)_ = cuantos 0 xs + cuantos 1 xs
+
+≡ {(3), n:=1, x:=x+1, xs:=agregaSiguiente xs}
+
+cuantos 1 (agregaSiguiente xs) = _cuantos 0 xs + cuantos 1 xs_
+
+≡ {(HI)}
+
+cuantos 1 (agregaSiguiente xs) = cuantos 1 (agregaSiguiente xs)
+
+≡ {reflexividad del =}
+
+True
+
+
+14)
+
+¬(p ∧ q) ≡ _¬p ∨ ¬q_
+
+≡ {caracterizacion de implicacion}
+
+¬(_p ∧ q_) ≡ p => ¬q
+
+≡ {regla dorada}
+
+¬(q ≡ _p ≡ p ∨ q_) ≡ p => ¬q
+
+≡ {teorema *}
+
+_¬(q ≡ p ∨ ¬q)_ ≡ p => ¬q
+
+≡ {definicion de negacion}
+
+_¬q ≡ p ∨ ¬q_ ≡ p => ¬q
+
+≡ {definicion de implica}
+
+(p => ¬q) ≡ (p => ¬q)
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+15)
+
+_p ∧ (p ∨ q)_ ≡ p
+
+≡ {regla dorada}
+
+_p ≡ (p ∨ q) ≡ p ∨ p ∨ q ≡ p_
+
+≡ {conmutatividad de ≡}
+
+p ≡ p ∨ q ≡ _p ∨ p_ ∨ q ≡ p
+
+≡ {idempotencia disyuncion}
+
+p ≡ p ∨ q ≡ _p ∨ q ≡ p_
+
+≡ {conmutatividad del ≡}
+
+(p ≡ p ∨ q) ≡ (p ≡ p ∨ q)
+
+≡ {reflexividad del ≡}
+
+True
+
+
+16)
+
+_p => p ∨ q_
+
+≡ {definicion del implica}
+
+_p ∨ p_ ∨ q ≡ p ∨ q
+
+≡ {idempotencia disyuncion}
+
+p ∨ q ≡ p ∨ q
+
+≡ {reflexividad del ≡}
+
+True
+
+
+17)
+
+p ∧ (_p => q_) ≡ p ∧ q
+
+≡ {caracterizacion de la implicacion}
+
+_p ∧ (¬p ∨ q)_ ≡ p ∧ q
+
+≡ {distributividad de la conjuncion con la disyuncion}
+
+(_p ∧ ¬p_) ∨ (p ∧ q) ≡ p ∧ q
+
+≡ {principio de no contradiccion}
+
+_False ∨ (p ∧ q)_ ≡ p ∧ q
+
+≡ {elemento neutro de la disyuncion}
+
+p ∧ q ≡ p ∧ q
+
+≡ {reflexividad del ≡}
+
+True
+
+
+18)
+
+_p => q_ ≡ _¬q => ¬p_
+
+≡ {caracterizacion de la implicacion}
+
+¬p ∨ q ≡ _¬¬q_ ∨ ¬p
+
+≡ {doble negacion}
+
+¬p ∨ q ≡ _q ∨ ¬p_
+
+≡ {conmutatividad disyuncion}
+
+¬p ∨ q ≡ ¬p ∨ q
+
+≡ {reflexividad del ≡}
+
+True
+
+
+19)
+
+_(_p => q_) => (_p ∧ r => q ∧ r_)_
+
+≡ {caracterizacion de la implicacion}
+
+¬(¬p ∨ q) ∨ (_¬(p ∧ r)_ ∨ (q ∧ r))
+
+≡ {de morgan conjuncion}
+
+_¬(¬p ∨ q)_ ∨ (¬p ∨ ¬r ∨ (q ∧ r))
+
+≡ {de morgan disyuncion}
+
+(_¬¬p_ ∧ ¬q) ∨ (¬p ∨ ¬r ∨ (q ∧ r))
+
+≡ {doble negacion}
+
+(_p ∧ ¬q_) ∨ (¬p ∨ ¬r ∨ (_q ∧ r_))
+
+≡ {regla dorada}
+
+(p ≡ ¬q ≡ p ∨ ¬q) ∨ (¬p ∨ _¬r ∨ (q ≡ r ≡ q ∨ r)_)
+
+≡ {distributividad disyuncion con ≡}
+
+(p ≡ ¬q ≡ p ∨ ¬q) ∨ (¬p ∨ ¬r ∨ q ≡ _¬r ∨ r_ ≡ q ∨ _r ∨ ¬r_)
+
+≡ {tercero excluido}
+
+(p ≡ ¬q ≡ p ∨ ¬q) ∨ (¬p ∨ ¬r ∨ q ≡ True ≡ _q ∨ True_)
+
+≡ {neutro disyuncion}
+
+(p ≡ ¬q ≡ p ∨ ¬q) ∨ (¬p ∨ ¬r ∨ q ≡ _True ≡ True_)
+
+≡ {neutro ≡}
+
+(p ≡ ¬q ≡ p ∨ ¬q) ∨ (_¬p ∨ ¬r ∨ q ≡ True_)
+
+≡ {neutro ≡}
+
+_(p ≡ ¬q ≡ p ∨ ¬q) ∨ ¬p ∨ ¬r ∨ q_
+
+≡ {conmutatividad disyuncion}
+
+¬p ∨ ¬r ∨ _q ∨ (p ≡ ¬q ≡ p ∨ ¬q)_
+
+≡ {distributividad disyuncion con ≡}
+
+¬p ∨ ¬r ∨ q ∨ p ≡ _q ∨ ¬q_ ≡ p ∨ _¬q ∨ q_
+
+≡ {tercero excluido}
+
+¬p ∨ ¬r ∨ q ∨ p ≡ True ≡ _p ∨ True_
+
+≡ {neutro disyuncion}
+
+¬p ∨ ¬r ∨ q ∨ p ≡ _True ≡ True_
+
+≡ {neutro ≡}
+
+_¬p ∨ ¬r ∨ q ∨ p ≡ True_
+
+≡ {neutro ≡}
+
+_¬p ∨ ¬r ∨ q ∨ p_
+
+≡ {conmutatividad disyuncion}
+
+_¬p ∨ p_ ∨ ¬r ∨ q
+
+≡ {tercero excluido}
+
+_True ∨ ¬r_ ∨ q
+
+≡ {neutro disyuncion}
+
+_True ∨ q_
+
+≡ {neutro disyuncion}
+
+True
+
+
+
+20)
+
+_p => q_ ≡ _q => p_ ≡ p ≡ q
+
+≡ {caracterizacion del implicacion}
+
+_¬p ∨ q_ ≡ _¬q ∨ p_ ≡ p ≡ q
+
+≡ {conmutatividad disyuncion}
+
+_q ∨ ¬p ≡ p ∨ ¬q ≡ p ≡ q_
+
+≡ {conmutatividad ≡}
+
+_q ≡ q ∨ ¬p_ ≡ _p ≡ p ∨ ¬q_
+
+≡ {teorema estrella}
+
+_q ∨ p_ ≡ p ∨ q
+
+≡ {conmutatividad disyuncion}
+
+p ∨ q ≡ p ∨ q
+
+≡ {reflexividad del ≡}
+
+True
+
+
+24)
+
+<∀x : x ∈ xs ∧ tam.x > 5 : cuadrado.x>
+
+
+25)
+
+<∃x : x ∈ xs : cuadrado.x ∧ tam.x < 10>
+
+
+26)
+
+<∃x : : cuadrado.x> ∧ _<∀y : : amarillo.y>_ => <∃x : : cuadrado.x ∧ amarillo.x>
+
+≡ {definicion de existe}
+
+_<∃x : : cuadrado.x> ∧ ¬<∃y : : ¬amarillo.y> => <∃x : : cuadrado.x ∧ amarillo.x>_
+
+≡ {currificacion}
+
+<∃x : : cuadrado.x> => (_¬<∃y : : ¬amarillo.y> => <∃x : : cuadrado.x ∧ amarillo.x>_)
+
+≡ {caracterizacion del implica}
+
+<∃x : : cuadrado.x> => (_¬¬<∃y : : ¬amarillo.y>_ ∨ <∃x : : cuadrado.x ∧ amarillo.x>)
+
+≡ {doble negacion}
+
+<∃x : : cuadrado.x> => (_<∃y : : ¬amarillo.y> ∨ <∃x : : cuadrado.x ∧ amarillo.x>_)
+
+≡ {regla del termino del existe}
+
+<∃x : : cuadrado.x> => <∃x : : _¬amarillo.y ∨ (cuadrado.x ∧ amarillo.x)_>
+
+≡ {distributividad de la disyuncion con la conjuncion}
+
+<∃x : : cuadrado.x> => <∃x : : _(¬amarillo.y ∨ cuadrado.x) ∧ _(¬amarillo.y ∨ amarillo.x)_>
+
+≡ {tercero excluido y neutro conjuncion}
+
+<∃x : : cuadrado.x> => _<∃x : : ¬amarillo.y ∨ cuadrado.x>_
+
+≡ {regla del termino del existe}
+
+_<∃x : : cuadrado.x> => <∃x : : ¬amarillo.y> ∨ <∃x : : cuadrado.x>_
+
+≡ {debilitamiento para ∨}
+
+True
+
+
+27)
+
+<∀x : x ∈ xs ∧ circulo.x : ¬(rojo.x)>
+
+
+28)
+
+<∃i : 0 < i < #xs : cuadrado.xs!!i ∧ rojo.xs!!i ∧ ¬<∃j : 0 < j < #xs ∧ j /= i : cuadrado.xs!!j>>
+
+
+29)
+
+<∀x : x ∈ xs : (triangulo.x ∧ rojo.x) ∨ cuadrado.x>
+
+
+30)
+
+<∃i : 0 < i < #xs : xs!!i > 0 ∧ <∃j : 0 < j < #xs ∧ j /= i : xs!!j /= xs!!i ∧ xs!!j <= 0>>
+
+
+31)
+
+a)
+
+<∃x : x ∈ xs : triangulo.x ∧ (tam.x < 5)>
+
+b)
+
+xs!!(xs-1) ∈ ys
+
+
+32)
+
+a)
+
+<∀x : : ¬(P.x => Q.x)> ≡ (<∀x : : P.x> ∧ <∀x : : ¬Q.x>)
+
+<∀x : : ¬(_P.x => Q.x_)> ≡ (<∀x : : P.x> ∧ <∀x : : ¬Q.x>)
+
+≡ {caracterizacion del implica}
+
+<∀x : : _¬(¬P.x ∨ Q.x)_> ≡ (<∀x : : P.x> ∧ <∀x : : ¬Q.x>)
+
+≡ {de morgan disyuncion}
+
+<∀x : : _¬¬P.x_ ∧ ¬Q.x> ≡ (<∀x : : P.x> ∧ <∀x : : ¬Q.x>)
+
+≡ {doble negacion}
+
+<∀x : : P.x ∧ ¬Q.x> ≡ _(<∀x : : P.x> ∧ <∀x : : ¬Q.x>)_
+
+≡ {regla del termino de ∀}
+
+<∀x : : P.x ∧ ¬Q.x> ≡ <∀x : : P.x ∧ ¬Q.x>
+
+≡ {reflexividad del ≡}
+
+True
+
+b)
+
+<∀x : : T.x> => <∀x : R.x : T.x>
+
+_<∀x : : T.x> => <∀x : R.x : T.x>_
+
+≡ {definicion dual de implicacion}
+
+<∀x : : T.x> ∧ _<∀x : R.x : T.x>_ ≡ <∀x : : T.x>
+
+≡ {intercambio entre rango y termino de ∀}
+
+<∀x : : T.x> ∧ <∀x : : _R.x => T.x_> ≡ <∀x : : T.x>
+
+≡ {caracterizacion de la implicacion}
+
+_<∀x : : T.x> ∧ <∀x : : ¬R.x ∨ T.x>_ ≡ <∀x : : T.x>
+
+≡ {regla del termino de ∀}
+
+<∀x : : _T.x ∧ (¬R.x ∨ T.x)_> ≡ <∀x : : T.x>
+
+≡ {ley de absorcion}
+
+<∀x : : T.x> ≡ <∀x : : T.x>
+
+≡ {reflexividad del ≡}
+
+True
+
+
+33)
+
+(<∃x : R.x : T.x> ∧ <∀x : R.x : S.x>) => <∃x : R.x : T.x ∧ S.x>
+
+(<∃x : R.x : T.x> ∧ _<∀x : R.x : S.x>_) => <∃x : R.x : T.x ∧ S.x>
+
+≡ {intercambio entre rango y termino de ∀}
+
+(_<∃x : R.x : T.x>_ ∧ <∀x : : R.x => S.x>) => <∃x : R.x : T.x ∧ S.x>
+
+≡ {intercambio entre rango y termino de ∃}
+
+(<∃x : : R.x ∧ T.x> ∧ <∀x : : _R.x => S.x_>) => <∃x : R.x : T.x ∧ S.x>
+
+≡ {caracterizacion de la implicacion}
+
+(<∃x : : R.x ∧ T.x> ∧ <∀x : : _¬R.x ∨ S.x>_) => <∃x : R.x : T.x ∧ S.x>
+
+≡ {de morgan conjuncion}
+
+(<∃x : : R.x ∧ T.x> ∧ _<∀x : : ¬(R.x ∧ ¬S.x)>_) => <∃x : R.x : T.x ∧ S.x>
+
+≡ {definicion de ∃}
+
+_(<∃x : : R.x ∧ T.x> ∧ ¬<∃x : : R.x ∧ ¬S.x>)_ => <∃x : R.x : T.x ∧ S.x>
+
+≡ {de morgan disyuncion}
+
+_¬(¬<∃x : : R.x ∧ T.x> ∨ <∃x : : R.x ∧ ¬S.x>) => <∃x : R.x : T.x ∧ S.x>_
+
+≡ {caracterizacion de la implicacion}
+
+_¬¬(¬<∃x : : R.x ∧ T.x> ∨ <∃x : : R.x ∧ ¬S.x>)_ ∨ <∃x : R.x : T.x ∧ S.x>
+
+≡ {doble negacion}
+
+¬<∃x : : R.x ∧ T.x> ∨ <∃x : : R.x ∧ ¬S.x> ∨ _<∃x : R.x : T.x ∧ S.x>_
+
+≡ {intercambio entre rango y termino de ∃}
+
+¬<∃x : : R.x ∧ T.x> ∨ _<∃x : : R.x ∧ ¬S.x> ∨ <∃x : : R.x ∧ T.x ∧ S.x>_
+
+≡ {regla del termino de ∃}
+
+¬<∃x : : R.x ∧ T.x> ∨ <∃x : : (R.x ∧ ¬S.x) ∨ (R.x ∧ T.x ∧ S.x)>
+
+
+34)
+
+<∀x : : P.x => Q.x> => (<∃x : : P.x> => <∃x : : Q.x>)
+
+<∀x : : P.x => Q.x> => (_<∃x : : P.x> => <∃x : : Q.x>_)
+
+≡ {caracterizacion de la implicacion}
+
+_<∀x : : P.x => Q.x>_ => (¬<∃x : : P.x> ∨ <∃x : : Q.x>)
+
+≡ {definicion de ∃}
+
+¬<∃x : : ¬(_P.x => Q.x_)> => (¬<∃x : : P.x> ∨ <∃x : : Q.x>)
+
+≡ {caracterizacion de la implicacion}
+
+_¬<∃x : : ¬(¬P.x ∨ Q.x)> => (¬<∃x : : P.x> ∨ <∃x : : Q.x>)_
+
+≡ {caracterizacion de la implicacion}
+
+_¬¬<∃x : : ¬(¬P.x ∨ Q.x)>_ ∨ (¬<∃x : : P.x> ∨ <∃x : : Q.x>)
+
+≡ {doble negacion}
+
+<∃x : : _¬(¬P.x ∨ Q.x)_> ∨ ¬<∃x : : P.x> ∨ <∃x : : Q.x>
+
+≡ {de morgan disyuncion}
+
+<∃x : : _¬¬P.x_ ∨ ¬Q.x> ∨ ¬<∃x : : P.x> ∨ <∃x : : Q.x>
+
+≡ {doble negacion}
+
+_<∃x : : P.x ∨ ¬Q.x> ∨ ¬<∃x : : P.x> ∨ <∃x : : Q.x>_
+
+≡ {conmutatividad disyuncion}
+
+_<∃x : : P.x ∨ ¬Q.x> ∨ <∃x : : Q.x>_ ∨ ¬<∃x : : P.x>
+
+≡ {regla del termino de ∃}
+
+<∃x : : P.x ∨ _¬Q.x ∨ Q.x_> ∨ ¬<∃x : : P.x>
+
+≡ {tercero excluido}
+
+<∃x : : _P.x ∨ True_> ∨ ¬<∃x : : P.x>
+
+≡ {absorvente disyuncion}
+
+_<∃x : : True>_ ∨ ¬<∃x : : P.x>
+
+≡ {regla del termino constante de ∃}
+
+_True ∨ ¬<∃x : : P.x>_
+
+≡ {absorvente disyuncion}
+
+True
+
+
+36)
+
+<∀x : R.x : T.x> ∧ <∀x : ¬T.x : R.x> ≡ <∀x : : T.x>
+
+_<∀x : R.x : T.x>_ ∧ _<∀x : ¬T.x : R.x>_ ≡ <∀x : : T.x>
+
+≡ {intercambio entre rango y termino de ∀}
+
+<∀x : : _R.x => T.x_> ∧ <∀x : : _¬T.x => R.x_> ≡ <∀x : : T.x>
+
+≡ {caracterizacion de la implicacion}
+
+<∀x : : ¬R.x ∨ T.x> ∧ <∀x : : _¬¬T.x_ ∨ R.x> ≡ <∀x : : T.x>
+
+≡ {doble negacion}
+
+_<∀x : : ¬R.x ∨ T.x> ∧ <∀x : : T.x ∨ R.x>_ ≡ <∀x : : T.x>
+
+≡ {regla del termino de ∀}
+
+<∀x : : _(¬R.x ∨ T.x) ∧ (T.x ∨ R.x_)> ≡ <∀x : : T.x>
+
+≡ {distributividad de la disyuncion con la conjuncion}
+
+<∀x : : T.x ∨ (_¬R.x ∧ R.x_)> ≡ <∀x : : T.x>
+
+≡ {principio de no contradiccion}
+
+<∀x : : _T.x ∨ False_> ≡ <∀x : : T.x>
+
+≡ {neutro de la disyuncion}
+
+<∀x : : T.x> ≡ <∀x : : T.x>
+
+≡ {reflexividad del ≡}
+
+True
+
+
+37)
+
+algunCuadrado [] = False                                    (1)
+algunCuadrado (x:xs) = cuadrado.x ∨ algunCuadrado xs        (2)
+
+e ∈ [] = False                                              (3)
+e ∈ (x:xs) = (e==x) v (e ∈ xs)                              (4)
+
+
+Caso base:
+
+_algunCuadrado []_ ≡ <∃x : _x ∈ []_ : cuadrado.x>
+
+≡ {(1) y (3)}
+
+False ≡ _<∃x : False : cuadrado.x>_
+
+≡ {rango vacio de ∃}
+
+False ≡ False
+
+≡ {reflexividad del ≡}
+
+True
+
+
+Paso inductivo:
+
+HI: algunCuadrado xs ≡ <∃x : x ∈ xs : cuadrado.x>
+
+_algunCuadrado (x:xs)_ ≡ <∃x : _x ∈ (x:xs)_ : cuadrado.x>
+
+≡ {(2) y (4)}
+
+cuadrado.x ∨ algunCuadrado xs ≡ _<∃x : (x==x) v (x ∈ xs) : cuadrado.x>_
+
+≡ {particion de rango de ∃}
+
+cuadrado.x ∨ algunCuadrado xs ≡ _<∃x : x==x : cuadrado.x>_ ∨ <∃x : x ∈ xs : cuadrado.x>
+
+≡ {rango unitario de ∃}
+
+cuadrado.x ∨ algunCuadrado xs ≡ cuadrado.x ∨ _<∃x : x ∈ xs : cuadrado.x>_
+
+≡ {(HI)}
+
+cuadrado.x ∨ algunCuadrado xs ≡ cuadrado.x ∨ algunCuadrado xs
+
+≡ {reflexividad del ≡}
+
+True
+
+
+38)
+
+e ∈ [] = False                                              (1)
+e ∈ (x:xs) = (e==x) v (e ∈ xs)                              (2)
+
+soloCeros [] = True                                         (3)
+soloCeros (x:xs) = x == 0 ∧ soloCeros xs                    (4)
+
+
+Caso base:
+
+_soloCeros []_ ≡ <∀x : _x ∈ []_ : x == 0>
+
+≡ {(3) y (1)}
+
+True ≡ _<∀x : False : x == 0>_
+
+≡ {rango vacio de ∀}
+
+True ≡ True
+
+≡ {reflexividad del ≡}
+
+True
+
+
+Paso inductivo:
+
+HI: soloCeros xs ≡ <∀x : x ∈ xs : x == 0>
+
+_soloCeros (x:xs)_ ≡ <∀x : _x ∈ (x:xs)_ : x == 0>
+
+≡ {(4) y (3)}
+
+x == 0 ∧ soloCeros xs ≡ _<∀x : (x==x) v (x ∈ xs) : x == 0>_
+
+≡ {particion de rango de ∀}
+
+x == 0 ∧ soloCeros xs ≡ <∀x : x==x : x == 0> ∧ _<∀x : x ∈ xs : x == 0>_
+
+≡ {(HI)}
+
+x == 0 ∧ soloCeros xs ≡ _<∀x : x==x : x == 0>_ ∧ soloCeros xs
+
+≡ {rango unitario de ∀}
+
+x == 0 ∧ soloCeros xs ≡ x == 0 ∧ soloCeros xs
+
+≡ {reflexividad del ≡}
+
+True
+
+
+39)
+
+e ∈ [] = False                                              (1)
+e ∈ (x:xs) = (e==x) v (e ∈ xs)                              (2)
+
+hayTR [] = False                                            (3)
+hayTR (x:xs) = (triangulo.x ∧ rojo.x) ∨ hayTR xs            (4)
+
+
+Caso base:
+
+_hayTR []_ ≡ <∃y : _y ∈ []_ : triangulo.y ∧ rojo.y>
+
+≡ {(3) y (1)}
+
+False ≡ _<∃y : False : triangulo.y ∧ rojo.y>_
+
+≡ {rango vacio de ∃}
+
+False ≡ False
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+Paso inductivo:
+
+HI: hayTR xs ≡ <∃y : y ∈ xs : triangulo.y ∧ rojo.y>
+
+_hayTR (x:xs)_ ≡ <∃y : _y ∈ (x:xs)_ : triangulo.y ∧ rojo.y>
+
+≡ {(4) y (2)}
+
+(triangulo.x ∧ rojo.x) ∨ hayTR xs ≡ _<∃y : (y==x) v (y ∈ xs) : triangulo.y ∧ rojo.y>_
+
+≡ {particion de rango de ∃}
+
+(triangulo.x ∧ rojo.x) ∨ hayTR xs ≡ _<∃y : y==x : triangulo.y ∧ rojo.y>_ ∨ <∃y : y ∈ xs : triangulo.y ∧ rojo.y>
+
+≡ {rango unitario de ∃}
+
+(triangulo.x ∧ rojo.x) ∨ hayTR xs ≡ (triangulo.x ∧ rojo.x) ∨ _<∃y : y ∈ xs : triangulo.y ∧ rojo.y>_
+
+≡ {(HI)}
+
+(triangulo.x ∧ rojo.x) ∨ hayTR xs ≡ (triangulo.x ∧ rojo.x) ∨ hayTR xs
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+40)
+
+e ∈ [] = False                                              (1)
+e ∈ (x:xs) = (e==x) v (e ∈ xs)                              (2)
+
+hayCoT [] = False                                           (3)
+hayCoT (x:xs) = (circulo.x ∨ triangulo.x) ∨ hayCoT xs       (4)
+
+
+Caso base:
+
+_hayCoT []_ ≡ <∃y : _y ∈ []_ : circulo.y ∨ triangulo.y>
+
+≡ {(3) y (1)}
+
+False ≡ _<∃y : False : circulo.y ∨ triangulo.y>_
+
+≡ {rango vacio de ∃}
+
+False ≡ False
+
+≡ {reflexividad del ≡}
+
+True
+
+
+
+Paso inductivo:
+
+HI: hayCoT xs ≡ <∃y : y ∈ xs : circulo.y ∨ triangulo.y>
+
+_hayCoT (x:xs)_ ≡ <∃y : _y ∈ (x:xs)_ : circulo.y ∨ triangulo.y>
+
+≡ {(4) y (2)}
+
+(circulo.x ∨ triangulo.x) ∨ hayCoT xs ≡ _<∃y : (y==x) v (y ∈ xs) : circulo.y ∨ triangulo.y>_
+
+≡ {particion de rango de ∃}
+
+(circulo.x ∨ triangulo.x) ∨ hayCoT xs ≡ _<∃y : y==x : circulo.y ∨ triangulo.y>_ ∨ <∃y : y ∈ xs : circulo.y ∨ triangulo.y>
+
+≡ {rango unitario de ∃}
+
+(circulo.x ∨ triangulo.x) ∨ hayCoT xs ≡ (circulo.x ∨ triangulo.x) ∨ _<∃y : y ∈ xs : circulo.y ∨ triangulo.y>_
+
+≡ {(HI)}
+
+(circulo.x ∨ triangulo.x) ∨ hayCoT xs ≡ (circulo.x ∨ triangulo.x) ∨ hayCoT xs
+
+≡ {reflexividad del ≡}
+
+True

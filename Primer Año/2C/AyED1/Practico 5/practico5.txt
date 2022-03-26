@@ -1,0 +1,12 @@
+1.
+    a. 
+        Var  N, cont, res : Int;
+        σ0 : (cont -> 1, res -> 0, N -> n)
+        l1  do cont < N:
+        l2      res := res + cont
+        l3      cont := cont + 1
+        l4  od
+
+        Var  N : Int;
+        σ0 : (N -> n)
+        l1  N * (N + 1) / 2

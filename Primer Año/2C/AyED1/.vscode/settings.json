@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.html": "html",
+        "*.txt": "django-txt",
+        "stdbool.h": "c",
+        "stdio.h": "c"
+    }
+}

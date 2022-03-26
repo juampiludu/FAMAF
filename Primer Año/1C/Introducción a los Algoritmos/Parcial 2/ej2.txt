@@ -1,0 +1,12 @@
+Nombre y Apellido: Juan Pablo Ludueña Zakka
+DNI: 43299161
+Comisión: 4
+
+a) "Los primeros N elementos de la lista xs están ordenados de forma creciente (puede tener repetidos)".
+
+< ∀x : 0 <= x < N-1 < #xs : xs!!x <= xs!!x+1 >
+
+Explícitamente sería: "Para todas las x que estan en el rango de xs 
+                       y que son menores a N-1 (como N es entero 
+                       y los indices empiezan de cero, se resta 1 a N para tomar los indices 
+                       correctamente), se cumple que x es menor o igual a x+1".
