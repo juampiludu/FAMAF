@@ -53,9 +53,10 @@ unsigned int array_from_file(int array[],
     file = fopen(filepath, "r");
     counter = 0u;
 
-    while (fscanf(file, "%d", &numIn) == 1 && counter <= max_size+1) {
+    while (fscanf(file, "%d", &numIn) == 1) {
         if (counter == 0) {
             res = numIn;
+            assert(res <= max_size);
         }
         else {
             array[counter-1] = numIn;

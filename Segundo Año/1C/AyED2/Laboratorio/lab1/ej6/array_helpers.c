@@ -1,6 +1,7 @@
+#include "array_helpers.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "array_helpers.h"
 
 
 unsigned int array_from_file(int array[],
@@ -15,9 +16,10 @@ unsigned int array_from_file(int array[],
     file = fopen(filepath, "r");
     counter = 0u;
 
-    while (fscanf(file, "%d", &numIn) == 1 && counter <= max_size+1) {
+    while (fscanf(file, "%d", &numIn) == 1) {
         if (counter == 0) {
             res = numIn;
+            assert(res <= max_size);
         }
         else {
             array[counter-1] = numIn;
@@ -64,10 +66,7 @@ void array_swap(int a[], unsigned int i, unsigned int j) {
 }
 
 void array_inverter(int a[], unsigned int length) {
-    for (unsigned int i = 0u; i < length; ++i) {
-        if (i >= length-1-i) {
-            break;
-        }
+    for (unsigned int i = 0u; i < length-1-i; ++i) {
         array_swap(a, i, length-1-i);
     }
 }
