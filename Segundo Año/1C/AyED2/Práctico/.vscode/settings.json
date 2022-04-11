@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.html": "django-html",
+        "*.txt": "django-txt",
+        "*.ayed": "plaintext",
+        "random": "c"
+    }
+}

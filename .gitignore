@@ -50,3 +50,13 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+*Makefile
+
+# Folders
+"Cursillo de Ingreso"
+"Pimer Año"/1C/"Análisis Matemático I"
+"Pimer Año"/1C/"Matemática Discreta I"
+"Pimer Año"/2C/"Análisis Matemático II"
+"Pimer Año"/1C/"Matemática Discreta I"
+"Segundo Año"/1C/"Análisis Numérico"/Teórico-Práctico
+"Segundo Año"/1C/"Organización del Computador"

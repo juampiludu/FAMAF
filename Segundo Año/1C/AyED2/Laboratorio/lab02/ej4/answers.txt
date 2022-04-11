@@ -1,0 +1,9 @@
+El quick sort en general es el metodo de ordenacion más rapido entre los tres que fueron evaluados en este practico,
+salvo por el caso en el que se dan listas ordenadas de forma ascendente, donde el insertion_sort resulto ser el mas rapido.
+También el quick sort es el unico que no realiza comparaciones.
+Luego cuando comparamos dos listas grandes, una ordenada de forma ascendente y otra ordenada de forma descendiente,
+vemos que el quick_sort practicamente le toma la misma cantidad de tiempo y "swaps" en acomodar la lista,
+mientras que si comparamos el funcionamiento de selection_sort e insertion_sort, vemos que en el primero es casi
+instantanea la ordenacion en una lista ordenada ascendentemente, mientras que para una lista ordenada de manera
+descendente, tarda casi el doble de tiempo que insertion_sort. En el caso de insertion_sort, toma casi el mismo tiempo
+en ordenar ambas listas.
