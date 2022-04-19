@@ -1,0 +1,70 @@
+1) b)
+[7, 1, 10, 3, 4, 9, 5] 
+
+var mid: nat
+if rgt > lft then 
+    mid := (rgt+lft) `div` 2
+    merge_sort_rec(a,lft,mid)
+    merge_sort_rec(a,mid+1,rgt)
+    merge(a,lft,mid,rgt)
+fi
+
+mid = 4
+merge_sort_rec(a,1,4)
+    mid = 2
+    merge_sort_rec(a,1,2)
+        mid = 1
+        merge(a, 1, 1, 2)
+    merge_sort_rec(a,3,4)
+        mid = 3
+        merge(a,3,3,4)
+merge_sort_rec(a,5,7)
+    mid = 6
+    merge_sort_rec(a,5,6)
+        mid = 5
+        merge(a,5,5,6)
+    merge_sort_rec(a,7,7)
+        mid = 7
+        merge(a,7,7,7)
+merge(a,1,4,7)
+
+2)
+a)
+
+proc intercalar_cada(in/out a: array[1..2^n] of int, in i: nat)
+    var tam : nat
+    var lft : nat
+    var rgt : nat
+    var mid : nat
+
+    tam := 2*2^i
+    
+    lft := 1
+    rgt := tam
+
+    mid := (lft + rgt) `div` 2
+
+    while rgt <= 2^n do
+        merge(a, lft, mid, rgt)
+        lft := rgt + 1
+        rgt := rgt + tam
+        mid := mid + tam
+    od
+end proc
+
+proc intercalar_cada(in/out a: array[1..2^n] of int, in i: nat)
+    var tam : nat
+    var lft : nat
+    var rgt : nat
+    var mid : nat
+
+    tam := 2^i
+
+    for k:=0 to 2^n do
+        lft := (k * tam) + 1
+        rgt := (k + 1) * tam
+        mid := (lft + rgt) `div` 2
+        merge(a, lft, mid, rgt)
+    od
+
+end proc

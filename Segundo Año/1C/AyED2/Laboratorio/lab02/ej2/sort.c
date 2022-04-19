@@ -6,7 +6,6 @@
 #include "sort_helpers.h"
 #include "sort.h"
 
-
 static void quick_sort_rec(int a[], unsigned int izq, unsigned int der) {
     unsigned int pivot = partition(a, izq, der);
     if (pivot > izq) {
