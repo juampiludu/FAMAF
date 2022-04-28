@@ -68,3 +68,16 @@ void array_from_file(WeatherTable array, const char *filepath) {
     }
     fclose(file);
 }
+
+void simple_array_dump(int a[], unsigned int length) {
+    printf("[");
+    for (unsigned int i = 0u; i < length; ++i) {
+        if (i == length-1) {
+            printf("%d", a[i]);
+        }
+        else {
+            printf("%d, ", a[i]);
+        }
+    }
+    printf("]\n\n");
+}

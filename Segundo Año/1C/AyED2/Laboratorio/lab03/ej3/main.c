@@ -21,18 +21,26 @@ int main(void) {
     person_t m = {90, 'M'};
     int a[] = {0, 1, 2, 3};
 
-    /* Completar aquí:
-       Al finalizar la ejecución las variables deben tener los siguientes valores
-       x = 9
-       m = (100, F)
-       a[1] = 42
-
-       Las restricciones son:
-       - No usar las variables 'x', 'm' y 'a' en la parte izquierda de alguna asignación.
-       - Se pueden agregar líneas de código, pero no modificar las que ya existen.
-       - Se pueden declarar hasta 2 punteros.
-       AYUDA: podes usar GDB para consultares valores de variables y la dirección de memoria donde estan alojadas.
-    */
+    // Creando pointer para ints
+    int *p = NULL;
+    
+    // asignando x al pointer y cambiando su valor
+    p = &x;
+    (*p) = (*p) + 8;
+    
+    // Creando pointer para person_t
+    person_t *personPtr = NULL;
+    
+    // asignando m y cambiando los valores del struct
+    personPtr = &m;
+    personPtr->age = personPtr->age+10;
+    personPtr->name_initial = personPtr->name_initial-7;
+    
+    // Cambio el valor de p para ahora darle a[1]
+    p = &a[1];
+    
+    // Cambio el valor de a[1] por el valor solicitado
+    (*p) = 42;
 
     printf("x = %d\n", x);
     printf("m = (%d, %c)\n", m.age, m.name_initial);

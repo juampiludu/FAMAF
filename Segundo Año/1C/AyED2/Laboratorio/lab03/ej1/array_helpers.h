@@ -47,4 +47,6 @@ void array_dump(WeatherTable a);
  */
 void array_from_file(WeatherTable a, const char *filepath);
 
+void simple_array_dump(int a[], unsigned int length);
+
 #endif

@@ -1,16 +1,19 @@
 /*
   @file main.c
-  @brief Defines main program function
+  @brief Main program function implementation
 */
-
 /* First, the standard lib includes, alphabetically ordered */
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+
 /* Then, this project's includes, alphabetically ordered */
-#include "array_helpers.h"
-#include "weather_utils.h"
+#include "helpers.h"
+#include "sort.h"
+#include "movie.h"
+
+#define MAX_MOVIES 50u
 
 /**
  * @brief print usage help
@@ -18,14 +21,7 @@
  */
 void print_help(char *program_name) {
     /* Print the usage help of this program. */
-    printf("Usage: %s <input file path>\n\n"
-           "Load climate data from a given file in disk.\n"
-           "\n"
-           "The input file must exist in disk and every line in it must have the following format:\n\n"
-           "<year> <month> <day> <temperature> <high> <low> <pressure> <moisture> <precipitations>\n\n"
-           "Those elements must be integers and will be copied into the multidimensional integer array 'a'.\n"
-           "The dimensions of the array are given by the macro tclimate.\n"
-           "\n\n",
+    printf("Usage: %s <input file path>\n\n",
            program_name);
 }
 
@@ -65,21 +61,23 @@ int main(int argc, char *argv[]) {
     /* parse the filepath given in command line arguments */
     filepath = parse_filepath(argc, argv);
 
-    /* create an array with the type of tclimate */
-    WeatherTable array;
+    /* create an array of MAX_SIZE elements */
+    movie_t movielist[MAX_MOVIES];
 
-    /* parse the file to fill the array and obtain the actual length */
-    array_from_file(array, filepath);
 
-    int min_temp = lower_min_temperature(array);
-    printf("La menor temperatura registrada en Córdoba es de: %d\n\n", min_temp);
-    int output[YEARS];
-    year_max_temperature(array, output);
-    simple_array_dump(output, YEARS);
-    month_precipitations(array);
+    /* parse the file to load de players */
+    unsigned int length = process_file(filepath, movielist, MAX_MOVIES);
 
-    /* show the ordered array in the screen */
-    array_dump(array);
+    /* show the movielist in the screen */
+    movielist_dump(movielist, length);
+
+    /* check if it is sorted */
+    if (array_is_sorted(movielist, length)) {
+        printf("Movielist is sorted\n");
+    } else {
+        printf("Movielist is scrambled\n");
+    }
 
     return (EXIT_SUCCESS);
 }
+

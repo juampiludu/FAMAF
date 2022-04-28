@@ -1,0 +1,6 @@
+main() -> absolute(x,y), x=-98, y=0, ret y=-(-98)=98 -> print(res), res=98
+
+El parámetro int *y de absolute() es de tipo in/out.
+
+C tiene disponibles los tipos in y out para sus funciones, el cual "in" son los parametros
+de entrada, y "out" es el return.
