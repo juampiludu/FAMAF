@@ -1,0 +1,189 @@
+1.
+
+fun min(a: array[1..n,1..m] of int) ret x: int
+    x := a[1,1]
+    for i:=1 to n do
+        for j:=1 to m do
+            if a[i,j] < x then
+                x := a[i,j]
+            fi
+        od
+    od
+end fun
+
+fun min_fila(a: array[1..n,1..m] of int) ret arr: array[1..n] of int
+    for i:=1 to n do
+        arr[n] := min(a[n..n, 1..m])
+    od
+end fun
+
+
+2.a
+
+fun min_temp(med: array[1980..2016,enero..diciembre,1..28,Temp..Prec] of nat) ret x: int
+    x := med[1980,enero,1,TempMin]
+    for i:=1980 to 2016 do
+        for j:=enero to diciembre do
+            for k:=1 to 28 do
+                if med[i,j,k,TempMin] < x then
+                    x := med[i,j,k,TempMin]
+                fi
+            od
+        od
+    od
+end fun
+
+2.b
+
+fun max_temp_per_year(med: array[1980..2016,enero..diciembre,1..28,Temp..Prec] of nat) ret arr: array[1980..2016] of int
+    var max_year_temp: int
+    for i:=1980 to 2016 do
+        max_year_temp := med[i,enero,1,TempMax]
+        for j:=enero to diciembre do
+            for k:=1 to 28 do
+                if med[i,j,k,TempMin] > max_year_temp then
+                    max_year_temp := med[i,j,k,TempMax]
+                fi
+            od
+        od
+        arr[i] := max_year_temp
+    od
+end fun
+
+
+
+
+3.a
+
+proc age_weight_avg(in a: array[1..n] of person, out avg_age, avg_weight: float)
+    avg_age := a[1].age
+    avg_weight := a[1].weight
+    for i:=2 to n do
+        avg_age := avg_age + a[2].age
+        avg_weight := avg_weight + a[2].weight
+    od
+    avg_age := avg_age / n
+    avg_weight := avg_weight / n
+end fun
+
+3.b
+
+proc alphabet_sort(in/out a: array[1..n] of person)
+    for i:=2 to n do
+        insert_person(a, i)
+    od
+end fun
+
+proc insert_person(in/out a: array[1..n] of person, in i: nat)
+    var j: nat
+    j := i
+    while j > 1 ∧ less_string(a[j].name, a[j-1].name) do
+        swap(a, j-1, j)
+        j := j-1
+    od
+end proc
+
+
+4.a
+
+proc swap_ref(in/out p,q: pointer to int)
+    var temp: int
+    temp := *p
+    *p := *q
+    *q := temp
+end proc
+
+4.b
+
+proc swap_val(in/out p,q: pointer to int)
+    var temp: pointer to int
+    temp := p
+    p := q
+    q := temp
+end proc
+
+x = 5
+y = -4
+
+*p = x
+*q = y
+
+r = p
+
+# Cuando se ejectuta el algoritmo del inciso a, solo cambia el valor al que apunta p y q, y no el valor de dirección, 
+# por lo tanto, el valor de r sigue siendo p.
+
+# En cambio, en el inciso b, como asignamos a p el valor de direccion de q, entonces r va a pasar a tener el
+# valor de direccion que tenía q en un principio, por lo tanto cambia su valor.
+
+
+
+5.a
+
+fun lex_less(a, b : array[1..n] of nat) ret res: bool
+    var i,j: nat
+    i := 1
+    j := 1
+    res := false
+    while i <= n ∧ j <= n ∧ a[i] = a[j] do
+        i := i + 1
+        j := j + 1
+    od
+    if a[i] < a[b] then
+        res := true
+    fi
+end fun
+
+5.b
+
+fun lex_less_or_equal(a, b : array[1..n] of nat) ret res: bool
+    res := false
+    if lex_less(a,b) ∨ a = b then
+        res := true
+    fi
+end fun
+
+5.c
+
+fun lex_compare(a, b : array[1..n] of nat) ret res: ord
+    if lex_less(a,b) then
+        res := menor
+    else
+        res := mayor
+    fi
+    if a = b then
+        res := igual
+    fi
+end fun
+
+# El interes de este algoritmo es tener una respuesta más gráfica y amigable que permita entender mejor
+# y con opciones más variadas el resultado de una funcion.
+
+
+6.
+
+fun sum_arrs(a,b: array[1..n,1..m] of nat) ret sum: nat
+    sum := 0
+    for i:=1 to n do
+        for j:=1 to m do
+            sum := sum + a[n,m] + b[n,m]
+        od
+    od
+end fun
+
+
+7.
+
+fun mul_arr(a: array[1..n,1..m] of nat) ret mul: nat
+    mul := 1
+    for i:=1 to n do
+        for j:=1 to m do
+            mul := mul * a[n,m]
+        od
+    od
+end fun
+
+
+fun mul_arrs(a: array[1..n,1..m] of nat, b: array[1..m,1..p] of nat) ret mul: nat
+    mul := mul_arr(a) * mul_arr(b)
+end fun

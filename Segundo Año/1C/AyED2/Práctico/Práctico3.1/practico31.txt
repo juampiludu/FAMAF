@@ -1,0 +1,354 @@
+1.
+
+type Objeto = tuple
+            id : Nat
+            value: Float
+            weight: Float
+end tuple
+
+type Obj_Mochila = tuple
+                obj : Objeto
+                fract : Float
+end tuple
+
+fun mochila(W: Float, C: Set of Objeto) ret L : List of Obj_Mochila
+    var o_m : Obj_Mochila 
+    var resto : Float
+    var C_aux : Set of Objeto
+    S := empty_list()
+    C_aux := set_copy(C)
+    resto := W
+    while resto > 0 do
+        o_m.obj := select_obj(C_aux)
+        if o_m.obj.weight <= resto then 
+            o_m.fract := 1.0
+            resto := resto - o_m.obj.weight
+        else
+            resto := 0
+        fi
+        addl(S,o_m)
+        elim(C_aux,o_m.obj)
+    od
+    set_destroy(C_aux)
+end fun
+
+fun select_obj(C: Set of Objeto) ret r : Objeto
+    var C_aux : Set of Objeto
+    var o : Objeto
+    var m : Float
+    m := -∞
+    C_aux := set_copy(C)
+    while ¬is_empty_set(C_aux) do
+        o := get(C_aux)
+        if o.value/o.weight > m then 
+            m := o.value/o.weight
+            r := o
+        fi
+        elim(C_aux,o)
+    od
+    set_destroy(C_aux)
+end fun
+
+# ejemplo
+# Mochila de capacidad 10, objetos de valor 12, 11
+# y 8, y peso 6, 5 y 4
+
+obj1 := (1,12.0,6.0)
+obj2 := (2,11.0,5.0)
+obj3 := (3,8.0,4.0)
+
+mochila(10.0, {obj1, obj2, obj3})
+
+resto := 10.0
+# iteracion 1
+    # selectObj
+    o := obj2
+        # o.weigth <= resto => 6.0 <= 10.0
+        resto := 4.0
+# iteracion 2
+    # selectObj
+    o := obj3
+        # o.weigth <= resto => 4.0 <= 4.0
+        resto := 0.0
+# iteracion 3
+    # selectObj
+    o := obj1
+        # o.weigth <= resto => 6.0 <= 0
+        resto := 0
+
+ret [obj2, obj3] # <== valor = 19, peso = 9
+
+# lo optimo hubiera sido: ret [obj1, obj3] <== valor = 20, peso = 10
+
+2.
+
+fun cambio(m: Nat,C: Set of Nat) ret S : List of Nat
+    var c, resto: Nat
+    var C_aux : Set of Nat
+    S := empty_list()
+    C_aux:= set_copy(C)
+    resto:= m
+    while ¬is_empty_set(C_aux) do
+        c := max(C_aux)
+        if c > resto then 
+            elim(C_aux,c)
+        else 
+            resto := resto - c
+            addl(S,c)
+        fi
+    od
+    set_destroy(C_aux)
+end fun
+
+# ejemplo
+
+cambio(10, {1,3,4})
+
+resto := 10
+# iteracion 1
+    c := 4
+    # 4 > 10 -> else
+    resto := 6
+    # addl 4
+# iteracion 2
+    c := 4
+    # 4 > 6 -> else
+    resto := 2
+    # addl 4
+# iteracion 3
+    c := 4
+    # 4 > 2 -> elim 4
+# iteracion 4
+    c := 3
+    # 3 > 2 -> elim 3
+# iteracion 5
+    c := 1
+    # 1 > 2 -> else
+    resto := 1
+    # addl 1
+# iteracion 6
+    c := 1
+    # 1 > 1 -> else
+    resto := 0
+    # addl 1
+# iteracion 7
+    c := 1
+    # 1 > 0 -> elim 1
+
+ret [4,4,1,1]
+
+
+3.
+
+type Town = String
+
+fun travel(autonomy : nat, towns : List of Town, distances : List of nat) ret r : List of Town
+    var stops : List of Town
+    stops := empty_list()
+
+    var fuel : nat
+    fuel := 0
+
+    for i:=0 to length_list(distances) do
+        if fuel >= index_list(distances, i) then
+            fuel := fuel - index_list(distances, i)
+        else
+            fuel := autonomy - index_list(distances, i)
+            addr(r, index_list(towns, i))
+        fi
+    od
+end fun
+
+
+a = 100
+
+1-2 = 90            # ¿llego a localidad 2? no, entonces cargo - 10
+2-3 = 100           # ¿llego a localidad 3? no, entonces cargo - 0
+3-4 = 30            # ¿llego a localidad 4? no, entonces cargo - 70
+4-5 = 80            # ¿llego a localidad 5? no, entonces cargo - 20
+5-6 = 10            # ¿llego a localidad 6? si - 10
+6-7 = 14            # ¿llego a localidad 7? no, entonces cargo - 86
+7-8 = 5             # ¿llego a localidad 8? si - 81
+
+
+4.
+
+t = 4
+
+# voy eligiendo la que menos tiempo sobrevive
+
+1 : 14              # 4 -> no la puedo rescatar
+2 : 18              # 5 -> la rescato -> t_curr = 16
+3 : 13              # 3 -> la rescato -> t_curr = 12
+4 : 5               # 1 -> la rescato -> t_curr = 4
+5 : 9               # 2 -> la rescato -> t_curr = 8
+
+type Whale = tuple
+        id : nat
+        survival_t : nat
+end tuple
+
+fun rescue_whale(rescue_t : nat, whales : List of Whale) ret r : List of Whale
+    var whales_aux : List of Whale
+    var t_curr : nat
+    var w : nat
+
+    whales_aux := copy_list(whales)
+    t_curr := rescue_t
+
+    for i:=0 to length_list(whales_aux) do
+        w = min_surv_t_whale(whales_aux)
+        if w.survival_t >= t_curr then
+            t_curr := t_cutt + rescue_t
+            addr(r, w)
+        fi
+        drop(whales_aux, w)
+    od
+end fun
+
+fun min_surv_t_whale(whales : List of Whale) ret r : Whale
+    r := index_list(whales, 0)
+    for i:=1 to length_list(whales) do
+        if index_list(whales, i).survival_t < whale_tmp.survival_t then
+            r := index_list(whales, i)
+        fi
+    od
+end fun
+
+
+5.
+
+tengo 5 amigos
+
+# busco la persona que vuelva antes de la fecha de salida de las otras personas
+
+f1 : 24-31
+f2 : 15-20
+f3 : 7-23
+f4 : 1-8
+f5 : 6-12
+
+
+
+6.
+
+facturas        - t_min: 5, t_max: 5
+criollitos      - t_min: 2, t_max: 3
+galletas        - t_min: 1, t_max: 1
+masitas         - t_min: 1, t_max: 2
+cubanitos       - t_min: 2, t_max: 4
+madalenas      - t_min: 3, t_max: 6
+
+sum_t = 0
+open_count = 0
+
+# busco la pieza tal que el tiempo minimo de coccion sea igual al tiempo transcurrido y que
+# no sobrepase el tiempo maximo de coccion
+
+type Bakery = tuple
+        min_t: nat
+        max_t: nat
+end tuple
+
+fun cook_time(pieces: List of Bakery) ret open_count: nat
+    var sum_t, curr_min_t: nat
+    var pieces_aux: List of Bakery
+    sum_t := 0
+    pieces_aux := copy_list(pieces)
+    while ¬is_empty_set(pieces_aux) do
+        curr_min_t := get_min_t(pieces_aux)
+        if sum_t == curr_min_t then
+            drop_p(sum_t, pieces_aux)
+            open_count := open_count + 1
+        else
+            sum_t := sum_t + 1
+        fi
+    od
+end fun
+
+proc drop_p(in t_min: nat, in/out pieces: List of Bakery)
+    for i := 0 to length_list(pieces) do
+        if t_min == index_list(pieces, i).t_min then
+            drop(pieces, index_list(pieces, i))
+        fi
+    od
+end proc
+
+fun get_min_t(pieces: List of Bakery) ret min: nat
+    min := index_list(pieces, 0)
+    for i := 1 to length_list(pieces) do
+        if index_list(pieces, 0).min_t < min then
+            min := index_list(pieces, 0).min_t
+        fi
+    od
+end fun
+
+
+
+
+7.
+
+C = 15000 # cantidad de oxigeno
+
+t = 90 # minutos de rescate por cada persona
+
+s1 = 35 # oxigeno por minuto
+s2 = 50 # oxigeno por minuto
+s3 = 15 # oxigeno por minuto
+s4 = 20 # oxigeno por minuto
+s5 = 20 # oxigeno por minuto
+
+# busco quien gaste menos oxigeno por minuto
+res = 0
+# iteracion 1
+    min_ox_p = get_min_ox_p(people_aux)
+    C = C - t * min_ox_p.ox
+    "C >= 0"
+        res += 1
+    drop(sn)
+
+type People = tuple
+        name: String
+        ox: nat
+end tuple
+
+fun save_people(people: List of People, ox_t: nat, rescue_t: nat) ret total_rescue_p: nat
+    var people_aux: List of People
+    var min_ox_p: People
+    people_aux := copy_list(people)
+    total_rescue_p := 0
+    while ¬is_empty_set(people_aux) do
+        min_ox_p = get_min_ox_p(people_aux)
+        ox_t := ox_t - (rescue_t * min_ox_p.ox)
+        if ox_t >= 0 then
+            total_rescue_p := total_rescue_p + 1
+        fi
+        drop(people_aux, min_ox_p)
+    od
+end fun
+
+fun get_min_ox_p(people: List of People) ret p: People
+    p := index_list(people, 0)
+    for i := 1 to length_list(people) do
+        if index_list(people, i).ox < p.ox then
+            p := index_list(people, i)
+        fi
+    od
+end fun
+
+
+
+
+8.
+
+4 troncos
+
+t1: k=12,  t=1
+t2: k=8,  t=2
+t3: k=7,  t=2
+t4: k=16, t=1
+
+k1 = 28
+k2 = 21
+
+

@@ -1,0 +1,4 @@
+aarch64-linux-gnu-gcc -O1 -S main.c
+aarch64-linux-gnu-gcc -o main main.s
+qemu-aarch64-static -L /usr/aarch64-linux-gnu ./main
+echo $?

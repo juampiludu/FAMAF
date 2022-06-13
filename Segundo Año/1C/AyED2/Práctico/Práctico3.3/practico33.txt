@@ -1,0 +1,156 @@
+1.
+
+fun cambio(d: array[1..n] of nat, i,j: nat) ret r: nat
+    if j=0 then 
+        r:= 0   
+    else if i = 0 then 
+        r:= ∞
+    else if d[i] > j then 
+        r:= cambio(d,i-1,j)
+    else 
+        r:= min(cambio(d,i-1,j),1+cambio(d,i,j-d[i]))
+    fi
+end fun
+
+2.
+
+# 68: 4
+# 74: 4
+# 75: 3
+# 83: 5
+# 88: 4
+# 89: 5
+
+
+3.
+
+# importes: array[1..n] of nat
+# harina: array[1..n] of nat
+# max_harina: nat
+m1, ... , mn
+h1, ... , hn
+panaderia(i, max_harina) 
+    # si no tengo más harina, entonces el importe total es 0
+    {max_harina <= 0} -> 0
+    # si tengo harina pero no tengo importes entonces el importe total es -infinito
+    {max_harina > 0 and is_empty(importes)} -> -inf
+    # si tengo harina pero la cantidad de harina requerida del producto es mayor a la cantidad de harina total,
+    # entonces hay que seguir buscando
+    {max_harina > 0 and harina[i]>max_harina} -> panaderia(i-1, max_harina)
+    # si tengo harina y la cantidad de harina requerida del producto es menor a la cantidad de harina total,
+    # entonces buscamos el máximo entre haber usado el producto actual y no haberlo usado
+    {max_harina > 0 and harina[i]<=max_harina} -> max(panaderia(i-1, max_harina), panaderia(i-1, max_harina-h[i])+m[i])
+
+
+
+4.
+
+# objetos: [1..n] -> lista de objetos
+# pesos: [1..n] -> lista de peso de cada objeto
+# P: nat -> kilogramos para ganar altura
+p1, ... , pn
+v1, ... , vn
+globo(i, P)
+    # si no tengo objetos
+    {P <= 0} -> 0
+    # si tengo objetos pero no se los pesos
+    {P > 0 and is_empty(p)} -> inf
+    # si tengo objetos pero el peso no es suficiente, debo sacar mas objetos
+    {P > 0 and p[i] < P} -> min(globo(i-1,P), globo(i-1, P-p[i] + v[i]))
+
+
+5.
+
+# salidas: [1..n] -> fechas de salidas
+# regresos: [1..n] -> fechas de regresos
+# montos: [1..n] -> monto por dia de viaje
+# G -> ganancia total
+
+alquiler(i, f)
+    # si no tengo amigos
+    {i = 0} -> 0
+    # si mi amigo ya se fue
+    {i > 0 and s[i] >= f} -> alquiler(i-1, f)
+    # veo el maximo de ganancias entre prestarselo a un amigo y no prestarselo
+    {i > 0 and s[i] < f} -> max(alquiler(i-1, f), alquiler(i-1, r[i]) + m[i]*(r[i]-s[i]))
+
+
+# la llamada principal sería la siguente, asumiendo que la fecha comienza en 0
+alquiler(n, 0)
+
+
+6.
+
+# MA, MB -> Tipos restantes de materia prima
+# v1, ..., vn -> valores
+# a1, ..., an -> materia prima A
+# b1, ..., bn -> materia prima B
+# G -> mayor valor alcanzable
+
+artesano(i, MA, MB)
+    # si no tengo más materia prima
+    {i <= 0} -> 0
+    # si no tengo suficiente materia prima para hacer el producto, no lo hago
+    {i > 0 ∧ (MA < a[i] ∨ MB < b[i])} -> artesano(i-1, MA, MB)
+    # si tengo suficiente materia prima
+    {i > 0 ∧ (MA >= a[i] ∧ MB >= b[i])} -> max(artesano(i-1, MA, MB), artesano(i-1, MA-a[i], MB-b[i]) + v[i])
+
+
+7.
+
+# w1, ..., wn -> peso de los objetos
+# v1, ..., vn -> valor de los objetos
+# W1, W2 -> dos mochilas con diferente peso
+
+mochila(i, W1, W2)
+    # si no tengo objetos
+    {i = 0} -> 0
+    # si el objeto sobrepasa el peso de la mochila, no lo pongo
+    {i > 0 and (W1 < w[i] ∨ W2 < w[i])} -> mochila(i-1, W1, W2)
+    # si los objetos entran en la primer mochila
+    {i > 0 and (W1 >= w[i] ∧ W2 < w[i])} -> mochila(i-1, W1-w[i], W2) + v[i]
+    # si los objetos entran en la segunda mochila
+    {i > 0 and (W1 >= w[i] ∧ W2 >= w[i])} -> mochila(i-1, W1, W2-w[i]) + v[i]
+    # si los objetos entran en las dos mochilas, me fijo cual es el maximo valor
+    {i > 0 and (W1 >= w[i] ∧ W2 >= w[i])} -> max(
+                                                mochila(i-1, W1, W2), 
+                                                mochila(i-1, W1-w[i], W2) + v[i], 
+                                                mochila(i-1, W1, W2-w[i]) + v[i]
+                                            )
+
+
+8.
+
+# S1 y S2 -> linea de montaje
+# S1,1; ..; S1,n  -> estaciones de S1
+# S2,1; ..; S2,n  -> estaciones de S2
+# a1,i y a2,i     -> costo de cada estacion (a1,i = costo de la estacion S1,i)
+# t(i,j)          -> costo de transferir en la estacion j 
+# Encontrar el costo minimo de fabricar un automovil usando ambas lineas.
+
+
+# S -> 1 ∨ 2 (es la Linea en la que estoy)
+# i = en que estacion estoy
+# n = estacion limite
+
+costo(i, S) =          # si transferir no cuesta nada 
+    # no hay estaciones 
+    # si ya termine de ensamblar el auto
+    {i > n > 0}         -> 0
+    #si hay estaciones por hacer ensamblo -> cambio/no cambio
+    {n>=i>0 and S=1}    ->  a[S,i] + min(costo(i+1, S), t[2,i] + costo(i+1,S))
+    {n>=i>0 and S=2}    ->  a[S,i] + min(costo(i+1, S), t[1,i] + costo(i+1,S))
+
+
+9.
+
+# c[i, j] -> puntaje
+up(i, j)
+    # si ya terminó el tablero
+    {i = n} -> c[i,j]
+    # no me puedo mover a la izquierda
+    {j = 1} -> c[i,j] + max(up(i+1,j), up(i+1, j+1))
+    # no me puedo mover a la derecha
+    {j = n} -> c[i,j] + max(up(i+1,j), up(i+1, j-1))
+    # me puedo mover a cualquier lado
+    {n > j > 1} -> c[i,j] + max(up(i+1,j), up(i+1, j-1), up(i+1, j+1))

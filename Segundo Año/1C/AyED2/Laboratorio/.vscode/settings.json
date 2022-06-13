@@ -5,6 +5,7 @@
         "*.ayed": "plaintext",
         "array": "c",
         "string_view": "c",
-        "mybool.h": "c"
+        "mybool.h": "c",
+        "stack.h": "c"
     }
 }

@@ -1,0 +1,293 @@
+1.
+
+implement Stack of T where
+
+type Stack of T = List of T
+
+# constructors
+
+fun empty_stack() ret s : Stack of T
+    s := empty()
+end fun
+
+proc push(in e: T, in/out s: Stack of T)
+    addl(e, s)
+end proc
+
+# operations
+
+fun is_empty_stack(s : Stack of T) ret e : T
+    e := is_empty(s)
+end fun
+
+fun top(s: Stack of T) ret e : T
+    e := head(s)
+end fun
+
+proc pop(in/out s: Stack of T)
+    drop(l, 1)
+end proc
+
+
+
+2.
+
+implement Stack of T where
+
+type Node of T = tuple
+            elem : T
+            next : pointer to (Node of T)
+        end tuple
+
+type Stack of T = pointer to (Node of T)
+
+# constructors
+
+fun empty_stack() ret s : Stack of T
+    s := null
+end fun
+
+proc push(in e: T, in/out s: Stack of T)
+    var p : pointer to (Node of T)
+    alloc(p)
+    p->elem := e
+    p->next := s
+    s := p
+end proc
+
+# operations
+
+fun is_empty_stack(s : Stack of T) ret e : T
+    e := s = null
+end fun
+
+fun top(s: Stack of T) ret e : T
+    e := s->elem
+end fun
+
+proc pop(in/out s: Stack of T)
+    var p : pointer to (Node of T)
+    p := s
+    s := s->next
+    free(p)
+end proc
+
+
+
+3.a
+
+implement Queue of T where
+
+type Queue of T = tuple
+            elems : array[0..N-1] of T
+            size : nat
+        end tuple
+
+# constructors
+
+fun empty_queue() ret q : Queue of T
+    q.size := 0
+end fun
+
+proc enqueue(in/out q : Queue of T, in e : T)
+    q.elems[q.size] := e
+    q.size := q.size + 1
+end proc
+
+# operations
+
+fun is_empty_queue(q: Queue of T) ret b : bool
+    b := q.size = 0
+end fun
+
+fun first(q : Queue of T) ret e : T
+    e := q.elems[0]
+end fun
+
+proc dequeue(in/out q : Queue of T)
+    for i:=0 to q.size-2 do
+        q.elems[i] := q.elems[i + 1]
+    od
+    q.size := q.size - 1
+end proc
+
+
+3.b
+
+# una banda
+
+4.
+
+type Direction = enumerate
+                    Left
+                    Right
+
+type Path = List of Direction
+
+implement Tree of T where
+
+    type Node of T = tuple
+        left: pointer to (Node of T)
+        value: T
+        right: pointer to (Node of T)
+    end tuple
+
+type Tree of T= pointer to (Node of T)
+
+# constructors
+
+fun empty_tree() ret t : Tree of T
+    t := null
+end fun
+
+fun node (tl : Tree of T, e : T, tr : Tree of T) ret t : Tree of T
+    alloc(t)
+    t->value := e
+    t->left := tl
+    t->right := tr
+end fun
+
+fun is_empty_tree(t : Tree of T) ret b : Bool
+    b := t = null
+end fun
+
+fun root(t : Tree of T) ret e : T
+    e := t->value
+end fun
+
+fun left(t : Tree of T) ret tl : Tree of T
+    tl := t->left
+end fun
+
+fun right(t : Tree of T) ret tl : Tree of T
+    tr := t->right
+end fun
+
+fun height(t : Tree of T) ret n : Nat
+    if t != null then
+        n := 1 + max(height(t->left), height(t->right))
+    else
+        n := 0
+    endif
+end fun
+
+fun is_path(t : Tree of T, p : Path) ret b : Bool
+    b := true
+    var d : Direction
+    while ¬is_empty(p) ∧ b do
+        if d = Left ∧ p->left = null then b := false fi
+        if d = Right ∧ p->right = null then b := false fi
+        tail(p)
+    od
+end fun
+
+fun subtree_at(t : Tree of T, p : Path) ret t0 : Tree of T
+    var p_aux : Path
+    var q : Tree of T
+    q := t
+    p_aux := list_copy(p)
+    while ¬is_empty(p_aux) ∧ ¬is_empty_tree(q) do
+        if head(p_aux) = Left then
+            q := q->left
+        else
+            q := q->right
+        fi
+        tail(q)
+    od
+    destroy(p_aux)
+    t0 := q
+end fun
+
+fun elem_at(t : Tree of T, p : Path) ret e : T
+    e := root(subtree_at(t, p))
+end fun
+
+
+5.b
+
+implement Dict of (K,V) where
+
+    type Node of (K,V) = tuple
+        left: pointer to (Node of (K,V))
+        key: K
+        value: V
+        right: pointer to (Node of (K,V))
+    end tuple
+
+type Dict of (K,V)= pointer to (Node of (K,V))
+
+
+fun empty_dict() ret d : Dict of (K,V)
+    d := null
+end fun
+
+proc add_dict(in/out d : Dict of (K,V), in k : K, in v : V)
+    if d = null then
+        d->right := null
+        d->left := null
+        d->key := k
+        d->value := v
+    else
+        if k >= d->key then
+            add_dict(d->right, k, v)
+        else
+            if k < d->key then
+                add_dict(d->left, k, v)
+            fi
+        fi
+    fi
+end proc
+
+fun is_empty_dict(d : Dict of (K,V)) ret b : bool
+    b := d = null
+end fun
+
+fun key_in_dict(d : Dict of (K,V), k : K) ret b : bool
+    b := false
+    if ¬is_empty_dict(d) then
+        if k = d->key then b := true fi
+        if k > d->key then b := key_in_dict(d->right, k) fi
+        if k < d->key then b := key_in_dict(d->left, k) fi
+    fi
+end fun
+
+fun get_value_in(d : Dict of (K,V), k : K) ret v : V
+    if ¬is_empty_dict(d) then
+        if k = d->key then v := d->value fi
+        if k > d->key then v := get_value_in(d->right, k) fi
+        if k < d->key then v := get_value_in(d->left, k) fi
+    fi
+end fun
+
+proc remove_key(in/out d : Dict of (K,V), in k : K)
+    var max_key : K
+    var max_val : V
+
+    if d->key = k then
+        if d->left = null then
+            d := d->right
+        else
+            borra_max_key_val(d->right, max_key, max_val) # {- proc auxiliar que me busca el elemento y lo elimina de la hoja -}
+            d->key = max_key
+            d->value = max_val
+        fi
+    else
+        if d->key > k then
+            remove_key(d->left, k)
+        else
+            remove_key(d->right, k)
+        fi
+    fi
+end proc
+
+proc borra_max_key_val(in/out d: Dict of (K, V), out k: K, out v: V)
+   # {- acá buscar el elemento máximo, devolverlo y borrarlo -}
+end proc
+
+fun keys_in_dict(d : Dict of (K,V)) ret l : List of K
+    l := empty_list()
+    while ¬is_empty_dict(d) do
+        addr(l, d->key)
+        tail(d)
+    od
+end fun

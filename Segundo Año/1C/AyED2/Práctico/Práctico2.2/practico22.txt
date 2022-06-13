@@ -1,0 +1,435 @@
+1.
+
+implement List of T where
+
+type Node of T = tuple
+            elem : T
+            next : pointer to (Node of T)
+        end tuple
+type List of T = pointer to (Node of T)
+
+
+fun empty() ret l : List of T
+    l := null
+end fun
+
+
+proc addl(in e : T, in/out l : List of T)
+    var p : pointer to (Node of T)
+    alloc(p)
+    p->elem := e
+    p->next := l
+    l := p
+end proc
+
+
+fun is_empty(l : List of T) ret b : bool
+    b := l = null
+end fun
+
+
+# {- PRE: not is_empty(l) -}
+fun head(l : List of T) ret e : T
+    e := l->elem
+end fun
+
+
+# {- PRE: not is_empty(l) -}
+proc tail(in/out l : List of T)
+    var p : pointer to (Node of T)
+    alloc(p)
+    p := l
+    l := p->next
+end proc
+
+
+proc addr(in/out l : List of T,in e : T)
+    var p,q : pointer to (Node of T)
+    alloc(p)
+    alloc(q)
+    q->elem := e
+    q->next := null
+    if ¬(is_empty(l)) then
+        p := l
+        while p->next != null do
+            p := p->next
+        od
+        p->next := q
+    else 
+        l := q
+    fi
+end proc
+
+
+fun length(l : List of T) ret n : nat
+    var p : pointer to (Node of T)
+    alloc(p)
+    n := 0
+    p := l
+    while p != null do
+        n := n+1
+        p := p->next
+    od
+end fun
+
+
+proc concat(in/out l: List of T, in l0: List of T)
+    var p : pointer to (Node of T)
+    alloc(p)
+    p := l0
+    while p != null do
+        addr(l, p->elem)
+        p := p->next
+    od
+end proc
+
+
+# {- PRE: length(l) > n -}
+fun index(l: List of T, n: nat) ret e: T
+    var p : pointer to (Node of T)
+    alloc(p)
+    p := l
+    while p != null do
+        if p->elem = n then
+            e := p->elem
+        else
+            p := p->next
+        fi
+    od
+end fun
+
+
+proc take(in/out l: List of T, in n: nat)
+    var p : pointer to (Node of T)
+    alloc(p)
+    var i : nat
+    i := 0
+    while i < n ∧ l != null do
+        p := l
+        l := p->next
+        i := i + 1
+    od
+    l->next := null
+end proc
+
+
+proc drop(in/out l: List of T, in n: nat)
+    var p : pointer to (Node of T)
+    var i : nat
+    alloc(p)
+    i := 0
+    while i < n ∧ l != null do
+        p := l
+        l := p->next
+        free(p)
+        i := i + 1
+    od
+end proc
+
+
+fun copy_list(l1 : List of T) ret l2 : List of T
+    var p,q : pointer to (Node of T)
+    alloc(p)
+    alloc(q)
+    p := l1
+    while p != null do
+        q := p->elem
+        p := p->next
+    od
+    l2 := q
+end proc
+
+
+
+2.
+
+# no entiendo el ejercicio
+
+
+3.
+
+implement List of T where
+
+type List of T = tuple
+            elems: array[1..n] of T
+            size: nat
+        end tuple
+
+# {- PRE: l.size > n -}
+proc add_at(in e: T, in n: nat, in/out l: List of T)
+    var l_start, l_end, l_copy : List of T
+    l_copy := copy_list(l)
+    l_start := take(l_copy, n)
+    l_end := drop(l, n)
+    addr(l_start, e)
+    concat(l_start, l_end)
+    l := l_start
+end proc
+
+
+
+4.a
+
+spec Tablero where
+
+constructors
+    fun tablero_inicial() ret t: Tablero
+    # {- devuelve un tablero representando el estado en el que no hay tantos -}
+
+    proc nuevo_tanto_A(in/out t: Tablero)
+    # {- agrega para el tablero t un punto para el equipo A -}
+
+    proc nuevo_tanto_B(in/out t: Tablero)
+    # {- agrega para el tablero t un punto para el equipo B -}
+
+destroy
+    proc destroy_tablero(in/out t: Tablero)
+    # {- libera memoria en caso de ser necesario -}
+
+operations
+    fun tablero_en_cero(t: Tablero) ret b : bool
+    # {- devuelve true si no hay tantos anotados y false en caso contrario -}
+
+    fun tanto_equipo_A(t: Tablero) ret b : bool
+    # {- devuelve true si el equipo A anotó un tanto -}
+
+    fun tanto_equipo_B(t: Tablero) ret b : bool
+    # {- devuelve true si el equipo B anotó un tanto -}
+
+    fun equipo_A_ganando(t: Tablero) ret b : bool
+    # {- devuelve true si el equipo A va ganando -}
+
+    fun equipo_B_ganando(t: Tablero) ret b : bool
+    # {- devuelve true si el equipo B va ganando -}
+
+    fun empatan(t: Tablero) ret b : bool
+    # {- devuelve true si hay empate -}
+
+    proc anotar_tantos_A(in/out t: Tablero, in n: nat)
+    # {- permite anotar n tantos para el equipo A -}
+
+    proc anotar_tantos_B(in/out t: Tablero, in n: nat)
+    # {- permite anotar n tantos para el equipo B -}
+
+    proc restar_tantos_A(in/out t: Tablero, in n: nat)
+    # {- permite restar n tantos para el equipo A. Si n es mayor 
+    # a los tantos anotados actualmente para A, los puntos quedan en 0 -}
+
+    proc restar_tantos_B(in/out t: Tablero, in n: nat)
+    # {- permite restar n tantos para el equipo B. Si n es mayor 
+    # a los tantos anotados actualmente para B, los puntos quedan en 0 -}
+end spec
+
+
+4.b
+
+spec Counter where
+
+constructors
+    fun init() ret c : Counter
+    # {- crea un contador inicial -}
+
+    proc incr(in/out c: Counter)
+    # {- incrementa el contador c -}
+
+destroy
+    proc destroy(in/out c: Counter)
+    # {- libera memoria en caso de ser necesario -}
+
+operations
+    fun is_init(c: Counter) ret b: bool
+    # {- devuelve true si el contador es inicial -}
+
+    # {- PRE: not is_init(c) -}
+    proc decr(in/out c: Counter)
+    # {- decrementa el contador c -}
+
+    fun copy(c: Counter) ret c2: Counter
+    # {- copia el contador c y lo devuelve en c2 -}
+end spec
+
+
+implement Tablero where
+
+type Tablero = tuple
+            tantos_A: Counter
+            tantos_B: Counter
+        end tuple
+
+fun tablero_inicial() ret t: Tablero
+    t.tantos_A := init()
+    t.tantos_B := init()
+end fun
+
+proc nuevo_tanto_A(in/out t: Tablero)
+    incr(t.tantos_A)
+end proc
+
+proc nuevo_tanto_B(in/out t: Tablero)
+    incr(t.tantos_B)
+end proc
+
+proc destroy_tablero(in/out t: Tablero)
+    destroy(t.tantos_A)
+    destroy(t.tantos_B)
+end proc
+
+proc anotar_tantos_A(in/out t: Tablero, in n: nat)
+    for i:=1 to n do
+        nuevo_tanto_A(t)
+    od
+end proc
+
+proc anotar_tantos_B(in/out t: Tablero, in n: nat)
+    for i:=1 to n do
+        nuevo_tanto_B(t)
+    od
+end proc
+
+fun equipo_A_ganando(t: Tablero) ret b: bool
+    var ctA, ctB : Counter
+    ctA := copy(t.tantos_A)
+    ctB := copy(t.tantos_B)
+    b := true
+    while b do
+        decr(ctA)
+        decr(ctB)
+        if is_init(ctA) ∧ ¬(is_init(ctB)) then
+            b := false
+        fi
+    od
+end fun
+
+fun equipo_B_ganando(t: Tablero) ret b: bool
+    var ctA, ctB : Counter
+    ctA := copy(t.tantos_A)
+    ctB := copy(t.tantos_B)
+    b := true
+    while b do
+        decr(ctA)
+        decr(ctB)
+        if is_init(ctB) ∧ ¬(is_init(ctA)) then
+            b := false
+        fi
+    od
+end fun
+
+# fun empatan(t: Tablero) ret b: bool
+#     var ctA, ctB : Counter
+#     ctA := copy(t.tantos_A)
+#     ctB := copy(t.tantos_B)
+#     b := true
+#     while b do
+#         decr(ctA)
+#         decr(ctB)
+#         if is_init(ctA) ∧ is_init(ctB) then
+#             b := false
+#         fi
+#     od
+# end fun
+
+
+4.c
+
+# La diferencia con la anterior implementación es que se puede trabajar mas eficientemente con
+# operaciones con numeros. Tambien es mas facil implementar las funciones que me dicen si un equipo
+# va ganando, ya que puedo comparar directamente los valores sin necesidad de decrementar los valores.
+
+
+5.
+
+spec Conjunto where
+
+constructors
+    fun vacio() ret c: Conjunto
+    # {- devuelve un conjunto vacio -}
+
+    proc agregar(in/out c: Conjunto, in e: T)
+    # {- agrega el elemento e al conjunto -}
+
+destroy
+    proc destroy(in/out c: Conjunto)
+    # {- destruye el conjunto c -}
+
+operations
+    fun pertenece(e: T, c: Conjunto) ret b : bool
+    # {- chequea si el elemento e pertenece al conjunto c -}
+
+    fun es_vacio(c: Conjunto) ret b : bool
+    # {- chequea si el conjunto es vacio -}
+
+    proc unir(in/out c: Conjunto, in c0: Conjunto)
+    # {- une el conjunto c con el c0 -}
+
+    proc intersectar(in/out c: Conjunto, in c0: Conjunto)
+    # {- intersecta el conjunto c con el c0 -}
+
+    proc diferencia(in/out c: Conjunto, in c0: Conjunto)
+    # {- ¿? -}
+
+
+6.b
+
+implement Conjunto where
+
+type Conjunto of T = List of T
+
+fun vacio() ret c: Conjunto
+    c := empty()
+end fun
+
+
+proc agregar(in/out c: Conjunto, in e: T)
+    var l_aux : List of T
+    var n : nat
+
+    l_aux = copy_list(c)
+    n := 0
+
+    while ¬(is_empty(l_aux)) ∧ head(l_aux) < e do
+        n := n + 1
+        tail(l_aux)
+    od
+
+    if is_empty(l_aux) ∨ head(l_aux) > e then
+        add_at(c, n, e)
+    fi
+
+    destroy(l_aux)
+end proc
+
+
+fun pertenece(e: T, c: Conjunto) ret b : bool
+    var i : nat
+    i := 0
+    b := false
+    while i < length(c) do
+        if index(c, i) = e then
+            b := true
+        fi
+        i := i + 1
+    od
+end fun
+
+
+fun es_vacio(c: Conjunto) ret b : bool
+    b := is_empty(c)
+end fun
+
+
+proc unir(in/out c: Conjunto, in c0: Conjunto)
+    var i : nat
+    i := 0
+    while i < length(c0) do
+        agregar(c, index(c0, i))
+        i := i + 1
+    od
+end proc
+
+
+proc intersectar(in/out c: Conjunto, in c0: Conjunto)
+    var l_aux : List of T
+    var i : nat
+    l_aux := copy_list(c)
+    i := 0
+    concat(l_aux, c0)

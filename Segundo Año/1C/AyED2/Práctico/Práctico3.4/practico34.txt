@@ -1,0 +1,142 @@
+1.
+
+fun cambio(d: array[1..n] of nat, m: nat) ret r: nat
+    var cam: array[0..n,0..m] of nat
+    var min: nat
+    for i:=0 to n do
+        cam[i,0] := 0
+    od
+    for j:=1 to m do
+        cam[0,j] := infinity
+    od
+    for i:=1 to n do
+        for j:=1 to m do
+            min := infinity
+            for q:=0 to j/d[i] do
+                if min > (q + cam[i-1,j-(q*d[i])]) then
+                    min := q + cam[i-1,j-(q*d[i])]
+                fi
+            od
+            cam[i,j] := min
+        od
+    od
+    r := cam[n,m]
+end fun
+
+
+
+
+3.a
+
+fun cambio(d: array[1..n] of nat, m: nat) ret r: nat
+    var cam: array[0..n,0..m] of nat
+    for k:=1 to m do
+        for i:=1 to n do
+            cam[i,k] := infinity
+            for j:=1 to i do
+                if d[j] <= k then
+                    cam[i,k] := min(cam[i,k], cam[j,k-d[j]])
+                fi
+            od
+            cam[i,k] := cam[i,k] + 1
+        od
+    od
+    r := cam[n,m]
+end fun
+
+
+
+3.b
+
+fun cambio(d: array[1..n] of nat, m: nat) ret r: nat
+    var cam: array[0..n,0..m] of nat
+    for i:=0 to n do
+        cam[i,0] := 0
+    od
+    for j:=1 to m do
+        cam[n,j] := infinity
+    od
+    for i:=0 to n do
+        for j:=1 to m do
+            if j < d[i] then
+                cam[i,j] := cam[i+1,j]
+            else
+                cam[i,j] := min(cam[i+1,j],1+cam[i,j-d[i]])
+            fi
+        od
+    od
+    r := cam[n,m]
+end fun
+
+
+4.3
+
+# importes: array[1..n] of nat
+# harina: array[1..n] of nat
+# max_harina: nat
+m1, ... , mn
+h1, ... , hn
+panaderia(i, max_harina) 
+    # si no tengo más harina, entonces el importe total es 0
+    {max_harina = 0} -> 0
+    # si tengo harina pero no tengo importes entonces el importe total es -infinito
+    {max_harina > 0 and is_empty(importes)} -> -inf
+    # si tengo harina pero la cantidad de harina requerida del producto es mayor a la cantidad de harina total,
+    # entonces hay que seguir buscando
+    {max_harina > 0 and harina[i]>max_harina} -> panaderia(i-1, max_harina)
+    # si tengo harina y la cantidad de harina requerida del producto es menor a la cantidad de harina total,
+    # entonces buscamos el máximo entre haber usado el producto actual y no haberlo usado
+    {max_harina > 0 and harina[i]<=max_harina} -> max(panaderia(i-1, max_harina), panaderia(i-1, max_harina-h[i])+m[i])
+
+fun panaderia(importes: array[1..n] of nat, harina: array[1..n] of nat, max_harina: nat) ret imp_total: nat
+    var pan: array[0..n,0..max_harina] of nat
+    for i:=0 to n do
+        pan[i,0] := 0
+    od
+    for i:=1 to max_harina do
+        pan[0,i] := -infinity
+    od
+    for i:=1 to n do
+        for j:=1 to max_harina do
+            if harina[i] > max_harina then
+                pan[i,j] := pan[i-1, max_harina]
+            else
+                pan[i,j] := max(pan[i-1, max_harina], pan[i-1, max_harina-harina[i]]+importes[i])
+            fi
+        od
+    od
+    imp_total := pan[n,max_harina]
+end fun
+
+
+4.7
+
+# w1, ..., wn -> peso de los objetos
+# v1, ..., vn -> valor de los objetos
+# W1, W2 -> dos mochilas con diferente peso
+
+mochila(i, W1, W2)
+    # si no tengo objetos
+    {i = 0} -> 0
+    # si el objeto sobrepasa el peso de la mochila, no lo pongo
+    {i > 0 and (W1 < w[i] ∨ W2 < w[i])} -> mochila(i-1, W1, W2)
+    # si los objetos entran en la primer mochila
+    {i > 0 and (W1 >= w[i] ∧ W2 < w[i])} -> mochila(i-1, W1-w[i], W2) + v[i]
+    # si los objetos entran en la segunda mochila
+    {i > 0 and (W1 >= w[i] ∧ W2 >= w[i])} -> mochila(i-1, W1, W2-w[i]) + v[i]
+    # si los objetos entran en las dos mochilas, me fijo cual es el maximo valor
+    {i > 0 and (W1 >= w[i] ∧ W2 >= w[i])} -> max(
+                                                mochila(i-1, W1, W2), 
+                                                mochila(i-1, W1-w[i], W2) + v[i], 
+                                                mochila(i-1, W1, W2-w[i]) + v[i]
+                                            )
+
+
+fun mochila(w,v: array[1..n] of nat, W1,W2: nat) ret r: nat
+    var moch: array[1..n,1..W1,1..W2] of nat
+    for i:=0 to n do
+        for j:=0 to n do
+            moch[0,i,j] := 0
+        od
+    od
+    
